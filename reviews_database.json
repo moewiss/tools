@@ -1,0 +1,30 @@
+[
+  {
+    "id": "d5d36477-39ba-45fa-84db-a76384d2e582",
+    "tool_name": "Product QR Generator",
+    "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+    "user_name": "Omar frahat",
+    "user_email": "omarfarhat711@gmail.com",
+    "rating": 2,
+    "comment": "VRT",
+    "created_at": "2025-12-31T06:14:13.155036",
+    "updated_at": "2025-12-31T06:14:13.155094",
+    "edited": false,
+    "helpful_count": 0,
+    "verified_purchase": false
+  },
+  {
+    "id": "eed2018d-8ab5-47e3-8c62-f1a0ad2c923f",
+    "tool_name": "Watermark Remover",
+    "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+    "user_name": "Omar frahat",
+    "user_email": "omarfarhat711@gmail.com",
+    "rating": 1,
+    "comment": "e",
+    "created_at": "2025-12-31T10:45:40.712314",
+    "updated_at": "2025-12-31T10:45:40.712328",
+    "edited": false,
+    "helpful_count": 0,
+    "verified_purchase": false
+  }
+]

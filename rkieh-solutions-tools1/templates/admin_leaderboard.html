@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - RKIEH Solutions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    body {
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        min-height: 100vh;
+    }
+
+    .admin-container {
+        max-width: 1600px;
+        margin: 100px auto 50px;
+        padding: 20px;
+    }
+
+    .admin-header {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 152, 0, 0.1));
+        border: 2px solid rgba(255, 215, 0, 0.4);
+        border-radius: 25px;
+        padding: 50px;
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .admin-title {
+        font-size: 42px;
+        font-weight: 900;
+        color: #fff;
+        margin-bottom: 15px;
+        text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    }
+
+    .admin-subtitle {
+        color: #FFD700;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 152, 0, 0.05));
+        border: 2px solid rgba(255, 215, 0, 0.3);
+        border-radius: 20px;
+        padding: 30px;
+        text-align: center;
+        transition: all 0.4s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-10px);
+        border-color: #FFD700;
+        box-shadow: 0 20px 50px rgba(255, 215, 0, 0.4);
+    }
+
+    .stat-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+        background: linear-gradient(135deg, #FFD700, #FFA500);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .stat-number {
+        font-size: 38px;
+        font-weight: 900;
+        color: #FFD700;
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        color: #aaa;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+
+    .leaderboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .leaderboard-section {
+        background: rgba(255, 255, 255, 0.03);
+        border: 2px solid rgba(255, 215, 0, 0.2);
+        border-radius: 25px;
+        padding: 30px;
+        backdrop-filter: blur(10px);
+    }
+
+    .section-title {
+        font-size: 24px;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .section-title i {
+        color: #FFD700;
+    }
+
+    .leaderboard-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .leaderboard-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        border-radius: 15px;
+        margin-bottom: 12px;
+        transition: all 0.3s;
+    }
+
+    .leaderboard-item:hover {
+        background: rgba(255, 215, 0, 0.1);
+        border-color: #FFD700;
+        transform: translateX(5px);
+    }
+
+    .rank {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #FFD700, #FFA500);
+        color: #000;
+        font-size: 18px;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .rank.gold {
+        background: linear-gradient(135deg, #FFD700, #FFA500);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+
+    .rank.silver {
+        background: linear-gradient(135deg, #C0C0C0, #808080);
+    }
+
+    .rank.bronze {
+        background: linear-gradient(135deg, #CD7F32, #A0522D);
+    }
+
+    .user-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: #fff;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+
+    .user-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .user-name {
+        color: #fff;
+        font-weight: 700;
+        font-size: 15px;
+        margin-bottom: 3px;
+    }
+
+    .user-email {
+        color: #888;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .user-stats {
+        text-align: right;
+        flex-shrink: 0;
+    }
+
+    .stat-value {
+        color: #FFD700;
+        font-weight: 900;
+        font-size: 20px;
+    }
+
+    .stat-type {
+        color: #aaa;
+        font-size: 11px;
+        text-transform: uppercase;
+    }
+
+    .plan-badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-left: 8px;
+    }
+
+    .plan-free {
+        background: rgba(128, 128, 128, 0.2);
+        color: #aaa;
+    }
+
+    .plan-pro {
+        background: rgba(33, 150, 243, 0.2);
+        color: #2196F3;
+        border: 1px solid #2196F3;
+    }
+
+    .plan-premium {
+        background: rgba(255, 215, 0, 0.2);
+        color: #FFD700;
+        border: 1px solid #FFD700;
+    }
+
+    .tools-section {
+        background: rgba(255, 255, 255, 0.03);
+        border: 2px solid rgba(255, 215, 0, 0.2);
+        border-radius: 25px;
+        padding: 30px;
+        margin-top: 30px;
+    }
+
+    .tool-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        margin-bottom: 10px;
+    }
+
+    .tool-name {
+        color: #fff;
+        font-weight: 700;
+    }
+
+    .tool-count {
+        color: #FFD700;
+        font-weight: 900;
+        font-size: 20px;
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+
+    @media (max-width: 768px) {
+        .admin-container {
+            margin-top: 80px;
+            padding: 15px;
+        }
+
+        .leaderboard-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+<body>
+    <!-- Admin Navigation Bar -->
+    <nav class="navbar" style="background: rgba(255, 152, 0, 0.1); border-bottom: 2px solid rgba(255, 152, 0, 0.3);">
+        <div class="nav-container">
+            <a href="/admin" class="brand">
+                <div class="brand-logo" style="font-size: 28px; font-weight: 900; letter-spacing: -2px;">
+                    <span style="color: #ff9800;">R</span><span style="color: #1a1a2e;">K</span>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">ADMIN</span>
+                    <span class="brand-subtitle" style="color: #ff9800;">Panel</span>
+                </div>
+            </a>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="/admin" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="/admin/manage" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-users-cog"></i> Manage Admins & Users
+                </a>
+                <a href="/admin/feedback" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-comments"></i> Feedback
+                </a>
+                <a href="/admin/leaderboard" class="nav-link active" style="color: #ff9800;">
+                    <i class="fas fa-trophy"></i> Leaderboard
+                </a>
+                <a href="/admin/discounts" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-tags"></i> Discounts
+                </a>
+                <a href="/admin/pricing" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-dollar-sign"></i> Pricing
+                </a>
+                <a href="/admin/tool-access" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-key"></i> Tool Access
+                </a>
+                <a href="/admin/logout" class="nav-link nav-link-logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+            
+            <button class="nav-toggle" id="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+<div class="admin-container">
+    <div class="admin-header">
+        <h1 class="admin-title">
+            <i class="fas fa-trophy"></i> Leaderboard
+        </h1>
+        <p class="admin-subtitle">Top Users & Statistics</p>
+    </div>
+
+    <!-- Overall Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-number" id="total-users">0</div>
+            <div class="stat-label">Total Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <div class="stat-number" id="active-users">0</div>
+            <div class="stat-label">Active Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-crown"></i>
+            </div>
+            <div class="stat-number" id="premium-users">0</div>
+            <div class="stat-label">Premium Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-number" id="total-reviews">0</div>
+            <div class="stat-label">Total Reviews</div>
+        </div>
+    </div>
+
+    <!-- Leaderboards -->
+    <div class="leaderboard-grid">
+        <!-- Top Users by Usage -->
+        <div class="leaderboard-section">
+            <h2 class="section-title">
+                <i class="fas fa-fire"></i> Top Users by Usage
+            </h2>
+            <ul class="leaderboard-list" id="top-usage"></ul>
+        </div>
+
+        <!-- Top Reviewers -->
+        <div class="leaderboard-section">
+            <h2 class="section-title">
+                <i class="fas fa-comment-dots"></i> Top Reviewers
+            </h2>
+            <ul class="leaderboard-list" id="top-reviewers"></ul>
+        </div>
+
+        <!-- Most Engaged -->
+        <div class="leaderboard-section">
+            <h2 class="section-title">
+                <i class="fas fa-bolt"></i> Most Engaged
+            </h2>
+            <ul class="leaderboard-list" id="top-engaged"></ul>
+        </div>
+
+        <!-- Top Premium Users -->
+        <div class="leaderboard-section">
+            <h2 class="section-title">
+                <i class="fas fa-gem"></i> Top Premium Users
+            </h2>
+            <ul class="leaderboard-list" id="top-premium"></ul>
+        </div>
+    </div>
+
+    <!-- Top Tools -->
+    <div class="tools-section">
+        <h2 class="section-title">
+            <i class="fas fa-tools"></i> Most Popular Tools
+        </h2>
+        <div id="top-tools"></div>
+    </div>
+</div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadLeaderboard();
+});
+
+async function loadLeaderboard() {
+    try {
+        const response = await fetch('/api/admin/leaderboard');
+        const result = await response.json();
+        
+        if (result.success) {
+            const data = result.data;
+            
+            // Update overall stats
+            document.getElementById('total-users').textContent = data.overall_stats.total_users;
+            document.getElementById('active-users').textContent = data.overall_stats.active_users;
+            document.getElementById('premium-users').textContent = data.overall_stats.premium_users;
+            document.getElementById('total-reviews').textContent = data.overall_stats.total_reviews;
+            
+            // Display leaderboards
+            displayLeaderboard('top-usage', data.leaderboards.top_users_by_usage, 'usage_today', 'uses');
+            displayLeaderboard('top-reviewers', data.leaderboards.top_reviewers, 'total_reviews', 'reviews');
+            displayLeaderboard('top-engaged', data.leaderboards.top_engaged, 'total_engagement', 'points');
+            displayLeaderboard('top-premium', data.leaderboards.top_premium, 'usage_today', 'uses');
+            
+            // Display top tools
+            displayTopTools(data.top_tools);
+        }
+    } catch (error) {
+        console.error('Error loading leaderboard:', error);
+    }
+}
+
+function displayLeaderboard(containerId, users, statKey, statLabel) {
+    const container = document.getElementById(containerId);
+    
+    if (users.length === 0) {
+        container.innerHTML = '<div class="no-data">No data available</div>';
+        return;
+    }
+    
+    let html = '';
+    users.forEach((user, index) => {
+        const rank = index + 1;
+        let rankClass = '';
+        if (rank === 1) rankClass = 'gold';
+        else if (rank === 2) rankClass = 'silver';
+        else if (rank === 3) rankClass = 'bronze';
+        
+        const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        
+        const planClass = user.plan === 'premium' ? 'plan-premium' : user.plan === 'pro' ? 'plan-pro' : 'plan-free';
+        const planText = user.plan.toUpperCase();
+        
+        html += `
+            <li class="leaderboard-item">
+                <div class="rank ${rankClass}">${rank}</div>
+                <div class="user-avatar">${initials}</div>
+                <div class="user-info">
+                    <div class="user-name">
+                        ${user.name}
+                        <span class="plan-badge ${planClass}">${planText}</span>
+                    </div>
+                    <div class="user-email">${user.email}</div>
+                </div>
+                <div class="user-stats">
+                    <div class="stat-value">${user[statKey]}</div>
+                    <div class="stat-type">${statLabel}</div>
+                </div>
+            </li>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function displayTopTools(tools) {
+    const container = document.getElementById('top-tools');
+    
+    if (tools.length === 0) {
+        container.innerHTML = '<div class="no-data">No data available</div>';
+        return;
+    }
+    
+    let html = '';
+    tools.forEach(tool => {
+        html += `
+            <div class="tool-item">
+                <div class="tool-name">${tool.name}</div>
+                <div class="tool-count">${tool.count}</div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+</script>
+
+<script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
+</body>
+</html>
+

@@ -1,0 +1,635 @@
+{% extends "base.html" %}
+
+{% block title %}Tools - RKIEH Solutions{% endblock %}
+
+{% block content %}
+<section class="tools-page">
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-tools"></i> Our Tools</h1>
+            <p>Professional-grade tools for all your media processing needs</p>
+        </div>
+
+        <!-- Active Tools -->
+        <div class="tools-section">
+            <h2><i class="fas fa-star"></i> Available Now <span style="color: #ff3333; font-size: 18px; margin-left: 10px;">(17 Tools)</span></h2>
+            <div class="tools-grid">
+                <div class="tool-card active">
+                    <div class="card-ribbon">Active</div>
+                    <div class="card-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3>Media Converter Pro</h3>
+                    <p>Convert between audio and video formats with professional quality. Supports batch processing and multiple formats.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fas fa-video"></i> MP4 → MP3</span>
+                        <span class="feature-tag"><i class="fas fa-music"></i> MP3 → MP4</span>
+                        <span class="feature-tag"><i class="fas fa-layer-group"></i> Batch</span>
+                        <span class="feature-tag"><i class="fas fa-file-upload"></i> Upload</span>
+                    </div>
+                    
+                    <a href="/tool/media-converter" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-eraser"></i>
+                    </div>
+                    <h3>Watermark Remover</h3>
+                    <p>Remove watermarks, logos, and text overlays using classical image processing. Fast, privacy-focused, and no AI required.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fas fa-shield-alt"></i> Privacy First</span>
+                        <span class="feature-tag"><i class="fas fa-bolt"></i> No AI</span>
+                        <span class="feature-tag"><i class="fas fa-infinity"></i> Unlimited</span>
+                        <span class="feature-tag"><i class="fas fa-paint-brush"></i> Manual</span>
+                    </div>
+                    
+                    <a href="/tool/watermark-remover" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3>Media Downloader</h3>
+                    <p>Download videos from YouTube, Instagram, Facebook, and TikTok. Support for video and audio formats.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fab fa-youtube"></i> YouTube</span>
+                        <span class="feature-tag"><i class="fab fa-instagram"></i> Instagram</span>
+                        <span class="feature-tag"><i class="fab fa-facebook"></i> Facebook</span>
+                        <span class="feature-tag"><i class="fab fa-tiktok"></i> TikTok</span>
+                    </div>
+                    
+                    <a href="/tool/media-downloader" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-closed-captioning"></i>
+                    </div>
+                    <h3>Subtitle Downloader</h3>
+                    <p>Download videos with subtitles in multiple languages. Auto-translate, embed, or save as separate files.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fas fa-language"></i> Multi-Language</span>
+                        <span class="feature-tag"><i class="fas fa-globe"></i> Auto-Translate</span>
+                        <span class="feature-tag"><i class="fas fa-file-alt"></i> SRT/VTT/ASS</span>
+                        <span class="feature-tag"><i class="fas fa-video"></i> Embed</span>
+                    </div>
+                    
+                    <a href="/tool/subtitle-downloader" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h3>QR Code Generator</h3>
+                    <p>Generate custom QR codes for URLs, text, and contact information with styling options.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fas fa-link"></i> Text/URL</span>
+                        <span class="feature-tag"><i class="fas fa-wifi"></i> WiFi</span>
+                        <span class="feature-tag"><i class="fas fa-address-card"></i> Contact</span>
+                        <span class="feature-tag"><i class="fas fa-envelope"></i> Email</span>
+                    </div>
+                    
+                    <a href="/tool/qr-generator" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3>Product QR Generator</h3>
+                    <p>Generate QR codes for products with detailed information. Perfect for inventory, e-commerce, and product tracking.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fas fa-barcode"></i> Product Info</span>
+                        <span class="feature-tag"><i class="fas fa-tag"></i> SKU/ID</span>
+                        <span class="feature-tag"><i class="fas fa-dollar-sign"></i> Price</span>
+                        <span class="feature-tag"><i class="fas fa-shopping-cart"></i> E-commerce</span>
+                    </div>
+                    
+                    <a href="/tool/product-qr-generator" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3>GIF Maker</h3>
+                    <p>Convert videos to GIF with custom duration, quality, and text captions - perfect for social media.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fas fa-video"></i> Video to GIF</span>
+                        <span class="feature-tag"><i class="fas fa-clock"></i> Duration Control</span>
+                        <span class="feature-tag"><i class="fas fa-font"></i> Text/Captions</span>
+                        <span class="feature-tag"><i class="fas fa-share-alt"></i> Social Media</span>
+                    </div>
+                    
+                    <a href="/tool/gif-maker" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Duplicate File Finder</h3>
+                    <p>Find and remove duplicate files in your system. Save storage space by cleaning up duplicates.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fas fa-hash"></i> Hash Detection</span>
+                        <span class="feature-tag"><i class="fas fa-folder"></i> Folder Scan</span>
+                        <span class="feature-tag"><i class="fas fa-trash"></i> Safe Delete</span>
+                        <span class="feature-tag"><i class="fas fa-hdd"></i> Save Space</span>
+                    </div>
+                    
+                    <a href="/tool/duplicate-finder" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>File Encryptor</h3>
+                    <p>Encrypt and decrypt files with strong encryption. Protect sensitive documents and media files.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fas fa-shield-alt"></i> AES-256</span>
+                        <span class="feature-tag"><i class="fas fa-key"></i> Password</span>
+                        <span class="feature-tag"><i class="fas fa-file"></i> All Formats</span>
+                        <span class="feature-tag"><i class="fas fa-lock"></i> Secure</span>
+                    </div>
+                    
+                    <a href="/tool/file-encryptor" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-magnet"></i>
+                    </div>
+                    <h3>Hook Analyzer</h3>
+                    <p>Analyze the strength of your content's opening hook. Perfect for TikTok, Instagram Reels, YouTube, and more.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fas fa-chart-line"></i> Score</span>
+                        <span class="feature-tag"><i class="fas fa-lightbulb"></i> Suggestions</span>
+                        <span class="feature-tag"><i class="fas fa-mobile-alt"></i> Multi-Platform</span>
+                        <span class="feature-tag"><i class="fas fa-star"></i> Examples</span>
+                    </div>
+                    
+                    <a href="/tool/hook-analyzer" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-random"></i>
+                    </div>
+                    <h3>Random Picker</h3>
+                    <p>Make random decisions! Add your options and let the picker choose for you. Perfect for choosing what to eat, where to go, or any decision.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fas fa-hand-pointer"></i> Pick One</span>
+                        <span class="feature-tag"><i class="fas fa-hand-paper"></i> Pick Multiple</span>
+                        <span class="feature-tag"><i class="fas fa-history"></i> History</span>
+                        <span class="feature-tag"><i class="fas fa-list"></i> Custom Options</span>
+                    </div>
+                    
+                    <a href="/tool/random-picker" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3>Trending Detector</h3>
+                    <p>Discover trending topics, hashtags, and keywords across social media platforms. Stay ahead of the trends!</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fab fa-twitter"></i> Twitter/X</span>
+                        <span class="feature-tag"><i class="fab fa-instagram"></i> Instagram</span>
+                        <span class="feature-tag"><i class="fab fa-tiktok"></i> TikTok</span>
+                        <span class="feature-tag"><i class="fas fa-chart-line"></i> Analytics</span>
+                    </div>
+                    
+                    <a href="/tool/trending-detector" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Social Media Search</h3>
+                    <p>Search for profiles, pages, and content related to any name across all major social media platforms.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fab fa-twitter"></i> Twitter/X</span>
+                        <span class="feature-tag"><i class="fab fa-instagram"></i> Instagram</span>
+                        <span class="feature-tag"><i class="fab fa-tiktok"></i> TikTok</span>
+                        <span class="feature-tag"><i class="fab fa-youtube"></i> YouTube</span>
+                    </div>
+                    
+                    <a href="/tool/social-media-search" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <h3>Social Media News</h3>
+                    <p>Search for news, articles, and trending content related to any name across all major social media platforms.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fas fa-newspaper"></i> News</span>
+                        <span class="feature-tag"><i class="fab fa-twitter"></i> Twitter/X</span>
+                        <span class="feature-tag"><i class="fab fa-youtube"></i> YouTube</span>
+                        <span class="feature-tag"><i class="fas fa-fire"></i> Trending</span>
+                    </div>
+                    
+                    <a href="/tool/social-media-news" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+                <div class="tool-card active">
+                    <div class="card-ribbon">New</div>
+                    <div class="card-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h3>Audio Enhancer</h3>
+                    <p>Clean voice recordings and remove noise. AI-powered audio enhancement for crystal clear speech.</p>
+                    
+                    <div class="card-features">
+                        <span class="feature-tag"><i class="fas fa-broom"></i> Noise Reduction</span>
+                        <span class="feature-tag"><i class="fas fa-volume-up"></i> Voice Enhance</span>
+                        <span class="feature-tag"><i class="fas fa-sliders-h"></i> Normalize</span>
+                        <span class="feature-tag"><i class="fas fa-cut"></i> Remove Silence</span>
+                    </div>
+                    
+                    <a href="/tool/audio-enhancer" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- Coming Soon Tools -->
+        <div class="tools-section">
+            <h2><i class="fas fa-clock"></i> Coming Soon</h2>
+            <div class="tools-grid">
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3>Image Converter</h3>
+                    <p>Convert, resize, and optimize images in various formats. Perfect for web optimization and batch processing.</p>
+                    <span class="coming-badge">In Development</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-compress"></i>
+                    </div>
+                    <h3>File Compressor</h3>
+                    <p>Compress files and create archives with multiple compression algorithms for optimal file size.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3>PDF Tools Suite</h3>
+                    <p>Merge, split, compress, and convert PDF documents. Complete PDF manipulation toolkit.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Code Formatter</h3>
+                    <p>Format and beautify code in multiple programming languages with customizable styles.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-crop"></i>
+                    </div>
+                    <h3>Video Editor</h3>
+                    <p>Cut, trim, and edit videos online. Add effects, transitions, and text overlays.</p>
+                    <span class="coming-badge">Future Release</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                    </div>
+                    <h3>Audio/Video Merger</h3>
+                    <p>Merge multiple videos into one, combine audio tracks, and add background music. Perfect for compilations.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <h3>Video Cutter</h3>
+                    <p>Cut and trim video clips with precision. Extract specific segments from longer videos easily.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <h3>Audio Extractor</h3>
+                    <p>Extract audio from video files in high quality. Support for multiple audio formats and bitrates.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-adjust"></i>
+                    </div>
+                    <h3>Image Editor</h3>
+                    <p>Crop, resize, rotate, and apply filters to images. Adjust brightness, contrast, and colors.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-file-archive"></i>
+                    </div>
+                    <h3>Archive Extractor</h3>
+                    <p>Extract ZIP, RAR, 7Z, and other archive formats. Support for password-protected archives.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Data Analyzer</h3>
+                    <p>Analyze CSV and Excel files with statistical tools. Generate charts, graphs, and data insights.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>Text Translator</h3>
+                    <p>Translate text between 100+ languages with high accuracy. Support for documents and batch translation.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-spell-check"></i>
+                    </div>
+                    <h3>Grammar Checker</h3>
+                    <p>Check grammar, spelling, and punctuation in your text. Improve writing quality with AI-powered suggestions.</p>
+                    <span class="coming-badge">Future Release</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-file-word"></i>
+                    </div>
+                    <h3>Document Converter</h3>
+                    <p>Convert between DOCX, PDF, TXT, RTF, and more. Preserve formatting and support batch conversion.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-table"></i>
+                    </div>
+                    <h3>Spreadsheet Tools</h3>
+                    <p>Merge Excel files, split sheets, convert formats, and perform advanced spreadsheet operations.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Color Palette Generator</h3>
+                    <p>Generate beautiful color palettes from images. Extract colors and create harmonious color schemes.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <h3>Password Generator</h3>
+                    <p>Generate secure passwords with customizable length and character sets. Create strong, unique passwords.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-hashtag"></i>
+                    </div>
+                    <h3>Hashtag Generator</h3>
+                    <p>Generate relevant hashtags for social media posts. Optimize your content for better reach and engagement.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-compress-alt"></i>
+                    </div>
+                    <h3>Image Compressor</h3>
+                    <p>Compress images without losing quality. Optimize file sizes for web, email, and storage.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <h3>Image Resizer</h3>
+                    <p>Resize images to any dimension. Batch resize multiple images with custom dimensions and aspect ratios.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>Background Remover</h3>
+                    <p>Remove backgrounds from images automatically. Create transparent PNGs for product photos and graphics.</p>
+                    <span class="coming-badge">Future Release</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3>Photo Enhancer</h3>
+                    <p>Enhance photos with AI-powered tools. Improve brightness, contrast, sharpness, and remove noise.</p>
+                    <span class="coming-badge">Future Release</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Screen Recorder</h3>
+                    <p>Record your screen with audio. Create tutorials, presentations, and video content easily.</p>
+                    <span class="coming-badge">Future Release</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h3>Audio Recorder</h3>
+                    <p>Record audio from microphone or system. Save in multiple formats with quality options.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-waveform-lines"></i>
+                    </div>
+                    <h3>Audio Editor</h3>
+                    <p>Edit audio files with trimming, fading, normalization, and effects. Professional audio editing tools.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <h3>Invoice Generator</h3>
+                    <p>Create professional invoices and receipts. Customizable templates with automatic calculations.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>Certificate Generator</h3>
+                    <p>Design and generate certificates, awards, and diplomas. Customizable templates with professional layouts.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-barcode"></i>
+                    </div>
+                    <h3>Barcode Generator</h3>
+                    <p>Generate barcodes and QR codes for products, inventory, and tracking. Multiple barcode formats supported.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-file-signature"></i>
+                    </div>
+                    <h3>Digital Signature</h3>
+                    <p>Add digital signatures to documents. Sign PDFs and images with customizable signature styles.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Calendar Generator</h3>
+                    <p>Create custom calendars with events and holidays. Export as PDF or image for printing.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Chart Generator</h3>
+                    <p>Create beautiful charts and graphs from data. Bar, line, pie, and more chart types available.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h3>URL Shortener</h3>
+                    <p>Shorten long URLs and create custom short links. Track clicks and manage your shortened URLs.</p>
+                    <span class="coming-badge">Planned</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Text to Speech</h3>
+                    <p>Convert text to natural-sounding speech. Multiple voices and languages supported.</p>
+                    <span class="coming-badge">Future Release</span>
+                </div>
+                
+                <div class="tool-card coming-soon">
+                    <div class="card-icon">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h3>Speech to Text</h3>
+                    <p>Transcribe audio to text with high accuracy. Support for multiple languages and audio formats.</p>
+                    <span class="coming-badge">Future Release</span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

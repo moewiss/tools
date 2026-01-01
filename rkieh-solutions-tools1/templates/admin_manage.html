@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Admins & Users - RKIEH Solutions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    .admin-container {
+        max-width: 1400px;
+        margin: 100px auto 50px;
+        padding: 20px;
+    }
+
+    .admin-header {
+        background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 152, 0, 0.05));
+        border: 2px solid rgba(255, 152, 0, 0.3);
+        border-radius: 20px;
+        padding: 40px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .admin-title {
+        font-size: 36px;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .admin-subtitle {
+        color: #ff9800;
+        font-size: 16px;
+    }
+
+    .tabs {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+        border-bottom: 2px solid rgba(255, 152, 0, 0.3);
+    }
+
+    .tab {
+        padding: 15px 30px;
+        background: transparent;
+        border: none;
+        color: #aaa;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        border-bottom: 3px solid transparent;
+    }
+
+    .tab:hover {
+        color: #ff9800;
+    }
+
+    .tab.active {
+        color: #ff9800;
+        border-bottom-color: #ff9800;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .section {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 152, 0, 0.3);
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .stat-card {
+        background: rgba(255, 152, 0, 0.1);
+        border: 2px solid rgba(255, 152, 0, 0.3);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 32px;
+        font-weight: 900;
+        color: #ff9800;
+    }
+
+    .stat-label {
+        color: #aaa;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 15px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 152, 0, 0.3);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #ff9800;
+        background: rgba(255, 152, 0, 0.1);
+    }
+
+    .btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #ff9800, #ffb74d);
+        color: #000;
+        box-shadow: 0 10px 30px rgba(255, 152, 0, 0.4);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 40px rgba(255, 152, 0, 0.6);
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        color: #fff;
+        box-shadow: 0 5px 20px rgba(255, 51, 51, 0.3);
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(255, 51, 51, 0.5);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background: rgba(255, 152, 0, 0.1);
+    }
+
+    th {
+        padding: 15px;
+        text-align: left;
+        color: #ff9800;
+        font-weight: 700;
+        border-bottom: 2px solid rgba(255, 152, 0, 0.3);
+    }
+
+    td {
+        padding: 15px;
+        color: #ddd;
+        border-bottom: 1px solid rgba(255, 152, 0, 0.1);
+    }
+
+    tr:hover {
+        background: rgba(255, 152, 0, 0.05);
+    }
+
+    .badge {
+        padding: 5px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .badge-super {
+        background: rgba(255, 215, 0, 0.2);
+        color: #FFD700;
+        border: 1px solid #FFD700;
+    }
+
+    .badge-regular {
+        background: rgba(76, 175, 80, 0.2);
+        color: #4CAF50;
+        border: 1px solid #4CAF50;
+    }
+
+    .badge-active {
+        background: rgba(76, 175, 80, 0.2);
+        color: #4CAF50;
+        border: 1px solid #4CAF50;
+    }
+
+    .badge-inactive {
+        background: rgba(255, 51, 51, 0.2);
+        color: #ff3333;
+        border: 1px solid #ff3333;
+    }
+
+    .alert {
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        display: none;
+    }
+
+    .alert-error {
+        background: rgba(255, 51, 51, 0.1);
+        border: 2px solid #ff3333;
+        color: #ff6666;
+    }
+
+    .alert-success {
+        background: rgba(76, 175, 80, 0.1);
+        border: 2px solid #4CAF50;
+        color: #4CAF50;
+    }
+
+    .stars {
+        color: #FFD700;
+    }
+
+    .search-box {
+        padding: 12px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 152, 0, 0.3);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 14px;
+        width: 300px;
+        margin-bottom: 20px;
+    }
+
+    .search-box:focus {
+        outline: none;
+        border-color: #ff9800;
+        background: rgba(255, 152, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+        .admin-container {
+            margin-top: 80px;
+        }
+
+        table {
+            overflow-x: auto;
+            display: block;
+        }
+
+        .search-box {
+            width: 100%;
+        }
+    }
+</style>
+</head>
+<body>
+    <!-- Admin Navigation Bar -->
+    <nav class="navbar" style="background: rgba(255, 152, 0, 0.1); border-bottom: 2px solid rgba(255, 152, 0, 0.3);">
+        <div class="nav-container">
+            <a href="/admin" class="brand">
+                <div class="brand-logo" style="font-size: 28px; font-weight: 900; letter-spacing: -2px;">
+                    <span style="color: #ff9800;">R</span><span style="color: #1a1a2e;">K</span>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">ADMIN</span>
+                    <span class="brand-subtitle" style="color: #ff9800;">Panel</span>
+                </div>
+            </a>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="/admin" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="/admin/manage" class="nav-link active" style="color: #ff9800;">
+                    <i class="fas fa-users-cog"></i> Manage Admins & Users
+                </a>
+                <a href="/admin/feedback" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-comments"></i> Feedback
+                </a>
+                <a href="/admin/leaderboard" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-trophy"></i> Leaderboard
+                </a>
+                <a href="/admin/discounts" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-tags"></i> Discounts
+                </a>
+                <a href="/admin/pricing" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-dollar-sign"></i> Pricing
+                </a>
+                <a href="/admin/tool-access" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-key"></i> Tool Access
+                </a>
+                <a href="/admin/logout" class="nav-link nav-link-logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+            
+            <button class="nav-toggle" id="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+<div class="admin-container">
+    <div class="admin-header">
+        <h1 class="admin-title">
+            <i class="fas fa-users-cog"></i> Manage Admins & Users
+        </h1>
+        <p class="admin-subtitle">Manage Administrator Accounts and View All Users</p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number" id="total-admins-count">0</div>
+            <div class="stat-label">Total Admins</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="total-users-count">0</div>
+            <div class="stat-label">Total Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="active-users-count">0</div>
+            <div class="stat-label">Active Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="total-ratings-count">0</div>
+            <div class="stat-label">Total Ratings</div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" onclick="switchTab('admins')">
+            <i class="fas fa-shield-alt"></i> Admins
+        </button>
+        <button class="tab" onclick="switchTab('users')">
+            <i class="fas fa-users"></i> Users
+        </button>
+    </div>
+
+    <!-- Admins Tab -->
+    <div id="admins-tab" class="tab-content active">
+        <!-- Add New Admin -->
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-user-plus"></i> Add New Admin
+            </h2>
+
+            <div id="alert-container"></div>
+
+            <form id="add-admin-form">
+                <div class="form-group">
+                    <label for="admin-name">
+                        <i class="fas fa-user"></i> Admin Name
+                    </label>
+                    <input type="text" id="admin-name" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="admin-email">
+                        <i class="fas fa-envelope"></i> Admin Email
+                    </label>
+                    <input type="email" id="admin-email" placeholder="admin@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="admin-password">
+                        <i class="fas fa-lock"></i> Password (min 8 characters)
+                    </label>
+                    <input type="password" id="admin-password" placeholder="Strong password" required minlength="8">
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Admin
+                </button>
+            </form>
+        </div>
+
+        <!-- Current Admins -->
+        <div class="section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 class="section-title">
+                    <i class="fas fa-shield-alt"></i> Current Admins
+                </h2>
+                <button class="btn btn-primary" onclick="loadAdmins()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+
+            <div id="admins-table-container">
+                <p style="text-align: center; color: #666;">Loading admins...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Tab -->
+    <div id="users-tab" class="tab-content">
+        <div class="section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                <h2 class="section-title">
+                    <i class="fas fa-users"></i> All Registered Users
+                </h2>
+                <button class="btn btn-primary" onclick="loadUsers()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+
+            <input type="text" id="user-search" class="search-box" placeholder="Search users by name or email...">
+
+            <div id="users-table-container">
+                <p style="text-align: center; color: #666;">Loading users...</p>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+
+<script>
+let allUsers = [];
+
+// Load data on page load
+document.addEventListener('DOMContentLoaded', function() {
+    loadAdmins();
+    loadUsers();
+    loadUserStats();
+});
+
+function switchTab(tab) {
+    // Update tab buttons
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.target.closest('.tab').classList.add('active');
+    
+    // Update tab content
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById(`${tab}-tab`).classList.add('active');
+}
+
+async function loadUserStats() {
+    try {
+        const response = await fetch('/api/user/stats');
+        const stats = await response.json();
+        
+        document.getElementById('total-users-count').textContent = stats.total_users || 0;
+        document.getElementById('active-users-count').textContent = stats.active_users || 0;
+        document.getElementById('total-ratings-count').textContent = stats.total_ratings || 0;
+    } catch (error) {
+        console.error('Error loading user stats:', error);
+    }
+}
+
+// Add admin form submit
+document.getElementById('add-admin-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('admin-name').value;
+    const email = document.getElementById('admin-email').value;
+    const password = document.getElementById('admin-password').value;
+    
+    try {
+        const response = await fetch('/api/admin/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            showAlert('success', 'Admin added successfully!');
+            document.getElementById('add-admin-form').reset();
+            loadAdmins();
+        } else {
+            showAlert('error', data.error || 'Failed to add admin.');
+        }
+    } catch (error) {
+        showAlert('error', 'Network error. Please try again.');
+    }
+});
+
+async function loadAdmins() {
+    try {
+        const response = await fetch('/api/admin/list');
+        const data = await response.json();
+        
+        if (data.success && data.admins && data.admins.length > 0) {
+            document.getElementById('total-admins-count').textContent = data.admins.length;
+            displayAdmins(data.admins);
+        } else {
+            document.getElementById('admins-table-container').innerHTML = 
+                '<p style="text-align: center; color: #666;">No admins found.</p>';
+        }
+    } catch (error) {
+        console.error('Error loading admins:', error);
+        document.getElementById('admins-table-container').innerHTML = 
+            '<p style="text-align: center; color: #666;">Error loading admins.</p>';
+    }
+}
+
+function displayAdmins(admins) {
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Created At</th>
+                    <th>Last Login</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    admins.forEach((admin, index) => {
+        const createdDate = admin.created_at ? new Date(admin.created_at).toLocaleDateString() : 'N/A';
+        const lastLogin = admin.last_login ? new Date(admin.last_login).toLocaleDateString() : 'Never';
+        const isSuperAdmin = admin.is_super_admin;
+        const badgeClass = isSuperAdmin ? 'badge-super' : 'badge-regular';
+        const badgeText = isSuperAdmin ? 'Super Admin' : 'Admin';
+
+        html += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${admin.name}</td>
+                <td>${admin.email}</td>
+                <td>${createdDate}</td>
+                <td>${lastLogin}</td>
+                <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+                <td>
+                    ${isSuperAdmin ? 
+                        '<span style="color: #666;">Cannot Delete</span>' : 
+                        `<button class="btn btn-danger" onclick="deleteAdmin('${admin.id}', '${admin.name}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>`
+                    }
+                </td>
+            </tr>
+        `;
+    });
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+    document.getElementById('admins-table-container').innerHTML = html;
+}
+
+async function loadUsers() {
+    try {
+        const response = await fetch('/api/admin/users');
+        const data = await response.json();
+        
+        if (data.success && data.users && data.users.length > 0) {
+            allUsers = data.users;
+            displayUsers(allUsers);
+        } else {
+            document.getElementById('users-table-container').innerHTML = 
+                '<p style="text-align: center; color: #666;">No users registered yet.</p>';
+        }
+    } catch (error) {
+        console.error('Error loading users:', error);
+        document.getElementById('users-table-container').innerHTML = 
+            '<p style="text-align: center; color: #666;">Error loading users.</p>';
+    }
+}
+
+function displayUsers(users) {
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Created At</th>
+                    <th>Last Login</th>
+                    <th>Status</th>
+                    <th>VIP Access</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    users.forEach((user, index) => {
+        const createdDate = user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A';
+        const lastLogin = user.last_login ? new Date(user.last_login).toLocaleDateString() : 'Never';
+        const statusClass = user.is_active ? 'badge-active' : 'badge-inactive';
+        const statusText = user.is_active ? 'Active' : 'Inactive';
+        let accessBadge = '<span class="badge" style="background: rgba(128, 128, 128, 0.2); color: #888;">Regular</span>';
+        let accessButton = `<button class="btn btn-primary" style="font-size: 12px; padding: 6px 12px; background: linear-gradient(135deg, #FFD700, #FFA500); color: #000;" onclick="grantVIP('${user.id}', '${user.email}')"><i class="fas fa-crown"></i> Grant Access</button>`;
+        
+        if (user.is_vip) {
+            // Check if it's VIP or Employee (we'd need to pass this from backend, for now show VIP)
+            accessBadge = '<span class="badge" style="background: rgba(255, 215, 0, 0.2); color: #FFD700; border: 1px solid #FFD700;"><i class="fas fa-crown"></i> VIP/Employee</span>';
+            accessButton = `<button class="btn btn-danger" style="font-size: 12px; padding: 6px 12px;" onclick="revokeVIP('${user.id}', '${user.email}')"><i class="fas fa-times"></i> Revoke Access</button>`;
+        }
+
+        html += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${user.first_name} ${user.last_name}</td>
+                <td>${user.email}</td>
+                <td>${createdDate}</td>
+                <td>${lastLogin}</td>
+                <td><span class="badge ${statusClass}">${statusText}</span></td>
+                <td>${accessBadge}</td>
+                <td>${accessButton}</td>
+            </tr>
+        `;
+    });
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+    document.getElementById('users-table-container').innerHTML = html;
+}
+
+async function grantVIP(userId, userEmail) {
+    // Ask for access type
+    const accessType = prompt('Access Type:\\n1. VIP (for premium customers)\\n2. Employee (for staff members)\\n\\nEnter 1 or 2:');
+    
+    if (accessType === null) return; // Cancelled
+    
+    const type = accessType === '2' ? 'employee' : 'vip';
+    const typeName = accessType === '2' ? 'Employee' : 'VIP';
+    
+    const reason = prompt(`Reason for granting ${typeName} access (optional):`);
+    
+    if (reason === null) return; // Cancelled
+    
+    try {
+        const response = await fetch('/api/admin/vip/grant', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user_id: userId,
+                user_email: userEmail,
+                reason: reason,
+                access_type: type
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            alert('✅ ' + data.message + '\\n\\nUser now has unlimited FREE access to all tools!');
+            loadUsers();
+        } else {
+            alert('❌ ' + (data.error || 'Failed to grant access'));
+        }
+    } catch (error) {
+        alert('❌ Network error. Please try again.');
+    }
+}
+
+async function revokeVIP(userId, userEmail) {
+    if (!confirm(`Revoke VIP access for ${userEmail}?\\n\\nThey will return to their normal subscription limits.`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/admin/vip/revoke', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user_id: userId
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            alert('✅ ' + data.message);
+            loadUsers();
+        } else {
+            alert('❌ ' + (data.error || 'Failed to revoke VIP access'));
+        }
+    } catch (error) {
+        alert('❌ Network error. Please try again.');
+    }
+}
+
+// Search users
+document.getElementById('user-search').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    
+    if (searchTerm === '') {
+        displayUsers(allUsers);
+        return;
+    }
+    
+    const filtered = allUsers.filter(user => 
+        `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm) ||
+        user.email.toLowerCase().includes(searchTerm)
+    );
+    
+    displayUsers(filtered);
+});
+
+async function deleteAdmin(adminId, adminName) {
+    if (!confirm(`Are you sure you want to delete admin: ${adminName}?`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/admin/delete/${adminId}`, {
+            method: 'DELETE'
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            showAlert('success', 'Admin deleted successfully!');
+            loadAdmins();
+        } else {
+            showAlert('error', data.error || 'Failed to delete admin.');
+        }
+    } catch (error) {
+        showAlert('error', 'Network error. Please try again.');
+    }
+}
+
+function showAlert(type, message) {
+    const container = document.getElementById('alert-container');
+    container.innerHTML = `
+        <div class="alert alert-${type}">
+            <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
+            ${message}
+        </div>
+    `;
+    container.querySelector('.alert').style.display = 'block';
+    
+    setTimeout(() => {
+        container.querySelector('.alert').style.display = 'none';
+    }, 5000);
+}
+</script>
+
+<script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
+</body>
+</html>

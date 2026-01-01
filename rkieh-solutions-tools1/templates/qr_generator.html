@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+
+{% block title %}QR Code Generator - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+    .qr-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .qr-form-section {
+        background: #1a1a1a;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 2px solid #333;
+    }
+    
+    .qr-input-group {
+        margin-bottom: 20px;
+    }
+    
+    .qr-input-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #fff;
+        font-weight: 500;
+        font-size: 14px;
+    }
+    
+    .qr-input-group input,
+    .qr-input-group textarea,
+    .qr-input-group select {
+        width: 100%;
+        padding: 12px 15px;
+        background: #2a2a2a;
+        border: 2px solid #333;
+        border-radius: 6px;
+        color: #fff;
+        font-size: 14px;
+        font-family: inherit;
+    }
+    
+    .qr-input-group input:focus,
+    .qr-input-group textarea:focus,
+    .qr-input-group select:focus {
+        outline: none;
+        border-color: #ff3333;
+    }
+    
+    .qr-input-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+    
+    .qr-options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .qr-preview-section {
+        background: #1a1a1a;
+        border-radius: 12px;
+        padding: 40px;
+        text-align: center;
+        border: 2px solid #333;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .qr-preview-placeholder {
+        color: #666;
+        font-size: 16px;
+    }
+    
+    .qr-image-wrapper {
+        background: #fff;
+        padding: 25px;
+        border-radius: 12px;
+        display: inline-block;
+        margin: 20px 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .qr-image-wrapper img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+    
+    .qr-type-selector {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+    }
+    
+    .qr-type-btn {
+        flex: 1;
+        min-width: 140px;
+        padding: 15px 20px;
+        background: #2a2a2a;
+        border: 2px solid #333;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+        color: #fff;
+        font-size: 14px;
+    }
+    
+    .qr-type-btn:hover {
+        border-color: #ff3333;
+        transform: translateY(-2px);
+    }
+    
+    .qr-type-btn.active {
+        border-color: #ff3333;
+        background: linear-gradient(135deg, #ff3333 0%, #cc0000 100%);
+        box-shadow: 0 4px 15px rgba(255, 51, 51, 0.3);
+    }
+    
+    .qr-type-btn i {
+        font-size: 20px;
+        display: block;
+        margin-bottom: 8px;
+    }
+    
+    .qr-type-content {
+        display: none;
+    }
+    
+    .qr-type-content.active {
+        display: block;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="tool-container">
+        <!-- Tool Header -->
+        <div class="tool-header">
+            <div class="tool-breadcrumb">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="/tools">Tools</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>QR Code Generator</span>
+            </div>
+            <h1 class="tool-title">
+                <i class="fas fa-qrcode"></i>
+                QR Code Generator
+            </h1>
+            <p class="tool-description">Generate custom QR codes for URLs, text, and contact information with styling options</p>
+        </div>
+
+        <div class="qr-container">
+            <!-- QR Type Selector -->
+            <div class="qr-type-selector">
+                <div class="qr-type-btn active" data-type="text">
+                    <i class="fas fa-text"></i>
+                    <span>Text/URL</span>
+                </div>
+                <div class="qr-type-btn" data-type="wifi">
+                    <i class="fas fa-wifi"></i>
+                    <span>WiFi</span>
+                </div>
+                <div class="qr-type-btn" data-type="contact">
+                    <i class="fas fa-address-card"></i>
+                    <span>Contact</span>
+                </div>
+                <div class="qr-type-btn" data-type="email">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email</span>
+                </div>
+            </div>
+
+            <!-- Text/URL Form -->
+            <div class="qr-type-content active" id="text-content">
+                <div class="qr-form-section">
+                    <form id="qr-text-form">
+                        <div class="qr-input-group">
+                            <label for="qr-text-input">
+                                <i class="fas fa-link"></i> Enter Text or URL
+                            </label>
+                            <textarea 
+                                id="qr-text-input" 
+                                placeholder="Enter text, URL, or any content here..."
+                                required
+                            ></textarea>
+                        </div>
+                        
+                        <div class="qr-options-grid">
+                            <div class="qr-input-group">
+                                <label for="qr-size">
+                                    <i class="fas fa-expand"></i> Size
+                                </label>
+                                <select id="qr-size">
+                                    <option value="200">Small (200x200)</option>
+                                    <option value="300" selected>Medium (300x300)</option>
+                                    <option value="400">Large (400x400)</option>
+                                    <option value="500">Extra Large (500x500)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="qr-input-group">
+                                <label for="qr-error-correction">
+                                    <i class="fas fa-shield-alt"></i> Error Correction
+                                </label>
+                                <select id="qr-error-correction">
+                                    <option value="L">Low (L) - ~7%</option>
+                                    <option value="M" selected>Medium (M) - ~15%</option>
+                                    <option value="Q">Quartile (Q) - ~25%</option>
+                                    <option value="H">High (H) - ~30%</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-qrcode"></i> Generate QR Code
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- WiFi Form -->
+            <div class="qr-type-content" id="wifi-content">
+                <div class="qr-form-section">
+                    <form id="qr-wifi-form">
+                        <div class="qr-input-group">
+                            <label for="wifi-ssid">Network Name (SSID)</label>
+                            <input type="text" id="wifi-ssid" placeholder="MyWiFiNetwork" required>
+                        </div>
+                        <div class="qr-input-group">
+                            <label for="wifi-password">Password</label>
+                            <input type="text" id="wifi-password" placeholder="Enter WiFi password">
+                        </div>
+                        <div class="qr-options-grid">
+                            <div class="qr-input-group">
+                                <label for="wifi-security">Security Type</label>
+                                <select id="wifi-security">
+                                    <option value="WPA">WPA/WPA2</option>
+                                    <option value="WEP">WEP</option>
+                                    <option value="nopass">No Password</option>
+                                </select>
+                            </div>
+                            <div class="qr-input-group">
+                                <label for="wifi-hidden">Hidden Network</label>
+                                <select id="wifi-hidden">
+                                    <option value="false">No</option>
+                                    <option value="true">Yes</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-qrcode"></i> Generate WiFi QR Code
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="qr-type-content" id="contact-content">
+                <div class="qr-form-section">
+                    <form id="qr-contact-form">
+                        <div class="qr-input-group">
+                            <label for="contact-name">Name</label>
+                            <input type="text" id="contact-name" placeholder="John Doe" required>
+                        </div>
+                        <div class="qr-options-grid">
+                            <div class="qr-input-group">
+                                <label for="contact-phone">Phone</label>
+                                <input type="tel" id="contact-phone" placeholder="+1234567890">
+                            </div>
+                            <div class="qr-input-group">
+                                <label for="contact-email">Email</label>
+                                <input type="email" id="contact-email" placeholder="john@example.com">
+                            </div>
+                        </div>
+                        <div class="qr-input-group">
+                            <label for="contact-url">Website</label>
+                            <input type="url" id="contact-url" placeholder="https://example.com">
+                        </div>
+                        <div class="qr-input-group">
+                            <label for="contact-address">Address</label>
+                            <textarea id="contact-address" placeholder="123 Main St, City, Country"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-qrcode"></i> Generate Contact QR Code
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Email Form -->
+            <div class="qr-type-content" id="email-content">
+                <div class="qr-form-section">
+                    <form id="qr-email-form">
+                        <div class="qr-input-group">
+                            <label for="email-to">To Email</label>
+                            <input type="email" id="email-to" placeholder="recipient@example.com" required>
+                        </div>
+                        <div class="qr-input-group">
+                            <label for="email-subject">Subject</label>
+                            <input type="text" id="email-subject" placeholder="Email subject">
+                        </div>
+                        <div class="qr-input-group">
+                            <label for="email-body">Message</label>
+                            <textarea id="email-body" placeholder="Email message body"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-qrcode"></i> Generate Email QR Code
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- QR Code Preview -->
+            <div class="qr-preview-section" id="qr-preview">
+                <div class="qr-preview-placeholder">
+                    <i class="fas fa-qrcode" style="font-size: 64px; color: #333; margin-bottom: 20px;"></i>
+                    <p>Your QR code will appear here</p>
+                    <p style="font-size: 12px; color: #555; margin-top: 10px;">Fill in the form above and click "Generate QR Code"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/qr_generator.js') }}"></script>
+{% endblock %}
+

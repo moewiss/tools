@@ -1,0 +1,209 @@
+o <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Tool - MP4 to MP3 & YouTube Downloader</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-music"></i>
+                <h1>Media Tool</h1>
+            </div>
+            <p class="tagline">Convert & Download Media Files with Ease</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="convert">
+                <i class="fas fa-file-audio"></i>
+                Convert to MP3
+            </button>
+            <button class="tab-btn" data-tab="download">
+                <i class="fab fa-youtube"></i>
+                YouTube Download
+            </button>
+        </div>
+
+        <!-- Convert Tab -->
+        <div class="tab-content active" id="convert-tab">
+            <div class="card">
+                <h2><i class="fas fa-exchange-alt"></i> Media Converter</h2>
+                <p class="description">Upload multiple files or folders to convert between formats</p>
+                
+                <form id="convert-form" enctype="multipart/form-data">
+                    <!-- Conversion Type Selector -->
+                    <div class="conversion-type-selector">
+                        <label>
+                            <i class="fas fa-random"></i> Conversion Direction
+                        </label>
+                        <div class="type-buttons">
+                            <button type="button" class="type-btn active" data-type="mp4_to_mp3">
+                                <i class="fas fa-video"></i> Video → MP3
+                            </button>
+                            <button type="button" class="type-btn" data-type="mp3_to_mp4">
+                                <i class="fas fa-music"></i> MP3 → Video
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="upload-area" id="drop-zone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p id="upload-text">Drag & Drop your video files here</p>
+                        <p class="or">or</p>
+                        <div class="upload-buttons">
+                            <label for="file-input" class="file-label">
+                                <i class="fas fa-file"></i> Select Files
+                            </label>
+                            <label for="folder-input" class="file-label folder-btn">
+                                <i class="fas fa-folder-open"></i> Select Folder
+                            </label>
+                        </div>
+                        <input type="file" id="file-input" accept="video/*,audio/*" multiple hidden>
+                        <input type="file" id="folder-input" webkitdirectory directory multiple hidden>
+                        <p class="file-info" id="file-info">Supports: MP4, MKV, AVI, MOV, WebM, MP3 (Max 500MB per file)</p>
+                    </div>
+
+                    <div class="selected-files" id="selected-files" style="display: none;">
+                        <div class="files-header">
+                            <h3><i class="fas fa-file-alt"></i> Selected Files (<span id="file-count">0</span>)</h3>
+                            <button type="button" class="btn-clear" id="clear-files">
+                                <i class="fas fa-trash"></i> Clear All
+                            </button>
+                        </div>
+                        <div class="files-list" id="files-list"></div>
+                    </div>
+
+                    <div class="settings">
+                        <label for="bitrate">
+                            <i class="fas fa-sliders-h"></i> Audio Quality (for MP3 output)
+                        </label>
+                        <select id="bitrate" name="bitrate">
+                            <option value="128k">128 kbps - Good (smaller file)</option>
+                            <option value="192k" selected>192 kbps - High (recommended)</option>
+                            <option value="256k">256 kbps - Very High</option>
+                            <option value="320k">320 kbps - Maximum</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="convert-btn" disabled>
+                        <i class="fas fa-magic"></i> <span id="convert-btn-text">Select Files to Convert</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Download Tab -->
+        <div class="tab-content" id="download-tab">
+            <div class="card">
+                <h2><i class="fab fa-youtube"></i> Download from YouTube</h2>
+                <p class="description">Download videos or audio from YouTube and other platforms</p>
+                
+                <form id="download-form">
+                    <div class="input-group">
+                        <i class="fas fa-link"></i>
+                        <input 
+                            type="url" 
+                            id="youtube-url" 
+                            placeholder="Paste YouTube URL here... (e.g., https://www.youtube.com/watch?v=...)"
+                            required
+                        >
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="setting-item">
+                            <label for="format">
+                                <i class="fas fa-file-download"></i> Format
+                            </label>
+                            <select id="format" name="format">
+                                <option value="mp3">MP3 (Audio Only)</option>
+                                <option value="video">MP4 (Video)</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-item">
+                            <label for="quality">
+                                <i class="fas fa-hd-video"></i> Quality
+                            </label>
+                            <select id="quality" name="quality">
+                                <option value="best" selected>Best Available</option>
+                                <option value="1080p">1080p (Full HD)</option>
+                                <option value="720p">720p (HD)</option>
+                                <option value="480p">480p (SD)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section" id="progress-section" style="display: none;">
+            <div class="card">
+                <h3 id="progress-title"><i class="fas fa-spinner fa-spin"></i> Processing...</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <p class="progress-text" id="progress-text">0%</p>
+                <p class="progress-message" id="progress-message">Please wait...</p>
+            </div>
+        </div>
+
+        <!-- Result Section -->
+        <div class="result-section" id="result-section" style="display: none;">
+            <div class="card success-card">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Success!</h3>
+                <p id="result-message">Your files are ready for download</p>
+                <div class="result-info">
+                    <i class="fas fa-file-archive" id="result-icon"></i>
+                    <span id="result-filename"></span>
+                </div>
+                <p class="result-note" id="result-note"></p>
+                <button class="btn btn-success" id="download-result-btn">
+                    <i class="fas fa-download"></i> <span id="download-btn-text">Download File</span>
+                </button>
+                <button class="btn btn-secondary" id="new-conversion-btn">
+                    <i class="fas fa-redo"></i> Convert Another
+                </button>
+            </div>
+        </div>
+
+        <!-- Error Section -->
+        <div class="error-section" id="error-section" style="display: none;">
+            <div class="card error-card">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>Oops! Something went wrong</h3>
+                <p id="error-message">An error occurred during processing</p>
+                <button class="btn btn-secondary" id="retry-btn">
+                    <i class="fas fa-redo"></i> Try Again
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>
+                <i class="fas fa-server"></i> Server IP: <strong>172.25.26.140</strong> | 
+                <i class="fas fa-code"></i> Made with <i class="fas fa-heart"></i> for WSL Ubuntu
+            </p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+

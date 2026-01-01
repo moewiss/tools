@@ -1,0 +1,1188 @@
+{% extends "base.html" %}
+
+{% block title %}Tools - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<style>
+    .search-container {
+        max-width: 600px;
+        margin: 30px auto;
+        position: relative;
+    }
+
+    .search-box {
+        width: 100%;
+        padding: 15px 50px 15px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 50px;
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+
+    .search-box:focus {
+        outline: none;
+        border-color: #ff3333;
+        background: rgba(255, 51, 51, 0.1);
+        box-shadow: 0 0 20px rgba(255, 51, 51, 0.3);
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ff3333;
+        font-size: 20px;
+    }
+
+    .tool-rating {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+    }
+
+    .stars {
+        display: flex;
+        gap: 3px;
+    }
+
+    .star {
+        color: #FFD700;
+        font-size: 16px;
+    }
+
+    .star.empty {
+        color: #444;
+    }
+
+    .star-clickable {
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .star-clickable:hover {
+        transform: scale(1.3);
+        filter: drop-shadow(0 0 5px #FFD700);
+    }
+
+    .rating-count {
+        color: #aaa;
+        font-size: 12px;
+    }
+
+    .rating-select {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin: 15px 0;
+    }
+
+    .rating-select .star {
+        font-size: 32px;
+        color: #444;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .rating-select .star:hover,
+    .rating-select .star.selected {
+        color: #FFD700;
+        transform: scale(1.1);
+    }
+
+    .rating-text {
+        text-align: center;
+        color: #888;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    .tool-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+    }
+
+    .btn-feedback {
+        padding: 8px 15px;
+        background: rgba(76, 175, 80, 0.1);
+        border: 2px solid rgba(76, 175, 80, 0.3);
+        border-radius: 8px;
+        color: #4CAF50;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        text-decoration: none;
+    }
+
+    .btn-feedback:hover {
+        background: rgba(76, 175, 80, 0.2);
+        border-color: #4CAF50;
+        transform: translateY(-2px);
+    }
+
+    .btn-share {
+        padding: 10px 20px;
+        background: rgba(33, 150, 243, 0.1);
+        border: 2px solid rgba(33, 150, 243, 0.3);
+        border-radius: 10px;
+        color: #2196F3;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        text-decoration: none;
+    }
+
+    .btn-share:hover {
+        background: rgba(33, 150, 243, 0.2);
+        border-color: #2196F3;
+        transform: translateY(-2px);
+    }
+
+    .share-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .share-btn {
+        padding: 15px 20px;
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .share-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .share-btn.whatsapp {
+        background: linear-gradient(135deg, #25D366, #128C7E);
+    }
+
+    .share-btn.facebook {
+        background: linear-gradient(135deg, #1877F2, #0D5DBF);
+    }
+
+    .share-btn.twitter {
+        background: linear-gradient(135deg, #1DA1F2, #0C85D0);
+    }
+
+    .share-btn.linkedin {
+        background: linear-gradient(135deg, #0A66C2, #004182);
+    }
+
+    .share-btn.telegram {
+        background: linear-gradient(135deg, #0088cc, #006699);
+    }
+
+    .share-btn.copy {
+        background: linear-gradient(135deg, #FF3333, #CC0000);
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+
+    .no-results i {
+        font-size: 64px;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .feedback-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 10000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .feedback-modal.active {
+        display: flex;
+    }
+
+    .feedback-content {
+        background: #1a1a2e;
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 500px;
+        width: 100%;
+        position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .feedback-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        color: #aaa;
+        font-size: 24px;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+    .feedback-close:hover {
+        color: #ff3333;
+    }
+
+    .feedback-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 14px;
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #ff3333;
+        background: rgba(255, 51, 51, 0.1);
+    }
+
+    .rating-select {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    .rating-select .star {
+        font-size: 32px;
+        color: #444;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .rating-select .star.selected {
+        color: #FFD700;
+    }
+
+    .rating-select .star:hover {
+        transform: scale(1.2);
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(255, 51, 51, 0.5);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="tools-page">
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-tools"></i> Our Tools</h1>
+            <p>Professional-grade tools for all your media processing needs</p>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-container">
+            <input type="text" id="tool-search" class="search-box" placeholder="Search tools by name or description...">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+
+        <!-- Active Tools -->
+        <div class="tools-section">
+            <h2><i class="fas fa-star"></i> Available Now <span style="color: #ff3333; font-size: 18px; margin-left: 10px;">(17 Tools)</span></h2>
+            <div class="tools-grid" id="tools-container">
+                <!-- Tool cards will be here -->
+                    </div>
+                    
+            <!-- No Results Message -->
+            <div id="no-results" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3 style="color: #aaa; margin-bottom: 10px;">No Tools Found</h3>
+                <p style="color: #666;">Try a different search term</p>
+                    </div>
+                </div>
+                    </div>
+</section>
+
+<!-- Feedback Modal -->
+<div id="feedback-modal" class="feedback-modal">
+    <div class="feedback-content">
+        <button class="feedback-close" onclick="closeFeedbackModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <h2 class="feedback-title" id="feedback-tool-name">Rate Tool</h2>
+        
+        <form id="feedback-form" onsubmit="submitFeedback(event)">
+            <div class="form-group">
+                <label>Your Rating</label>
+                <div class="rating-select" id="rating-stars">
+                    <i class="fas fa-star star" data-rating="1"></i>
+                    <i class="fas fa-star star" data-rating="2"></i>
+                    <i class="fas fa-star star" data-rating="3"></i>
+                    <i class="fas fa-star star" data-rating="4"></i>
+                    <i class="fas fa-star star" data-rating="5"></i>
+                    </div>
+                <div class="rating-text" id="rating-text">Click to rate</div>
+                    </div>
+                    
+            <div class="form-group">
+                <label for="feedback-text">
+                    <i class="fas fa-comment"></i> Your Feedback
+                </label>
+                <textarea id="feedback-text" placeholder="Share your experience with this tool..." rows="5" required></textarea>
+                </div>
+                
+            <div style="display: flex; gap: 10px;">
+                <button type="button" class="btn" style="flex: 1; background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 51, 51, 0.3);" onclick="closeFeedbackModal()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button type="submit" class="btn-submit" style="flex: 1;">
+                    <i class="fas fa-paper-plane"></i> Submit Rating
+                </button>
+                    </div>
+        </form>
+                    </div>
+                </div>
+                
+<!-- Share Modal -->
+<div id="share-modal" class="feedback-modal">
+    <div class="feedback-content" style="max-width: 500px;">
+        <button class="feedback-close" onclick="closeShareModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <h2 class="feedback-title" id="share-tool-name">Share Tool</h2>
+        <p style="color: #aaa; text-align: center; margin-bottom: 30px;">Share this amazing tool with your friends!</p>
+        
+        <div class="share-buttons">
+            <button class="share-btn whatsapp" onclick="shareOn('whatsapp')">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </button>
+            <button class="share-btn facebook" onclick="shareOn('facebook')">
+                <i class="fab fa-facebook"></i> Facebook
+            </button>
+            <button class="share-btn twitter" onclick="shareOn('twitter')">
+                <i class="fab fa-twitter"></i> Twitter
+            </button>
+            <button class="share-btn linkedin" onclick="shareOn('linkedin')">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </button>
+            <button class="share-btn telegram" onclick="shareOn('telegram')">
+                <i class="fab fa-telegram"></i> Telegram
+            </button>
+            <button class="share-btn copy" onclick="shareOn('copy')">
+                <i class="fas fa-link"></i> Copy Link
+            </button>
+                </div>
+                    </div>
+                    </div>
+                    
+<script>
+// Tools data
+const tools = [
+    {
+        name: "Media Converter Pro",
+        description: "Convert between audio and video formats with professional quality. Supports batch processing and multiple formats.",
+        icon: "fas fa-exchange-alt",
+        url: "/tool/media-converter",
+        rating: 4.8,
+        reviews: 156,
+        features: ["MP4 → MP3", "MP3 → MP4", "Batch", "Upload"],
+        category: "media",
+        isPaid: true
+        // Admin will set price via discount/pricing system
+    },
+    {
+        name: "Watermark Remover",
+        description: "Remove watermarks, logos, and text overlays using classical image processing. Fast, privacy-focused, and no AI required.",
+        icon: "fas fa-eraser",
+        url: "/tool/watermark-remover",
+        rating: 4.6,
+        reviews: 89,
+        features: ["Privacy First", "No AI", "Unlimited", "Manual"],
+        category: "media",
+        isPaid: true
+        // Admin will set price via discount/pricing system
+    },
+    {
+        name: "Media Downloader",
+        description: "Download videos from YouTube, Instagram, Facebook, and TikTok. Support for video and audio formats.",
+        icon: "fas fa-download",
+        url: "/tool/media-downloader",
+        rating: 4.7,
+        reviews: 234,
+        features: ["YouTube", "Instagram", "Facebook", "TikTok"],
+        category: "media",
+        isPaid: true
+        // Admin will set price via discount/pricing system
+    },
+    {
+        name: "Subtitle Downloader",
+        description: "Download videos with subtitles in multiple languages. Auto-translate, embed, or save as separate files.",
+        icon: "fas fa-closed-captioning",
+        url: "/tool/subtitle-downloader",
+        rating: 4.5,
+        reviews: 67,
+        features: ["Multi-Language", "Auto-Translate", "SRT/VTT/ASS", "Embed"],
+        category: "media"
+    },
+    {
+        name: "QR Code Generator",
+        description: "Generate custom QR codes with logos, colors, and styles. Perfect for URLs, contact info, WiFi, and more.",
+        icon: "fas fa-qrcode",
+        url: "/tool/qr-generator",
+        rating: 4.9,
+        reviews: 178,
+        features: ["Custom Colors", "Logo Support", "High Quality", "Multiple Types"],
+        category: "utility"
+    },
+    {
+        name: "Product QR Generator",
+        description: "Generate QR codes for products with detailed information. Perfect for inventory, e-commerce, and product tracking.",
+        icon: "fas fa-box",
+        url: "/tool/product-qr-generator",
+        rating: 4.4,
+        reviews: 45,
+        features: ["Product Info", "SKU/ID", "Price", "E-commerce"],
+        category: "utility"
+    },
+    {
+        name: "GIF Maker",
+        description: "Create animated GIFs from videos or images. Customize speed, size, and quality for perfect GIFs.",
+        icon: "fas fa-film",
+        url: "/tool/gif-maker",
+        rating: 4.6,
+        reviews: 123,
+        features: ["Video to GIF", "Image to GIF", "Custom Speed", "Quality Control"],
+        category: "media"
+    },
+    {
+        name: "Duplicate File Finder",
+        description: "Find and remove duplicate files in your system. Save storage space by cleaning up duplicates.",
+        icon: "fas fa-search",
+        url: "/tool/duplicate-finder",
+        rating: 4.3,
+        reviews: 56,
+        features: ["Hash Detection", "Folder Scan", "Safe Delete", "Save Space"],
+        category: "utility"
+    },
+    {
+        name: "File Encryptor",
+        description: "Encrypt and decrypt files with military-grade encryption. Protect your sensitive data with password protection.",
+        icon: "fas fa-lock",
+        url: "/tool/file-encryptor",
+        rating: 4.7,
+        reviews: 92,
+        features: ["AES-256", "Password", "Secure", "Fast"],
+        category: "security"
+    },
+    {
+        name: "Hook Analyzer",
+        description: "Analyze the strength of your content's opening hook. Perfect for TikTok, Instagram Reels, YouTube, and more.",
+        icon: "fas fa-chart-line",
+        url: "/tool/hook-analyzer",
+        rating: 4.8,
+        reviews: 201,
+        features: ["AI Analysis", "Score", "Suggestions", "Multi-Platform"],
+        category: "ai",
+        isPaid: true
+        // Admin will set price via discount/pricing system
+    },
+    {
+        name: "Random Picker",
+        description: "Make random decisions! Add your options and let the picker choose for you. Perfect for choosing what to eat, where to go, or any decision.",
+        icon: "fas fa-random",
+        url: "/tool/random-picker",
+        rating: 4.5,
+        reviews: 134,
+        features: ["Pick One", "Pick Multiple", "History", "Custom Options"],
+        category: "utility"
+    },
+    {
+        name: "Trending Detector",
+        description: "Discover what's trending on social media! Analyze hashtags, topics, and viral content across platforms.",
+        icon: "fas fa-fire",
+        url: "/tool/trending-detector",
+        rating: 4.9,
+        reviews: 289,
+        features: ["Real-Time", "Multi-Platform", "Analytics", "Hashtags"],
+        category: "social"
+    },
+    {
+        name: "Social Media Search",
+        description: "Search across all social media platforms at once. Find profiles, posts, and content from one place.",
+        icon: "fas fa-search-plus",
+        url: "/tool/social-media-search",
+        rating: 4.6,
+        reviews: 167,
+        features: ["All Platforms", "Profile Search", "Fast", "Comprehensive"],
+        category: "social"
+    },
+    {
+        name: "Social Media News",
+        description: "Get the latest news from social media and news platforms. Stay updated with trending stories and breaking news.",
+        icon: "fas fa-newspaper",
+        url: "/tool/social-media-news",
+        rating: 4.4,
+        reviews: 78,
+        features: ["Real-Time", "Multiple Sources", "Trending", "Breaking News"],
+        category: "social"
+    },
+    {
+        name: "Audio Enhancer",
+        description: "Clean voice and reduce noise from audio files. Professional audio enhancement with noise reduction and voice isolation.",
+        icon: "fas fa-volume-up",
+        url: "/tool/audio-enhancer",
+        rating: 4.7,
+        reviews: 145,
+        features: ["Noise Reduction", "Voice Isolation", "Professional", "Fast"],
+        category: "ai",
+        isPaid: true
+        // Admin will set price via discount/pricing system
+    }
+];
+
+// Category filtering
+let currentCategory = 'all';
+let userToolAccess = []; // Store tools user has access to
+let hasUnlimitedAccess = false; // VIP/Employee access
+
+function filterByCategory(category) {
+    currentCategory = category;
+    
+    // Update active button
+    document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.closest('.category-btn').classList.add('active');
+    
+    // Filter tools
+    if (category === 'all') {
+        renderTools(tools);
+    } else {
+        const filtered = tools.filter(tool => tool.category === category);
+        renderTools(filtered);
+    }
+    
+    // Clear search
+    document.getElementById('tool-search').value = '';
+}
+
+let currentToolName = "";
+let selectedRating = 0;
+
+// Render tools
+function renderTools(toolsToRender = tools) {
+    const container = document.getElementById('tools-container');
+    const noResults = document.getElementById('no-results');
+    
+    if (toolsToRender.length === 0) {
+        container.innerHTML = '';
+        noResults.style.display = 'block';
+        return;
+    }
+    
+    noResults.style.display = 'none';
+    const isLoggedIn = {{ 'true' if session.get('user_id') else 'false' }};
+    
+    container.innerHTML = toolsToRender.map(tool => {
+        // Check if user has access to this tool
+        const userHasAccess = hasUnlimitedAccess || userToolAccess.includes(tool.name);
+        
+        // Check if tool has a meaningful price set
+        // A tool has a price if:
+        // 1. It has a base price > 0, OR
+        // 2. It has a discounted price > 0, OR  
+        // 3. It has an original price > 0 (even if discounted to 0)
+        const hasPrice = (tool.price && tool.price > 0) || 
+                        (tool.discountedPrice !== undefined && tool.discountedPrice > 0) || 
+                        (tool.originalPrice && tool.originalPrice > 0);
+        
+        // Tool is only free if explicitly marked as free by discount
+        const isFreeNow = tool.isFreeByDiscount === true;
+        
+        // If tool is marked as paid but has no price and not free by discount, make it effectively free
+        const effectivelyFree = tool.isPaid && !hasPrice && !isFreeNow;
+        
+        // Debug logging for each tool
+        if (tool.isPaid) {
+            const willShowBuyNow = hasPrice && !userHasAccess && !isFreeNow;
+            console.log(`[TOOL] ${tool.name}:`, {
+                isPaid: tool.isPaid,
+                price: tool.price,
+                originalPrice: tool.originalPrice,
+                discountedPrice: tool.discountedPrice,
+                hasPrice: hasPrice,
+                isFreeNow: isFreeNow,
+                effectivelyFree: effectivelyFree,
+                userHasAccess: userHasAccess,
+                hasDiscount: tool.discount ? `${tool.discount}%` : 'No',
+                expectedButton: willShowBuyNow ? '🛒 Buy Now' : '🚀 Launch Tool',
+                priceWillShow: !userHasAccess && (isFreeNow || hasPrice)
+            });
+        }
+        
+        // Show pricing for paid tools (only if user doesn't have access)
+        let priceHTML = '';
+        if (tool.isPaid && !userHasAccess) {
+            if (isFreeNow) {
+                // Tool is FREE due to admin discount
+                priceHTML = `
+                    <div class="tool-pricing" style="margin: 15px 0; text-align: center;">
+                        <span style="color: #888; text-decoration: line-through; font-size: 16px; margin-right: 10px;">$${(tool.originalPrice || tool.price || 0).toFixed(2)}</span>
+                        <span style="color: #4CAF50; font-size: 24px; font-weight: 700;">FREE</span>
+                </div>
+                `;
+            } else if (hasPrice) {
+                // Has a price (either discounted or regular)
+                if (tool.discount && tool.discountedPrice !== undefined && tool.discountedPrice > 0) {
+                    // Show discounted price with strikethrough original (admin set discount with price)
+                    const origPrice = tool.originalPrice || tool.price || 0;
+                    priceHTML = `
+                        <div class="tool-pricing" style="margin: 15px 0; text-align: center;">
+                            <span style="color: #888; text-decoration: line-through; font-size: 16px; margin-right: 10px;">$${origPrice.toFixed(2)}</span>
+                            <span style="color: #4CAF50; font-size: 24px; font-weight: 700;">$${tool.discountedPrice.toFixed(2)}</span>
+                    </div>
+                    `;
+                } else if (tool.originalPrice && tool.originalPrice > 0) {
+                    // Has original price but no discounted price - show original price
+                    priceHTML = `
+                        <div class="tool-pricing" style="margin: 15px 0; text-align: center;">
+                            <span style="color: #4CAF50; font-size: 24px; font-weight: 700;">$${tool.originalPrice.toFixed(2)}</span>
+                    </div>
+                    `;
+                } else if (tool.price && tool.price > 0) {
+                    // Show regular price (no admin discount)
+                    priceHTML = `
+                        <div class="tool-pricing" style="margin: 15px 0; text-align: center;">
+                            <span style="color: #4CAF50; font-size: 24px; font-weight: 700;">$${tool.price.toFixed(2)}</span>
+                </div>
+                    `;
+                }
+            }
+        }
+        
+        // Show "Access Granted" badge if user has access to paid tool
+        if (userHasAccess && tool.isPaid) {
+            priceHTML = `
+                <div class="tool-pricing" style="margin: 15px 0; text-align: center;">
+                    <span style="color: #4CAF50; font-size: 18px; font-weight: 700; background: rgba(76, 175, 80, 0.2); padding: 8px 20px; border-radius: 25px; display: inline-block;">
+                        <i class="fas fa-check-circle"></i> Access Granted
+                    </span>
+                    </div>
+            `;
+        }
+        
+        // Determine button text and action
+        let buttonHTML = '';
+        
+        // Show BUY NOW if:
+        // - Tool is paid AND
+        // - Has a price (from discount or base) AND
+        // - User doesn't have access AND
+        // - NOT free via discount
+        if (tool.isPaid && hasPrice && !userHasAccess && !isFreeNow) {
+            if (isLoggedIn) {
+                // Show Buy Now button
+                const checkoutUrl = `/checkout/${encodeURIComponent(tool.name)}`;
+                buttonHTML = `
+                    <a href="${checkoutUrl}" class="btn btn-primary" style="flex: 1; background: linear-gradient(135deg, #FF3333, #CC0000); font-size: 16px; font-weight: 700;">
+                        <i class="fas fa-shopping-cart"></i> Buy Now
+                    </a>
+                `;
+            } else {
+                // Not logged in, prompt to login for purchase
+                buttonHTML = `
+                    <a href="/login?next=${encodeURIComponent('/checkout/' + encodeURIComponent(tool.name))}" class="btn btn-primary" style="flex: 1; background: linear-gradient(135deg, #FF3333, #CC0000); font-size: 16px; font-weight: 700;">
+                        <i class="fas fa-sign-in-alt"></i> Login to Buy
+                    </a>
+                `;
+            }
+        } else {
+            // Show LAUNCH TOOL if:
+            // - Tool is not paid OR
+            // - Tool is paid but has no price (effectivelyFree) OR
+            // - User has explicit access OR
+            // - Tool is free via admin discount (isFreeNow)
+            if (isLoggedIn || !tool.isPaid || effectivelyFree || isFreeNow) {
+                buttonHTML = `
+                    <a href="${tool.url}" class="btn btn-primary" style="flex: 1; background: linear-gradient(135deg, #FF3333, #CC0000); font-size: 16px; font-weight: 700;">
+                        <i class="fas fa-rocket"></i> Launch Tool
+                    </a>
+                `;
+            } else {
+                // Not logged in and trying to access a tool
+                buttonHTML = `
+                    <a href="/login?next=${encodeURIComponent(tool.url)}" class="btn btn-primary" style="flex: 1; background: linear-gradient(135deg, #FF3333, #CC0000); font-size: 16px; font-weight: 700;">
+                        <i class="fas fa-sign-in-alt"></i> Login to Use
+                    </a>
+                `;
+            }
+        }
+                
+        return `
+        <div class="tool-card active" data-tool-name="${tool.name.toLowerCase()}" data-tool-desc="${tool.description.toLowerCase()}">
+            ${tool.isFreeByDiscount ? `<div class="card-ribbon" style="background: linear-gradient(135deg, #4CAF50, #66BB6A);">🎁 100% OFF</div>` : tool.discount ? `<div class="card-ribbon" style="background: linear-gradient(135deg, #4CAF50, #66BB6A);">${tool.discount}% OFF</div>` : (!tool.isPaid || effectivelyFree ? '<div class="card-ribbon">🆓 FREE</div>' : '')}
+                    <div class="card-icon">
+                <i class="${tool.icon}"></i>
+                    </div>
+            <h3>${tool.name}</h3>
+            <p>${tool.description}</p>
+            
+            ${priceHTML}
+            
+            <div class="tool-rating">
+                <div class="stars">
+                    ${generateStars(tool.rating)}
+                </div>
+                <span class="rating-count">${tool.rating} (${tool.reviews} reviews)</span>
+                    </div>
+                    
+                    <div class="card-features">
+                ${tool.features.map(f => `<span class="feature-tag">${f}</span>`).join('')}
+                    </div>
+                    
+            <div class="tool-actions">
+                ${buttonHTML}
+                <button class="btn-feedback" onclick="openRateModal('${tool.name}', event)">
+                    <i class="fas fa-star"></i> Rate
+                </button>
+                <button class="btn-share" onclick="openShareModal('${tool.name}', '${tool.url}', event)">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function generateStars(rating) {
+    // Generate star display based on rating (0-5)
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= Math.floor(rating)) {
+            // Filled star
+            stars += '<i class="fas fa-star star" style="color: #FFD700;"></i>';
+        } else if (i === Math.ceil(rating) && rating % 1 !== 0) {
+            // Half star
+            stars += '<i class="fas fa-star-half-alt star" style="color: #FFD700;"></i>';
+        } else {
+            // Empty star (gray)
+            stars += '<i class="far fa-star star empty" style="color: #444;"></i>';
+        }
+    }
+    return stars;
+}
+
+// Search functionality
+document.getElementById('tool-search').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    
+    if (searchTerm === '') {
+        renderTools(tools);
+        return;
+    }
+    
+    const filtered = tools.filter(tool => 
+        tool.name.toLowerCase().includes(searchTerm) ||
+        tool.description.toLowerCase().includes(searchTerm) ||
+        tool.features.some(f => f.toLowerCase().includes(searchTerm))
+    );
+    
+    renderTools(filtered);
+});
+
+// Rate modal (stars + feedback) - login required
+function openRateModal(toolName, event) {
+    // Check if user is logged in
+    const isLoggedIn = {{ 'true' if session.get('user_id') else 'false' }};
+    
+    if (!isLoggedIn) {
+        event.preventDefault();
+        const confirmLogin = confirm('🔒 You must be logged in to rate tools.\\n\\nWould you like to login now?');
+        if (confirmLogin) {
+            window.location.href = '/login?next=' + encodeURIComponent(window.location.pathname);
+        }
+        return;
+    }
+    
+    currentToolName = toolName;
+    document.getElementById('feedback-tool-name').textContent = `Rate: ${toolName}`;
+    document.getElementById('feedback-modal').classList.add('active');
+    selectedRating = 0;
+    updateRatingStars();
+}
+
+function closeFeedbackModal() {
+    document.getElementById('feedback-modal').classList.remove('active');
+    document.getElementById('feedback-form').reset();
+    selectedRating = 0;
+    updateRatingStars();
+}
+
+// Rating stars interaction
+document.addEventListener('DOMContentLoaded', function() {
+    const ratingStars = document.querySelectorAll('#rating-stars .star');
+    
+    ratingStars.forEach(star => {
+        star.addEventListener('click', function() {
+            selectedRating = parseInt(this.dataset.rating);
+            updateRatingStars();
+        });
+        
+        star.addEventListener('mouseenter', function() {
+            const rating = parseInt(this.dataset.rating);
+            document.querySelectorAll('#rating-stars .star').forEach((s, index) => {
+                if (index < rating) {
+                    s.style.color = '#FFD700';
+                } else {
+                    s.style.color = '#444';
+                }
+            });
+        });
+    });
+    
+    document.getElementById('rating-stars').addEventListener('mouseleave', function() {
+        updateRatingStars();
+    });
+});
+
+function updateRatingStars() {
+    document.querySelectorAll('#rating-stars .star').forEach((star, index) => {
+        if (index < selectedRating) {
+            star.classList.add('selected');
+            star.style.color = '#FFD700';
+        } else {
+            star.classList.remove('selected');
+            star.style.color = '#444';
+        }
+    });
+    
+    const ratingText = document.getElementById('rating-text');
+    if (selectedRating > 0) {
+        ratingText.textContent = `${selectedRating} star${selectedRating > 1 ? 's' : ''} selected`;
+        ratingText.style.color = '#FFD700';
+    } else {
+        ratingText.textContent = 'Click to rate';
+        ratingText.style.color = '#888';
+    }
+}
+
+// Star rating functionality is now in openRateModal section above
+
+async function submitFeedback(e) {
+    e.preventDefault();
+    
+    const comment = document.getElementById('feedback-text').value.trim();
+    
+    if (!comment) {
+        alert('💬 Please write your feedback!');
+        return;
+    }
+    
+    if (selectedRating === 0) {
+        alert('⭐ Please select a rating (1-5 stars) before submitting!');
+        return;
+    }
+    
+    try {
+        // Submit review with user's selected rating
+        const response = await fetch('/api/tool/review', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                tool_name: currentToolName,
+                rating: selectedRating, // Use the user's actual selected rating
+                comment: comment
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            alert(`✅ ${data.message}\\n\\nThank you for reviewing ${currentToolName}!\\nYour rating: ${selectedRating} ⭐`);
+            closeFeedbackModal();
+            
+            // Update the tool rating display
+            const tool = tools.find(t => t.name === currentToolName);
+            if (tool) {
+                tool.reviews++;
+                renderTools(tools);
+            }
+        } else {
+            if (response.status === 401) {
+                alert('🔒 Please login to submit a review!');
+                window.location.href = '/login';
+            } else {
+                alert('❌ ' + (data.error || 'Failed to submit review. Please try again.'));
+            }
+        }
+    } catch (error) {
+        console.error('Error submitting review:', error);
+        alert('❌ Network error. Please try again.');
+    }
+}
+
+// Close modal on outside click
+document.getElementById('feedback-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeFeedbackModal();
+    }
+});
+
+// Load active discounts and apply to tools
+// Quick rating removed - all rating now done via modal
+
+// Load active discounts from admin
+async function loadDiscounts() {
+    console.log('[DISCOUNTS] Loading active discounts...');
+    
+    try {
+        const response = await fetch('/api/discounts/active');
+        const data = await response.json();
+        
+        console.log('[DISCOUNTS] API Response:', data);
+        
+        if (data.success && data.discounts) {
+            // Apply discounts to tools
+            data.discounts.forEach(discount => {
+                if (!discount.is_active) return;
+                
+                // Check if discount has expired
+                if (discount.expires_at) {
+                    const expiryDate = new Date(discount.expires_at);
+                    if (expiryDate < new Date()) {
+                        console.log(`[DISCOUNTS] Discount for ${discount.tool_name} has expired`);
+                        return;
+                    }
+                }
+                
+                // Apply discount to specific tool or all tools
+                tools.forEach(tool => {
+                    if (discount.tool_name === 'All Tools' || discount.tool_name === tool.name) {
+                        // Use original_price from discount if tool has no base price
+                        const originalPrice = discount.original_price || tool.price || 0;
+                        
+                        if (discount.discount_type === 'percentage') {
+                            const discountAmount = (originalPrice * discount.discount_value) / 100;
+                            tool.price = originalPrice;  // Set base price!
+                            tool.discountedPrice = originalPrice - discountAmount;
+                            tool.discount = discount.discount_value;
+                            tool.isFreeByDiscount = false;  // NOT FREE - Still need to buy!
+                        } else if (discount.discount_type === 'fixed') {
+                            tool.price = originalPrice;  // Set base price!
+                            tool.discountedPrice = originalPrice - discount.discount_value;
+                            tool.discount = ((discount.discount_value / originalPrice) * 100).toFixed(0);
+                            tool.isFreeByDiscount = false;  // NOT FREE - Still need to buy!
+                        } else if (discount.discount_type === 'free') {
+                            tool.price = originalPrice;  // Set base price for display!
+                            tool.discountedPrice = 0;
+                            tool.discount = 100;
+                            tool.isFreeByDiscount = true;   // FREE - Can launch without buying!
+                        }
+                        
+                        tool.originalPrice = originalPrice;
+                        
+                        console.log(`[DISCOUNTS] Applied ${discount.discount_type} discount to ${tool.name}:`, {
+                            discountFromDB: {
+                                type: discount.discount_type,
+                                value: discount.discount_value,
+                                original_price: discount.original_price
+                            },
+                            toolAfterDiscount: {
+                                price: tool.price,
+                                originalPrice: tool.originalPrice,
+                                discountedPrice: tool.discountedPrice,
+                                discount: tool.discount,
+                                isFreeByDiscount: tool.isFreeByDiscount
+                            },
+                            expectedButton: tool.isFreeByDiscount ? '🚀 Launch Tool' : '🛒 Buy Now'
+                        });
+                    }
+                });
+            });
+            
+            console.log('[DISCOUNTS] ✅ Discounts applied, re-rendering tools...');
+            renderTools(tools);
+        }
+    } catch (error) {
+        console.error('[DISCOUNTS] ❌ Error loading discounts:', error);
+    }
+}
+
+// Load user's tool access
+async function loadUserToolAccess() {
+    const isLoggedIn = {{ 'true' if session.get('user_id') else 'false' }};
+    
+    console.log('[TOOL ACCESS] Loading user tool access...');
+    console.log('[TOOL ACCESS] User logged in:', isLoggedIn);
+    
+    if (!isLoggedIn) {
+        console.log('[TOOL ACCESS] User not logged in, skipping access check');
+        return;
+    }
+    
+    try {
+        console.log('[TOOL ACCESS] Fetching /api/my-tool-access...');
+        const response = await fetch('/api/my-tool-access');
+        const data = await response.json();
+        
+        console.log('[TOOL ACCESS] API Response:', data);
+        
+        if (data.success) {
+            userToolAccess = data.tools || [];
+            hasUnlimitedAccess = data.has_unlimited_access || false;
+            
+            console.log('[TOOL ACCESS] User has access to:', userToolAccess);
+            console.log('[TOOL ACCESS] Has unlimited access:', hasUnlimitedAccess);
+            
+            // Re-render tools to update buttons
+            console.log('[TOOL ACCESS] Re-rendering tools with access info...');
+            renderTools(tools);
+            console.log('[TOOL ACCESS] ✅ Tools re-rendered with correct buttons!');
+        }
+    } catch (error) {
+        console.error('[TOOL ACCESS] ❌ Error loading user tool access:', error);
+    }
+}
+
+// Share modal functions
+let currentShareTool = '';
+let currentShareUrl = '';
+
+function openShareModal(toolName, toolUrl, event) {
+    event.preventDefault();
+    currentShareTool = toolName;
+    currentShareUrl = window.location.origin + toolUrl;
+    document.getElementById('share-tool-name').textContent = `Share ${toolName}`;
+    document.getElementById('share-modal').classList.add('active');
+}
+
+function closeShareModal() {
+    document.getElementById('share-modal').classList.remove('active');
+}
+
+function shareOn(platform) {
+    const shareText = `Check out this amazing tool: ${currentShareTool}`;
+    const shareUrl = currentShareUrl;
+    
+    let url = '';
+    
+    switch(platform) {
+        case 'whatsapp':
+            url = `https://wa.me/?text=${encodeURIComponent(shareText + ' - ' + shareUrl)}`;
+            break;
+        case 'facebook':
+            url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+            break;
+        case 'twitter':
+            url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+            break;
+        case 'linkedin':
+            url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+            break;
+        case 'telegram':
+            url = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
+            break;
+        case 'copy':
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                alert('✅ Link copied to clipboard!');
+                closeShareModal();
+            }).catch(() => {
+                alert('❌ Failed to copy link');
+            });
+            return;
+    }
+    
+    if (url) {
+        window.open(url, '_blank', 'width=600,height=400');
+        closeShareModal();
+    }
+}
+
+// Close share modal on outside click
+document.getElementById('share-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeShareModal();
+    }
+});
+
+// Initialize
+Promise.all([
+    loadDiscounts(),
+    loadUserToolAccess()
+]).then(() => {
+    console.log('Tools page initialized');
+});
+</script>
+{% endblock %}
+

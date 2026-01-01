@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+
+{% block title %}Subtitle Downloader - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/subtitle.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="tool-container">
+        <!-- Tool Header -->
+        <div class="tool-header">
+            <div class="tool-breadcrumb">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="/tools">Tools</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Subtitle Downloader</span>
+            </div>
+            <h1 class="tool-title">
+                <i class="fas fa-closed-captioning"></i>
+                Subtitle Downloader Pro
+            </h1>
+            <p class="tool-description">Download, translate, and embed subtitles from YouTube videos</p>
+        </div>
+
+        <!-- Main Tool Card -->
+        <div class="card">
+            <h2><i class="fas fa-language"></i> Subtitle Tools</h2>
+            <p class="description">Download subtitles from YouTube or extract/add subtitles to your own videos</p>
+            
+            <!-- Source Type Selector -->
+            <div class="source-selector">
+                <button type="button" class="source-btn active" data-source="youtube">
+                    <i class="fab fa-youtube"></i> YouTube URL
+                </button>
+                <button type="button" class="source-btn" data-source="upload">
+                    <i class="fas fa-upload"></i> Upload Video
+                </button>
+            </div>
+            
+            <form id="subtitle-form">
+                <!-- YouTube URL Input -->
+                <div class="input-group" id="url-input-group">
+                    <label for="video-url">
+                        <i class="fab fa-youtube"></i> YouTube Video URL
+                    </label>
+                    <input 
+                        type="url" 
+                        id="video-url" 
+                        name="url" 
+                        placeholder="https://www.youtube.com/watch?v=..." 
+                    >
+                </div>
+
+                <!-- File Upload Input -->
+                <div class="input-group" id="file-input-group" style="display: none;">
+                    <label for="video-file">
+                        <i class="fas fa-file-video"></i> Select Video File
+                    </label>
+                    <div class="upload-area" id="video-drop-zone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & Drop your video here or click to browse</p>
+                        <input type="file" id="video-file" accept="video/*" hidden>
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('video-file').click()">
+                            <i class="fas fa-folder-open"></i> Choose File
+                        </button>
+                        <p class="file-info">Supports: MP4, MKV, AVI, MOV, WebM (Max 500MB)</p>
+                    </div>
+                    <div id="selected-file-info" style="display: none;">
+                        <div class="file-preview">
+                            <i class="fas fa-file-video"></i>
+                            <span id="file-name"></span>
+                            <span id="file-size"></span>
+                            <button type="button" class="btn-remove" id="remove-file">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subtitle Options -->
+                <div class="options-grid">
+                    <!-- Language Selection -->
+                    <div class="option-card">
+                        <label for="source-language">
+                            <i class="fas fa-microphone"></i> Video Language (What's spoken in video)
+                        </label>
+                        <select id="source-language" name="source_language">
+                            <option value="auto">🤖 Auto-Detect</option>
+                            <option value="en">English</option>
+                            <option value="ar">Arabic</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="it">Italian</option>
+                            <option value="pt">Portuguese</option>
+                            <option value="ru">Russian</option>
+                            <option value="ja">Japanese</option>
+                            <option value="ko">Korean</option>
+                            <option value="zh">Chinese</option>
+                            <option value="hi">Hindi</option>
+                        </select>
+                        <small>Select the language spoken in the video</small>
+                    </div>
+
+                    <div class="option-card">
+                        <label for="target-language">
+                            <i class="fas fa-globe"></i> Subtitle Language (What you want)
+                        </label>
+                        <select id="target-language" name="target_language">
+                            <option value="same">Same as Video (No Translation)</option>
+                            <option value="en" selected>English</option>
+                            <option value="ar">Arabic</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="it">Italian</option>
+                            <option value="pt">Portuguese</option>
+                            <option value="ru">Russian</option>
+                            <option value="ja">Japanese</option>
+                            <option value="ko">Korean</option>
+                            <option value="zh-CN">Chinese (Simplified)</option>
+                            <option value="zh-TW">Chinese (Traditional)</option>
+                            <option value="hi">Hindi</option>
+                            <option value="tr">Turkish</option>
+                            <option value="nl">Dutch</option>
+                            <option value="pl">Polish</option>
+                        </select>
+                        <small>Select the language you want for subtitles</small>
+                    </div>
+
+                    <!-- Action Type (for uploaded videos) -->
+                    <div class="option-card" id="action-type-card" style="display: none;">
+                        <label>
+                            <i class="fas fa-cog"></i> Action
+                        </label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="action_type" value="extract" checked>
+                                <span>Extract Existing Subtitles</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="action_type" value="generate">
+                                <span>Generate Subtitles (Speech-to-Text)</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="action_type" value="add">
+                                <span>Add Subtitle Files (Upload .srt/.vtt)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Subtitle File Upload (for 'add' action) -->
+                    <div class="option-card" id="subtitle-file-upload" style="display: none;">
+                        <label for="subtitle-files">
+                            <i class="fas fa-file-upload"></i> Upload Subtitle Files
+                        </label>
+                        <input type="file" id="subtitle-files" accept=".srt,.vtt,.ass" multiple>
+                        <small>Upload one or more subtitle files to embed into your video</small>
+                    </div>
+
+                    <!-- Download Type (Simplified for AI Subtitles) -->
+                    <div class="option-card" id="download-type-card">
+                        <label>
+                            <i class="fas fa-download"></i> Download Type
+                        </label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="download_type" value="video_with_subs" checked>
+                                <span>📦 Video with Embedded Subtitles (Works Automatically in VLC)</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="download_type" value="video_separate_subs">
+                                <span>🎬 Video + Separate Subtitle File (Manual loading required)</span>
+                            </label>
+                        </div>
+                        <small style="color: #ff6b6b; display: block; margin-top: 10px;">
+                            ⚡ AI will automatically generate subtitles if video doesn't have them!
+                        </small>
+                    </div>
+
+                    <!-- Subtitle Format (Simplified) -->
+                    <div class="option-card">
+                        <label for="subtitle-format">
+                            <i class="fas fa-file-alt"></i> Subtitle Format
+                        </label>
+                        <select id="subtitle-format" name="format">
+                            <option value="srt" selected>SRT (Best Compatibility)</option>
+                        </select>
+                        <small>SRT format works with all players including Windows Media Player</small>
+                    </div>
+                </div>
+
+                <!-- Video Quality (for video downloads) -->
+                <div class="quality-section" id="quality-section">
+                    <label for="video-quality">
+                        <i class="fas fa-video"></i> Video Quality
+                    </label>
+                    <select id="video-quality" name="quality">
+                        <option value="best">Best Quality</option>
+                        <option value="1080p">1080p (Full HD)</option>
+                        <option value="720p" selected>720p (HD)</option>
+                        <option value="480p">480p (SD)</option>
+                        <option value="360p">360p (Low)</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary" id="download-btn">
+                    <i class="fas fa-download"></i>
+                    <span id="download-btn-text">Download</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="card progress-card" id="progress-section" style="display: none;">
+            <h3 id="progress-title"><i class="fas fa-spinner fa-spin"></i> Processing...</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%">
+                    <span id="progress-text">0%</span>
+                </div>
+            </div>
+            <p class="progress-message" id="progress-message">Initializing...</p>
+            <div class="download-info" id="download-info" style="display: none;">
+                <div class="info-item">
+                    <span class="info-label">Downloaded:</span>
+                    <span class="info-value" id="downloaded-size">0 MB</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Total Size:</span>
+                    <span class="info-value" id="total-size">-- MB</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Speed:</span>
+                    <span class="info-value" id="download-speed">-- MB/s</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">ETA:</span>
+                    <span class="info-value" id="download-eta">--:--</span>
+                </div>
+            </div>
+            <button type="button" class="btn btn-cancel" id="cancel-btn" style="display: none;">
+                <i class="fas fa-times"></i> Cancel Download
+            </button>
+        </div>
+
+        <!-- Result Section -->
+        <div class="card result-card" id="result-section" style="display: none;">
+            <div class="result-icon" id="result-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 id="result-message">Download Complete!</h3>
+            <p id="result-details"></p>
+            <div class="result-actions">
+                <a href="#" class="btn btn-download" id="download-result-btn">
+                    <i class="fas fa-download"></i>
+                    <span id="download-result-text">Download</span>
+                </a>
+                <button type="button" class="btn btn-secondary" id="new-download-btn">
+                    <i class="fas fa-plus"></i> New Download
+                </button>
+            </div>
+        </div>
+
+        <!-- Error Section -->
+        <div class="card error-card" id="error-section" style="display: none;">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>Oops! Something went wrong</h3>
+            <p id="error-message"></p>
+            <button type="button" class="btn btn-secondary" id="retry-btn">
+                <i class="fas fa-redo"></i> Try Again
+            </button>
+        </div>
+
+        <!-- Info Card -->
+        <div class="info-card">
+            <h3><i class="fas fa-info-circle"></i> Features</h3>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Download subtitles in 12+ languages</li>
+                <li><i class="fas fa-check"></i> Auto-generated and manual subtitles</li>
+                <li><i class="fas fa-check"></i> Embed subtitles or download separately</li>
+                <li><i class="fas fa-check"></i> Multiple subtitle formats (SRT, VTT, ASS)</li>
+                <li><i class="fas fa-check"></i> Auto-translate to any language</li>
+                <li><i class="fas fa-check"></i> High-quality video download</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/subtitle.js') }}"></script>
+{% endblock %}
+

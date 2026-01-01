@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Download History - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/history.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="history-container">
+    <div class="history-header">
+        <h1><i class="fas fa-history"></i> Download History</h1>
+        <p class="subtitle">Track, search, and re-download your videos</p>
+    </div>
+
+    <!-- Statistics Dashboard -->
+    <div class="stats-grid" id="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-download"></i></div>
+            <div class="stat-info">
+                <div class="stat-value" id="stat-total">0</div>
+                <div class="stat-label">Total Downloads</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon success"><i class="fas fa-check-circle"></i></div>
+            <div class="stat-info">
+                <div class="stat-value" id="stat-completed">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon error"><i class="fas fa-times-circle"></i></div>
+            <div class="stat-info">
+                <div class="stat-value" id="stat-failed">0</div>
+                <div class="stat-label">Failed</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-hdd"></i></div>
+            <div class="stat-info">
+                <div class="stat-value" id="stat-size">0 GB</div>
+                <div class="stat-label">Total Size</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="history-controls">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-input" placeholder="Search by title or URL...">
+        </div>
+        
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">
+                <i class="fas fa-list"></i> All
+            </button>
+            <button class="filter-btn" data-filter="completed">
+                <i class="fas fa-check"></i> Completed
+            </button>
+            <button class="filter-btn" data-filter="failed">
+                <i class="fas fa-times"></i> Failed
+            </button>
+        </div>
+        
+        <button class="btn-clear" id="clear-history-btn">
+            <i class="fas fa-trash"></i> Clear History
+        </button>
+    </div>
+
+    <!-- Downloads List -->
+    <div class="downloads-section">
+        <div id="downloads-list" class="downloads-list">
+            <!-- Downloads will be loaded here -->
+        </div>
+        
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <i class="fas fa-inbox"></i>
+            <h3>No Downloads Yet</h3>
+            <p>Your download history will appear here</p>
+            <a href="/tool/media-converter" class="btn-primary">
+                <i class="fas fa-download"></i> Start Downloading
+            </a>
+        </div>
+        
+        <div id="loading-state" class="loading-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading history...</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/history.js') }}"></script>
+{% endblock %}
+

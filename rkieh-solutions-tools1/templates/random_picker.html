@@ -1,0 +1,398 @@
+{% extends "base.html" %}
+
+{% block title %}Random Picker - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+    .picker-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    
+    .picker-section {
+        background: #1a1a1a;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 2px solid #333;
+    }
+    
+    .input-group {
+        margin-bottom: 20px;
+    }
+    
+    .input-group label {
+        display: block;
+        color: #fff;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+    
+    .input-group input {
+        width: 100%;
+        padding: 12px 15px;
+        background: #2a2a2a;
+        border: 2px solid #333;
+        border-radius: 6px;
+        color: #fff;
+        font-size: 16px;
+    }
+    
+    .input-group input:focus {
+        outline: none;
+        border-color: #ff3333;
+        box-shadow: 0 0 0 3px rgba(255, 51, 51, 0.1);
+        transform: translateY(-1px);
+    }
+    
+    #search-input:focus {
+        background: linear-gradient(135deg, #2a1a1a 0%, #1a1a1a 100%);
+    }
+    
+    #search-input::placeholder {
+        color: #666;
+    }
+    
+    .options-list {
+        background: #2a2a2a;
+        border: 2px solid #333;
+        border-radius: 8px;
+        padding: 15px;
+        min-height: 200px;
+        max-height: 400px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+    }
+    
+    .option-item {
+        background: #1a1a1a;
+        padding: 12px 15px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 2px solid #333;
+    }
+    
+    .option-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .option-text {
+        color: #fff;
+        flex: 1;
+        font-size: 16px;
+    }
+    
+    .option-remove {
+        background: #ff3333;
+        border: none;
+        color: #fff;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    
+    .option-remove:hover {
+        background: #ff5555;
+    }
+    
+    .empty-state {
+        text-align: center;
+        color: #666;
+        padding: 40px 20px;
+    }
+    
+    .empty-state i {
+        font-size: 48px;
+        margin-bottom: 15px;
+        display: block;
+    }
+    
+    .quick-add-section {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .pick-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .pick-option-btn {
+        background: #2a2a2a;
+        border: 2px solid #333;
+        border-radius: 8px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .pick-option-btn:hover {
+        background: #333;
+        border-color: #555;
+    }
+    
+    .pick-option-btn.active {
+        background: #ff3333;
+        border-color: #ff3333;
+    }
+    
+    .pick-option-btn i {
+        font-size: 24px;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .pick-option-btn span {
+        color: #fff;
+        font-weight: 500;
+    }
+    
+    .result-section {
+        background: #1a1a1a;
+        border-radius: 12px;
+        padding: 40px;
+        margin-bottom: 30px;
+        border: 2px solid #333;
+        text-align: center;
+        display: none;
+    }
+    
+    .result-section.show {
+        display: block;
+    }
+    
+    .result-display {
+        font-size: 48px;
+        font-weight: bold;
+        color: #ff3333;
+        margin: 30px 0;
+        padding: 30px;
+        background: #2a2a2a;
+        border-radius: 12px;
+        border: 3px solid #ff3333;
+        min-height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .result-label {
+        color: #aaa;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    
+    .spinning {
+        animation: spin 0.1s linear infinite;
+    }
+    
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    .history-section {
+        background: #2a2a2a;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    
+    .history-section h3 {
+        color: #fff;
+        margin-top: 0;
+        margin-bottom: 15px;
+    }
+    
+    .history-item {
+        background: #1a1a1a;
+        padding: 10px 15px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        color: #ccc;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .history-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .clear-history-btn {
+        background: #333;
+        border: none;
+        color: #fff;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+    }
+    
+    .clear-history-btn:hover {
+        background: #444;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="tool-container">
+        <!-- Tool Header -->
+        <div class="tool-header">
+            <div class="tool-breadcrumb">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="/tools">Tools</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Random Picker</span>
+            </div>
+            <h1 class="tool-title">
+                <i class="fas fa-random"></i>
+                Random Picker
+            </h1>
+            <p class="tool-description">Make random decisions! Add your options and let the picker choose for you. Perfect for choosing what to eat, where to go, or any decision.</p>
+        </div>
+
+        <div class="picker-container">
+            <!-- Input Section -->
+            <div class="picker-section">
+                <h2><i class="fas fa-list"></i> Add Your Options</h2>
+                
+                <!-- Video Comment Section -->
+                <div class="input-group" style="margin-bottom: 25px; background: #2a2a2a; padding: 20px; border-radius: 8px; border: 2px solid #333;">
+                    <label><i class="fas fa-video"></i> Or Load Comments from Video</label>
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 10px; margin-bottom: 10px;">
+                        <input type="text" id="video-url" placeholder="Enter video URL (YouTube, TikTok, Instagram)" style="background: #1a1a1a; border: 2px solid #333; border-radius: 6px; padding: 12px 15px; color: #fff;" />
+                        <button type="button" class="btn btn-secondary" id="load-comments-btn">
+                            <i class="fas fa-download"></i> Load Comments
+                        </button>
+                    </div>
+                    <div class="hint" style="color: #888; font-size: 14px;">
+                        <i class="fas fa-info-circle"></i> Supports YouTube, TikTok, and Instagram video URLs. Comments will be added as options.
+                    </div>
+                    <div id="comments-loading" style="display: none; color: #ffaa00; margin-top: 10px;">
+                        <i class="fas fa-spinner fa-spin"></i> Loading comments...
+                    </div>
+                </div>
+                
+                <!-- File Upload Section -->
+                <div class="input-group" style="margin-bottom: 25px;">
+                    <label><i class="fas fa-file-upload"></i> Or Upload a File</label>
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center;">
+                        <input type="file" id="file-input" accept=".txt,.csv,.json" style="display: none;" />
+                        <input type="text" id="file-name" placeholder="No file selected" readonly style="background: #2a2a2a; border: 2px solid #333; border-radius: 6px; padding: 12px 15px; color: #888; cursor: pointer;" onclick="document.getElementById('file-input').click();" />
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('file-input').click();">
+                            <i class="fas fa-folder-open"></i> Browse
+                        </button>
+                    </div>
+                    <div class="hint" style="color: #888; font-size: 14px; margin-top: 8px;">
+                        <i class="fas fa-info-circle"></i> Supports .txt (one option per line), .csv (one option per row), or .json files
+                    </div>
+                </div>
+                
+                <!-- Quick Add -->
+                <div class="quick-add-section">
+                    <input type="text" id="option-input" placeholder="Enter an option (e.g., Pizza, Burger, Sushi)" />
+                    <button type="button" class="btn btn-primary" id="add-option-btn">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </div>
+                
+                <!-- Search Section -->
+                <div class="input-group" style="margin-bottom: 20px; background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%); padding: 25px; border-radius: 12px; border: 2px solid #333; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);">
+                    <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <span style="font-size: 24px;">🔍</span>
+                        <span style="font-size: 18px; font-weight: 600;">Search Options</span>
+                    </label>
+                    <div style="position: relative;">
+                        <input type="text" id="search-input" placeholder="🔎 Type to search for a specific comment or option..." style="padding-left: 45px; background: linear-gradient(135deg, #1a1a1a 0%, #2a1a1a 100%); border: 2px solid #333; border-radius: 10px; padding: 15px 18px 15px 50px; font-size: 16px; transition: all 0.3s;" />
+                        <span style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #888;">🔍</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+                        <div class="hint" style="color: #888; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                            <span id="search-results-count"></span>
+                        </div>
+                        <button type="button" class="clear-history-btn" id="clear-search-btn" style="display: none; background: linear-gradient(135deg, #333 0%, #222 100%); border: none; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);" onmouseover="this.style.background='linear-gradient(135deg, #444 0%, #333 100%)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.3)'" onmouseout="this.style.background='linear-gradient(135deg, #333 0%, #222 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.2)'">
+                            <i class="fas fa-times"></i> Clear Search
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Options List -->
+                <div class="options-list" id="options-list">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>No options added yet. Add your choices above!</p>
+                    </div>
+                </div>
+                
+                <!-- Pick Options -->
+                <div class="pick-options">
+                    <div class="pick-option-btn active" data-pick="single">
+                        <i class="fas fa-hand-pointer"></i>
+                        <span>Pick One</span>
+                    </div>
+                    <div class="pick-option-btn" data-pick="multiple">
+                        <i class="fas fa-hand-paper"></i>
+                        <span>Pick Multiple</span>
+                    </div>
+                    <div class="pick-option-btn" data-pick="remove">
+                        <i class="fas fa-random"></i>
+                        <span>Pick & Remove</span>
+                    </div>
+                </div>
+                
+                <!-- Multiple Pick Count -->
+                <div class="input-group" id="multiple-count-group" style="display: none;">
+                    <label for="pick-count">How many to pick?</label>
+                    <input type="number" id="pick-count" min="2" value="2" />
+                </div>
+                
+                <!-- Pick Button -->
+                <button type="button" class="btn btn-primary btn-large" id="pick-btn" style="width: 100%;" disabled>
+                    <i class="fas fa-random"></i> Pick Randomly
+                </button>
+            </div>
+
+            <!-- Result Section -->
+            <div class="result-section" id="result-section">
+                <div class="result-label" id="result-label">The winner is...</div>
+                <div class="result-display" id="result-display"></div>
+                <button type="button" class="btn btn-secondary" id="pick-again-btn">
+                    <i class="fas fa-redo"></i> Pick Again
+                </button>
+            </div>
+
+            <!-- History Section -->
+            <div class="picker-section">
+                <div class="history-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3><i class="fas fa-history"></i> Pick History</h3>
+                        <button type="button" class="clear-history-btn" id="clear-history-btn">
+                            <i class="fas fa-trash"></i> Clear
+                        </button>
+                    </div>
+                    <div id="history-list">
+                        <p style="color: #666; text-align: center; padding: 20px;">No picks yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/random_picker.js') }}"></script>
+{% endblock %}
+

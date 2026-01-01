@@ -1,0 +1,640 @@
+{% extends "base.html" %}
+
+{% block title %}Duplicate File Finder - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+    .duplicate-finder-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .scan-options {
+        background: #1a1a1a;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 2px solid #333;
+    }
+    
+    .scan-options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+    
+    .option-group {
+        margin-bottom: 20px;
+    }
+    
+    .option-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #fff;
+        font-weight: 500;
+        font-size: 14px;
+    }
+    
+    .option-group input,
+    .option-group select {
+        width: 100%;
+        padding: 12px 15px;
+        background: #2a2a2a;
+        border: 2px solid #333;
+        border-radius: 6px;
+        color: #fff;
+        font-size: 14px;
+    }
+    
+    .option-group input:focus,
+    .option-group select:focus {
+        outline: none;
+        border-color: #ff3333;
+    }
+    
+    .option-group input[type="checkbox"] {
+        width: auto;
+        margin-right: 8px;
+    }
+    
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .checkbox-group label {
+        margin-bottom: 0;
+        font-weight: normal;
+        cursor: pointer;
+    }
+    
+    .results-section {
+        background: #1a1a1a;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 2px solid #333;
+        display: none;
+    }
+    
+    .results-section.active {
+        display: block;
+    }
+    
+    .results-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #333;
+    }
+    
+    .results-stats {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-number {
+        font-size: 32px;
+        font-weight: bold;
+        color: #ff3333;
+        display: block;
+    }
+    
+    .stat-label {
+        font-size: 12px;
+        color: #888;
+        margin-top: 5px;
+    }
+    
+    .duplicate-group {
+        background: #2a2a2a;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+        border: 2px solid #333;
+    }
+    
+    .duplicate-group:hover {
+        border-color: #ff3333;
+    }
+    
+    .duplicate-group-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .duplicate-group-info {
+        flex: 1;
+    }
+    
+    .duplicate-group-title {
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    
+    .duplicate-group-meta {
+        color: #888;
+        font-size: 12px;
+    }
+    
+    .duplicate-group-actions {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .file-item {
+        background: #1a1a1a;
+        border-radius: 6px;
+        padding: 15px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid #333;
+    }
+    
+    .file-item:hover {
+        border-color: #ff3333;
+    }
+    
+    .file-item-info {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .file-item-icon {
+        font-size: 24px;
+        color: #ff3333;
+    }
+    
+    .file-item-details {
+        flex: 1;
+    }
+    
+    .file-item-name {
+        color: #fff;
+        font-weight: 500;
+        margin-bottom: 5px;
+        word-break: break-all;
+    }
+    
+    .file-item-path {
+        color: #888;
+        font-size: 12px;
+        word-break: break-all;
+    }
+    
+    .file-item-size {
+        color: #888;
+        font-size: 12px;
+        margin-left: 15px;
+    }
+    
+    .file-item-actions {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .btn-select {
+        background: #333;
+        border: none;
+        color: #fff;
+        padding: 8px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .btn-select:hover {
+        background: #ff3333;
+    }
+    
+    .btn-select.selected {
+        background: #ff3333;
+    }
+    
+    .bulk-actions {
+        background: #1a1a1a;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+        border: 2px solid #333;
+        display: none;
+    }
+    
+    .bulk-actions.active {
+        display: block;
+    }
+    
+    .bulk-actions-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .selected-count {
+        color: #ff3333;
+        font-weight: 600;
+    }
+    
+    .file-list-item {
+        background: #2a2a2a;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 2px solid #333;
+    }
+    
+    .file-list-item:hover {
+        border-color: #ff3333;
+    }
+    
+    .file-info {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .file-icon {
+        font-size: 24px;
+        color: #ff3333;
+    }
+    
+    .file-details {
+        flex: 1;
+    }
+    
+    .file-name {
+        color: #fff;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+    
+    .file-size {
+        color: #888;
+        font-size: 12px;
+    }
+    
+    .btn-remove {
+        background: #cc0000;
+        border: none;
+        color: #fff;
+        padding: 8px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .btn-remove:hover {
+        background: #ff0000;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="tool-container">
+        <!-- Tool Header -->
+        <div class="tool-header">
+            <div class="tool-breadcrumb">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="/tools">Tools</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Duplicate File Finder</span>
+            </div>
+            <h1 class="tool-title">
+                <i class="fas fa-search"></i>
+                Duplicate File Finder
+            </h1>
+            <p class="tool-description">Find and remove duplicate files in your system. Save storage space by cleaning up duplicates.</p>
+        </div>
+
+        <div class="duplicate-finder-container">
+            <!-- Tabs for File Duplicates and Excel/CSV Duplicates -->
+            <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #333;">
+                <button class="tab-btn active" id="file-duplicates-tab" onclick="switchTab('files')" style="padding: 12px 24px; background: #2a2a2a; border: none; color: #fff; cursor: pointer; border-radius: 8px 8px 0 0; font-size: 16px;">
+                    <i class="fas fa-file"></i> File Duplicates
+                </button>
+                <button class="tab-btn" id="excel-duplicates-tab" onclick="switchTab('excel')" style="padding: 12px 24px; background: #1a1a1a; border: none; color: #888; cursor: pointer; border-radius: 8px 8px 0 0; font-size: 16px;">
+                    <i class="fas fa-table"></i> Excel/CSV Duplicates
+                </button>
+            </div>
+
+            <!-- File Duplicates Section -->
+            <div id="file-duplicates-section">
+            <!-- Scan Options -->
+            <div class="scan-options">
+                <h2><i class="fas fa-cog"></i> Scan Options</h2>
+                
+                <div class="upload-area" id="scan-drop-zone">
+                    <i class="fas fa-folder-open"></i>
+                    <p>Drag & Drop folder here to scan</p>
+                    <p class="or">or</p>
+                    <label for="folder-input" class="file-label">
+                        <i class="fas fa-folder"></i> Select Folder to Scan
+                    </label>
+                    <input type="file" id="folder-input" webkitdirectory directory multiple hidden>
+                    <p class="file-info">Select a folder to scan for duplicate files</p>
+                </div>
+
+                <div id="selected-folder" style="display: none; margin-bottom: 20px;">
+                    <div class="file-list-item">
+                        <div class="file-info">
+                            <i class="fas fa-folder file-icon"></i>
+                            <div class="file-details">
+                                <div class="file-name" id="folder-name"></div>
+                                <div class="file-size" id="folder-item-count"></div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-remove" onclick="removeFolder()">
+                            <i class="fas fa-times"></i> Remove
+                        </button>
+                    </div>
+                </div>
+
+                <div class="scan-options-grid">
+                    <div class="option-group">
+                        <label for="scan-method">
+                            <i class="fas fa-search"></i> Scan Method
+                        </label>
+                        <select id="scan-method">
+                            <option value="hash" selected>Hash (MD5) - Most Accurate</option>
+                            <option value="name_size">Name + Size - Fast</option>
+                            <option value="size">Size Only - Very Fast</option>
+                        </select>
+                    </div>
+                    
+                    <div class="option-group">
+                        <label for="min-file-size">
+                            <i class="fas fa-file"></i> Minimum File Size (KB)
+                        </label>
+                        <input type="number" id="min-file-size" min="0" value="0" placeholder="0">
+                    </div>
+                    
+                    <div class="option-group">
+                        <label for="file-types">
+                            <i class="fas fa-filter"></i> File Types (comma-separated)
+                        </label>
+                        <input type="text" id="file-types" placeholder="mp4,mp3,jpg,png (leave empty for all)">
+                    </div>
+                </div>
+
+                <div class="option-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="include-subfolders" checked>
+                        <label for="include-subfolders">Include subfolders</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="show-preview">
+                        <label for="show-preview">Show preview before deletion</label>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-large" id="start-scan-btn" disabled>
+                    <i class="fas fa-search"></i> Start Scan
+                </button>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="progress-section" id="progress-section" style="display: none;">
+                <div class="card">
+                    <h3 id="progress-title"><i class="fas fa-spinner fa-spin"></i> Scanning...</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <p class="progress-text" id="progress-text">0%</p>
+                    <p class="progress-message" id="progress-message">Please wait...</p>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="results-section">
+                <div class="results-header">
+                    <h2><i class="fas fa-list"></i> Duplicate Files Found</h2>
+                    <div class="results-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="duplicate-groups-count">0</span>
+                            <span class="stat-label">Duplicate Groups</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="duplicate-files-count">0</span>
+                            <span class="stat-label">Duplicate Files</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="wasted-space">0 MB</span>
+                            <span class="stat-label">Wasted Space</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="duplicate-groups-container"></div>
+
+                <!-- Create Clean Folder Button -->
+                <div style="background: #1a1a1a; border-radius: 12px; padding: 20px; margin: 20px 0; border: 2px solid #10b981; display: none;" id="create-clean-folder-section">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 style="color: #10b981; margin-bottom: 10px;">
+                                <i class="fas fa-folder-plus"></i> Create Clean Folder
+                            </h3>
+                            <p style="color: #888; font-size: 14px; margin: 0;">
+                                Create a new folder containing only unique files (no duplicates). 
+                                One copy of each file will be kept.
+                            </p>
+                        </div>
+                        <button type="button" class="btn btn-success" id="create-clean-folder-btn" style="padding: 12px 30px; font-size: 16px;">
+                            <i class="fas fa-folder-plus"></i> Create Clean Folder
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bulk Actions -->
+                <div class="bulk-actions" id="bulk-actions">
+                    <div class="bulk-actions-header">
+                        <h3><i class="fas fa-check-square"></i> Selected Files: <span class="selected-count" id="selected-count">0</span></h3>
+                        <div>
+                            <button type="button" class="btn btn-secondary" onclick="clearSelection()">
+                                <i class="fas fa-times"></i> Clear Selection
+                            </button>
+                            <button type="button" class="btn btn-danger" id="delete-selected-btn" onclick="deleteSelected()">
+                                <i class="fas fa-trash"></i> Delete Selected
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Section -->
+            <div class="error-section" id="error-section" style="display: none;">
+                <div class="card error-card">
+                    <div class="error-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Oops! Something went wrong</h3>
+                    <p id="error-message">An error occurred during scanning</p>
+                    <button class="btn btn-secondary" id="retry-btn">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
+            </div>
+            </div>
+            <!-- End File Duplicates Section -->
+
+            <!-- Excel/CSV Duplicates Section -->
+            <div id="excel-duplicates-section" style="display: none;">
+                <div class="scan-options">
+                    <h2><i class="fas fa-table"></i> Find Duplicate Records in Excel/CSV Files</h2>
+                    
+                    <div class="upload-area" id="excel-drop-zone">
+                        <i class="fas fa-file-excel"></i>
+                        <p>Drag & Drop Excel (.xlsx, .xls) or CSV files here</p>
+                        <p class="or">or</p>
+                        <label for="excel-input" class="file-label">
+                            <i class="fas fa-file"></i> Select Excel/CSV File
+                        </label>
+                        <input type="file" id="excel-input" accept=".xlsx,.xls,.csv" hidden>
+                        <p class="file-info">Upload Excel or CSV file to find duplicate records</p>
+                    </div>
+
+                    <div id="selected-excel-file" style="display: none; margin: 20px 0;">
+                        <div class="file-list-item">
+                            <div class="file-info">
+                                <i class="fas fa-file-excel file-icon"></i>
+                                <div class="file-details">
+                                    <div class="file-name" id="excel-file-name"></div>
+                                    <div class="file-size" id="excel-file-info"></div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-remove" onclick="removeExcelFile()">
+                                <i class="fas fa-times"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="column-selection" style="display: none; margin: 20px 0;">
+                        <div class="option-group">
+                            <label>
+                                <i class="fas fa-columns"></i> Select Columns to Check for Duplicates
+                            </label>
+                            <div id="column-checkboxes" style="background: #2a2a2a; padding: 15px; border-radius: 8px; max-height: 200px; overflow-y: auto;">
+                                <!-- Columns will be populated here -->
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <button type="button" class="btn btn-secondary" onclick="selectAllColumns()" style="margin-right: 10px;">
+                                    <i class="fas fa-check-square"></i> Select All
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="deselectAllColumns()">
+                                    <i class="fas fa-square"></i> Deselect All
+                                </button>
+                            </div>
+                        </div>
+                        <div class="option-group" style="margin-top: 20px;">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="keep-first-duplicate" checked>
+                                <label for="keep-first-duplicate">Keep first occurrence of duplicates (recommended)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-large" id="scan-excel-btn" disabled style="width: 100%; margin-top: 20px;">
+                        <i class="fas fa-search"></i> Find Duplicate Records
+                    </button>
+                </div>
+
+                <!-- Excel Progress Section -->
+                <div class="progress-section" id="excel-progress-section" style="display: none;">
+                    <div class="card">
+                        <h3 id="excel-progress-title"><i class="fas fa-spinner fa-spin"></i> Scanning...</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="excel-progress-fill"></div>
+                        </div>
+                        <p class="progress-text" id="excel-progress-text">0%</p>
+                        <p class="progress-message" id="excel-progress-message">Please wait...</p>
+                    </div>
+                </div>
+
+                <!-- Excel Results Section -->
+                <div class="results-section" id="excel-results-section" style="display: none;">
+                    <div class="results-header">
+                        <h2><i class="fas fa-list"></i> Duplicate Records Found</h2>
+                        <div class="results-stats">
+                            <div class="stat-item">
+                                <span class="stat-number" id="excel-duplicate-count">0</span>
+                                <span class="stat-label">Duplicate Records</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="excel-unique-count">0</span>
+                                <span class="stat-label">Unique Records</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="excel-total-count">0</span>
+                                <span class="stat-label">Total Records</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="excel-duplicate-records" style="margin: 20px 0;">
+                        <!-- Duplicate records will be displayed here -->
+                    </div>
+
+                    <div style="background: #1a1a1a; border-radius: 12px; padding: 20px; margin-top: 20px; border: 2px solid #10b981;">
+                        <h3 style="color: #10b981; margin-bottom: 15px;">
+                            <i class="fas fa-download"></i> Export Options
+                        </h3>
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                            <button type="button" class="btn btn-success" id="export-unique-btn">
+                                <i class="fas fa-file-excel"></i> Export Unique Records (No Duplicates)
+                            </button>
+                            <button type="button" class="btn btn-warning" id="export-duplicates-btn">
+                                <i class="fas fa-file-excel"></i> Export Duplicate Records Only
+                            </button>
+                            <button type="button" class="btn btn-primary" id="export-cleaned-btn">
+                                <i class="fas fa-file-excel"></i> Export Cleaned File (One Copy of Each)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Excel Error Section -->
+                <div class="error-section" id="excel-error-section" style="display: none;">
+                    <div class="card error-card">
+                        <div class="error-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Oops! Something went wrong</h3>
+                        <p id="excel-error-message">An error occurred during scanning</p>
+                        <button class="btn btn-secondary" onclick="resetExcelSection()">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- End Excel/CSV Duplicates Section -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/duplicate_finder.js') }}"></script>
+{% endblock %}
+

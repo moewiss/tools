@@ -1,0 +1,391 @@
+{% extends "base.html" %}
+
+{% block title %}Coming Soon - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<style>
+    .coming-soon-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16162b 50%, #1a1a2e 100%);
+    }
+
+    .coming-soon-content {
+        max-width: 1200px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .coming-soon-header {
+        margin-bottom: 60px;
+    }
+
+    .coming-soon-logo {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 30px;
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        border-radius: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 70px;
+        box-shadow: 0 20px 60px rgba(255, 51, 51, 0.4);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 20px 60px rgba(255, 51, 51, 0.4);
+        }
+        50% {
+            transform: scale(1.05);
+            box-shadow: 0 25px 70px rgba(255, 51, 51, 0.6);
+        }
+    }
+
+    .coming-soon-title {
+        font-size: 56px;
+        font-weight: 900;
+        color: #fff;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .coming-soon-subtitle {
+        font-size: 24px;
+        color: #aaa;
+        margin-bottom: 20px;
+    }
+
+    .coming-soon-description {
+        font-size: 18px;
+        color: #888;
+        max-width: 700px;
+        margin: 0 auto 40px;
+        line-height: 1.6;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 60px;
+    }
+
+    .feature-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 20px;
+        padding: 40px 30px;
+        transition: all 0.4s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #ff3333, #ff6666);
+        transform: scaleX(0);
+        transition: transform 0.4s;
+    }
+
+    .feature-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        border-color: #ff3333;
+        background: rgba(255, 51, 51, 0.1);
+        box-shadow: 0 20px 60px rgba(255, 51, 51, 0.3);
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 25px;
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        transition: all 0.4s;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: rotateY(360deg);
+    }
+
+    .feature-number {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 51, 51, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #ff3333;
+        font-size: 18px;
+    }
+
+    .feature-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 15px;
+    }
+
+    .feature-description {
+        color: #aaa;
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .feature-status {
+        display: inline-block;
+        padding: 8px 20px;
+        background: rgba(255, 152, 0, 0.2);
+        border: 2px solid #ff9800;
+        border-radius: 20px;
+        color: #ff9800;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .notify-section {
+        margin-top: 60px;
+        padding: 40px;
+        background: rgba(255, 51, 51, 0.05);
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 20px;
+    }
+
+    .notify-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 15px;
+    }
+
+    .notify-text {
+        color: #aaa;
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+
+    .notify-form {
+        display: flex;
+        gap: 15px;
+        max-width: 500px;
+        margin: 0 auto;
+        justify-content: center;
+    }
+
+    .notify-input {
+        flex: 1;
+        padding: 15px 25px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 16px;
+    }
+
+    .notify-input:focus {
+        outline: none;
+        border-color: #ff3333;
+        background: rgba(255, 51, 51, 0.1);
+    }
+
+    .notify-button {
+        padding: 15px 35px;
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .notify-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(255, 51, 51, 0.5);
+    }
+
+    .back-button {
+        margin-top: 40px;
+    }
+
+    .back-button a {
+        padding: 15px 35px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 12px;
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s;
+    }
+
+    .back-button a:hover {
+        background: rgba(255, 51, 51, 0.1);
+        border-color: #ff3333;
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+        .coming-soon-title {
+            font-size: 36px;
+        }
+
+        .coming-soon-subtitle {
+            font-size: 18px;
+        }
+
+        .features-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .notify-form {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="coming-soon-container">
+    <div class="coming-soon-content">
+        <div class="coming-soon-header">
+            <div class="coming-soon-logo">
+                🚀
+            </div>
+            <h1 class="coming-soon-title">Exciting Features Coming Soon!</h1>
+            <p class="coming-soon-subtitle">We're working hard to bring you amazing new tools</p>
+            <p class="coming-soon-description">
+                Our team is developing cutting-edge features that will revolutionize your workflow. 
+                Here are the 5 incredible tools we're launching soon!
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <!-- Feature 1: AI Video Editor -->
+            <div class="feature-card">
+                <div class="feature-number">1</div>
+                <div class="feature-icon">🎬</div>
+                <h3 class="feature-title">AI Video Editor</h3>
+                <p class="feature-description">
+                    Automatically edit your videos with AI-powered scene detection, transitions, 
+                    and effects. Just upload your footage and let AI create a masterpiece!
+                </p>
+                <span class="feature-status">Coming Q1 2026</span>
+            </div>
+
+            <!-- Feature 2: Live Stream Studio -->
+            <div class="feature-card">
+                <div class="feature-number">2</div>
+                <div class="feature-icon">📡</div>
+                <h3 class="feature-title">Live Stream Studio</h3>
+                <p class="feature-description">
+                    Professional live streaming with multi-platform broadcasting, overlays, 
+                    chat integration, and real-time analytics. Stream to YouTube, Twitch, and more!
+                </p>
+                <span class="feature-status">Coming Q2 2026</span>
+            </div>
+
+            <!-- Feature 3: Voice Cloning AI -->
+            <div class="feature-card">
+                <div class="feature-number">3</div>
+                <div class="feature-icon">🎙️</div>
+                <h3 class="feature-title">Voice Cloning AI</h3>
+                <p class="feature-description">
+                    Clone any voice with just 30 seconds of audio! Perfect for voiceovers, 
+                    dubbing, and content creation. Support for 50+ languages!
+                </p>
+                <span class="feature-status">Coming Q2 2026</span>
+            </div>
+
+            <!-- Feature 4: NFT Generator & Marketplace -->
+            <div class="feature-card">
+                <div class="feature-number">4</div>
+                <div class="feature-icon">🎨</div>
+                <h3 class="feature-title">NFT Generator & Marketplace</h3>
+                <p class="feature-description">
+                    Create, mint, and sell NFTs with our easy-to-use generator. Built-in marketplace 
+                    with low fees and instant transactions on multiple blockchains!
+                </p>
+                <span class="feature-status">Coming Q3 2026</span>
+            </div>
+
+            <!-- Feature 5: 3D Video Converter -->
+            <div class="feature-card">
+                <div class="feature-number">5</div>
+                <div class="feature-icon">🕶️</div>
+                <h3 class="feature-title">3D Video Converter</h3>
+                <p class="feature-description">
+                    Convert any 2D video to stunning 3D! AI-powered depth mapping creates immersive 
+                    experiences. Compatible with VR headsets and 3D displays!
+                </p>
+                <span class="feature-status">Coming Q4 2026</span>
+            </div>
+        </div>
+
+        <div class="notify-section">
+            <h2 class="notify-title">Get Notified When We Launch!</h2>
+            <p class="notify-text">
+                Be the first to try our new features. Enter your email to get early access!
+            </p>
+            <form class="notify-form" onsubmit="notifyMe(event)">
+                <input type="email" class="notify-input" placeholder="your.email@example.com" required>
+                <button type="submit" class="notify-button">
+                    <i class="fas fa-bell"></i> Notify Me
+                </button>
+            </form>
+        </div>
+
+        <div class="back-button">
+            <a href="/">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+function notifyMe(event) {
+    event.preventDefault();
+    const email = event.target.querySelector('input').value;
+    
+    // Simple notification (you can connect to a real backend later)
+    alert(`✅ Thank you! We'll notify ${email} when we launch!`);
+    event.target.reset();
+}
+</script>
+{% endblock %}
+

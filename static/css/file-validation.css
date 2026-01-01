@@ -1,0 +1,19 @@
+/* File Validation Styles */
+.file-item.file-invalid {
+    opacity: 0.6;
+    border: 2px solid #ff0000 !important;
+    background: rgba(255, 0, 0, 0.1) !important;
+}
+
+.file-item.file-invalid .file-name {
+    color: #ff6666 !important;
+}
+
+.file-item.file-invalid .file-name::after {
+    content: " ⚠ Wrong type!";
+    color: #ff0000;
+    font-size: 0.85em;
+    font-weight: bold;
+    margin-left: 10px;
+}
+

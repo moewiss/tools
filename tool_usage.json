@@ -1,0 +1,295 @@
+{
+  "Duplicate File Finder": {
+    "total_uses": 1,
+    "unique_users": [
+      "a3a90d27f61cac7921d9a9d5f2627dca"
+    ],
+    "usage_log": [
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T07:37:16.836490"
+      }
+    ]
+  },
+  "Hook Analyzer": {
+    "total_uses": 3,
+    "unique_users": [
+      "a3a90d27f61cac7921d9a9d5f2627dca"
+    ],
+    "usage_log": [
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T08:03:23.072109"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T08:14:16.373627"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T08:17:05.327858"
+      }
+    ]
+  },
+  "Media Converter Pro": {
+    "total_uses": 7,
+    "unique_users": [
+      "a3a90d27f61cac7921d9a9d5f2627dca"
+    ],
+    "usage_log": [
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T08:15:21.148127"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T09:31:45.734045"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T09:40:10.071489"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T10:16:05.332575"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T08:01:35.727031"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T08:06:47.801625"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:37:38.525976"
+      }
+    ]
+  },
+  "Subtitle Downloader": {
+    "total_uses": 5,
+    "unique_users": [
+      "a3a90d27f61cac7921d9a9d5f2627dca"
+    ],
+    "usage_log": [
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T08:35:42.943574"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T08:37:22.840101"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T09:01:01.367679"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T09:13:44.904181"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:07:08.896361"
+      }
+    ]
+  },
+  "Product QR Generator": {
+    "total_uses": 2,
+    "unique_users": [
+      "a3a90d27f61cac7921d9a9d5f2627dca"
+    ],
+    "usage_log": [
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T08:35:52.814145"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T09:50:40.722624"
+      }
+    ]
+  },
+  "QR Code Generator": {
+    "total_uses": 2,
+    "unique_users": [
+      "a3a90d27f61cac7921d9a9d5f2627dca"
+    ],
+    "usage_log": [
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T09:01:06.149893"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T09:50:44.207432"
+      }
+    ]
+  },
+  "Watermark Remover": {
+    "total_uses": 4,
+    "unique_users": [
+      "a3a90d27f61cac7921d9a9d5f2627dca"
+    ],
+    "usage_log": [
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2025-12-31T09:41:05.702622"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:18:14.752463"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:18:21.147939"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:18:25.152128"
+      }
+    ]
+  },
+  "Media Downloader": {
+    "total_uses": 14,
+    "unique_users": [
+      "a3a90d27f61cac7921d9a9d5f2627dca",
+      "af2e8ae0b0c8c6d5544907468770730a"
+    ],
+    "usage_log": [
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T08:19:28.865227"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T08:24:38.252760"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T08:29:45.073684"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T08:32:52.185936"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T08:47:08.930841"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T08:52:47.823344"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T08:52:53.701341"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T08:53:03.027739"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T09:06:45.918010"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T09:29:25.850720"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:07:18.558265"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:18:29.502343"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:22:14.046688"
+      },
+      {
+        "user_id": "af2e8ae0b0c8c6d5544907468770730a",
+        "timestamp": "2026-01-01T12:26:09.144389"
+      }
+    ]
+  },
+  "Social Media News": {
+    "total_uses": 1,
+    "unique_users": [
+      "a3a90d27f61cac7921d9a9d5f2627dca"
+    ],
+    "usage_log": [
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:08:12.061735"
+      }
+    ]
+  },
+  "Audio Enhancer": {
+    "total_uses": 11,
+    "unique_users": [
+      "a3a90d27f61cac7921d9a9d5f2627dca"
+    ],
+    "usage_log": [
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:18:40.029540"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:24:34.970692"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:24:30.437984"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:25:46.050955"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:26:29.046731"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:29:40.956237"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:31:04.546844"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:31:08.046867"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:35:39.852437"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:37:07.130784"
+      },
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:37:17.555264"
+      }
+    ]
+  },
+  "File Encryptor": {
+    "total_uses": 1,
+    "unique_users": [
+      "a3a90d27f61cac7921d9a9d5f2627dca"
+    ],
+    "usage_log": [
+      {
+        "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+        "timestamp": "2026-01-01T11:26:23.790285"
+      }
+    ]
+  }
+}

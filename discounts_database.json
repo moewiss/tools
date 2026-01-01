@@ -1,0 +1,38 @@
+[
+  {
+    "id": "859f5f49-ff56-4c81-a94f-ab6bbe32ea5c",
+    "tool_name": "Media Converter Pro",
+    "discount_type": "percentage",
+    "discount_value": 10.0,
+    "original_price": 88,
+    "description": "",
+    "is_active": true,
+    "created_at": "2025-12-31T11:39:50.983776",
+    "expires_at": null,
+    "used_count": 0
+  },
+  {
+    "id": "a8efd292-4ec0-4bb0-8f8b-14bda844e468",
+    "tool_name": "Hook Analyzer",
+    "discount_type": "percentage",
+    "discount_value": 44.0,
+    "original_price": 566,
+    "description": "",
+    "is_active": true,
+    "created_at": "2026-01-01T09:38:56.299803",
+    "expires_at": null,
+    "used_count": 0
+  },
+  {
+    "id": "bed85cf0-b247-481a-8827-aa7817a7e5e8",
+    "tool_name": "File Encryptor",
+    "discount_type": "percentage",
+    "discount_value": 100.0,
+    "original_price": null,
+    "description": "\ud83c\udf81 FREE ACCESS",
+    "is_active": true,
+    "created_at": "2026-01-01T11:26:10.548452",
+    "expires_at": null,
+    "used_count": 0
+  }
+]

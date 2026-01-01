@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Pricing - RKIEH Solutions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    body {
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        min-height: 100vh;
+    }
+
+    .admin-container {
+        max-width: 1200px;
+        margin: 100px auto 50px;
+        padding: 20px;
+    }
+
+    .admin-header {
+        background: linear-gradient(135deg, rgba(33, 150, 243, 0.15), rgba(33, 150, 243, 0.1));
+        border: 2px solid rgba(33, 150, 243, 0.4);
+        border-radius: 25px;
+        padding: 50px;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .admin-title {
+        font-size: 42px;
+        font-weight: 900;
+        color: #fff;
+        margin-bottom: 15px;
+        text-shadow: 0 0 30px rgba(33, 150, 243, 0.5);
+    }
+
+    .admin-subtitle {
+        color: #2196F3;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .price-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(33, 150, 243, 0.3);
+        border-radius: 25px;
+        padding: 40px;
+        transition: all 0.3s;
+    }
+
+    .price-card:hover {
+        transform: translateY(-5px);
+        border-color: #2196F3;
+        box-shadow: 0 20px 50px rgba(33, 150, 243, 0.4);
+    }
+
+    .plan-name {
+        font-size: 28px;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .current-price {
+        font-size: 48px;
+        font-weight: 900;
+        color: #2196F3;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 15px 20px;
+        background: rgba(33, 150, 243, 0.08);
+        border: 2px solid rgba(33, 150, 243, 0.4);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 700;
+        text-align: center;
+        transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #2196F3;
+        background: rgba(33, 150, 243, 0.15);
+        box-shadow: 0 0 20px rgba(33, 150, 243, 0.3);
+    }
+
+    .form-group textarea {
+        width: 100%;
+        padding: 15px 20px;
+        background: rgba(33, 150, 243, 0.08);
+        border: 2px solid rgba(33, 150, 243, 0.4);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 14px;
+        font-family: inherit;
+        resize: vertical;
+        min-height: 100px;
+        transition: all 0.3s;
+    }
+
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #2196F3;
+        background: rgba(33, 150, 243, 0.15);
+        box-shadow: 0 0 20px rgba(33, 150, 243, 0.3);
+    }
+
+    .form-group small {
+        display: block;
+        margin-top: 5px;
+    }
+
+    .btn {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #2196F3, #64B5F6);
+        color: #fff;
+        box-shadow: 0 10px 30px rgba(33, 150, 243, 0.4);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(33, 150, 243, 0.6);
+    }
+
+    .alert {
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        display: none;
+    }
+
+    .alert-success {
+        background: rgba(76, 175, 80, 0.1);
+        border: 2px solid #4CAF50;
+        color: #4CAF50;
+    }
+
+    .alert-error {
+        background: rgba(255, 51, 51, 0.1);
+        border: 2px solid #ff3333;
+        color: #ff6666;
+    }
+
+    .features-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    .features-list li {
+        padding: 8px 0;
+        color: #ddd;
+        font-size: 14px;
+    }
+
+    .features-list li i {
+        color: #2196F3;
+        margin-right: 8px;
+    }
+</style>
+</head>
+<body>
+    <!-- Admin Navigation Bar -->
+    <nav class="navbar" style="background: rgba(255, 152, 0, 0.1); border-bottom: 2px solid rgba(255, 152, 0, 0.3);">
+        <div class="nav-container">
+            <a href="/admin" class="brand">
+                <div class="brand-logo" style="font-size: 28px; font-weight: 900; letter-spacing: -2px;">
+                    <span style="color: #ff9800;">R</span><span style="color: #1a1a2e;">K</span>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">ADMIN</span>
+                    <span class="brand-subtitle" style="color: #ff9800;">Panel</span>
+                </div>
+            </a>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="/admin" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="/admin/manage" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-users-cog"></i> Manage Admins & Users
+                </a>
+                <a href="/admin/feedback" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-comments"></i> Feedback
+                </a>
+                <a href="/admin/leaderboard" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-trophy"></i> Leaderboard
+                </a>
+                <a href="/admin/discounts" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-tags"></i> Discounts
+                </a>
+                <a href="/admin/pricing" class="nav-link active" style="color: #ff9800;">
+                    <i class="fas fa-dollar-sign"></i> Pricing
+                </a>
+                <a href="/admin/tool-access" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-key"></i> Tool Access
+                </a>
+                <a href="/admin/logout" class="nav-link nav-link-logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+            
+            <button class="nav-toggle" id="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+<div class="admin-container">
+    <div class="admin-header">
+        <h1 class="admin-title">
+            <i class="fas fa-dollar-sign"></i> Manage Pricing
+        </h1>
+        <p class="admin-subtitle">Edit subscription prices, features & usage limits</p>
+    </div>
+
+    <div id="alert-container"></div>
+
+    <div style="background: rgba(76, 175, 80, 0.1); border: 2px solid rgba(76, 175, 80, 0.4); border-radius: 15px; padding: 20px; margin-bottom: 30px; text-align: center;">
+        <h3 style="color: #4CAF50; margin-bottom: 10px;">
+            <i class="fas fa-crown"></i> VIP Access Management
+        </h3>
+        <p style="color: #ddd; font-size: 14px; margin-bottom: 15px;">
+            Grant specific users unlimited FREE access to ALL tools (bypasses all subscription limits)
+        </p>
+        <a href="/admin/manage" class="btn" style="background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; display: inline-flex; width: auto;">
+            <i class="fas fa-users"></i> Manage VIP Users
+        </a>
+    </div>
+
+    <div class="pricing-grid">
+        <!-- Pro Plan -->
+        <div class="price-card">
+            <h3 class="plan-name">
+                <i class="fas fa-star"></i> Pro Plan
+            </h3>
+            <div class="current-price">$<span id="pro-current">9.99</span></div>
+            
+            <ul class="features-list">
+                <li><i class="fas fa-check"></i> 100 uses per day</li>
+                <li><i class="fas fa-check"></i> High quality</li>
+                <li><i class="fas fa-check"></i> Priority support</li>
+                <li><i class="fas fa-check"></i> No ads</li>
+            </ul>
+
+            <form onsubmit="updatePrice(event, 'pro')">
+                <div class="form-group">
+                    <label for="pro-price">
+                        <i class="fas fa-dollar-sign"></i> Monthly Price (USD)
+                    </label>
+                    <input type="number" id="pro-price" step="0.01" min="0" placeholder="9.99" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="pro-limit">
+                        <i class="fas fa-chart-line"></i> Daily Usage Limit
+                    </label>
+                    <input type="number" id="pro-limit" min="1" placeholder="100" value="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="pro-features">
+                        <i class="fas fa-list"></i> Features (one per line)
+                    </label>
+                    <textarea id="pro-features" rows="4" placeholder="100 uses per day&#10;High quality&#10;Priority support&#10;No ads">100 uses per day
+High quality
+Priority support
+No ads</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update Pro Plan
+                </button>
+            </form>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="price-card">
+            <h3 class="plan-name">
+                <i class="fas fa-crown"></i> Premium Plan
+            </h3>
+            <div class="current-price">$<span id="premium-current">19.99</span></div>
+            
+            <ul class="features-list">
+                <li><i class="fas fa-check"></i> Unlimited uses</li>
+                <li><i class="fas fa-check"></i> Ultra quality</li>
+                <li><i class="fas fa-check"></i> VIP support</li>
+                <li><i class="fas fa-check"></i> API access</li>
+                <li><i class="fas fa-check"></i> Custom branding</li>
+            </ul>
+
+            <form onsubmit="updatePrice(event, 'premium')">
+                <div class="form-group">
+                    <label for="premium-price">
+                        <i class="fas fa-dollar-sign"></i> Monthly Price (USD)
+                    </label>
+                    <input type="number" id="premium-price" step="0.01" min="0" placeholder="19.99" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="premium-limit">
+                        <i class="fas fa-infinity"></i> Daily Usage Limit
+                    </label>
+                    <input type="number" id="premium-limit" min="-1" placeholder="-1 for unlimited" value="-1">
+                    <small style="color: #888; font-size: 12px;">Enter -1 for unlimited</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="premium-features">
+                        <i class="fas fa-list"></i> Features (one per line)
+                    </label>
+                    <textarea id="premium-features" rows="5" placeholder="Unlimited uses&#10;Ultra quality&#10;VIP support&#10;API access&#10;Custom branding">Unlimited uses
+Ultra quality
+VIP support
+API access
+Custom branding</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update Premium Plan
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadPricing();
+});
+
+async function loadPricing() {
+    try {
+        const response = await fetch('/api/admin/pricing');
+        const data = await response.json();
+        
+        if (data.success) {
+            // Load PRO plan
+            const proPlan = data.prices.pro;
+            const proPrice = typeof proPlan === 'object' ? proPlan.price : proPlan;
+            document.getElementById('pro-current').textContent = proPrice.toFixed(2);
+            document.getElementById('pro-price').placeholder = proPrice.toFixed(2);
+            
+            if (typeof proPlan === 'object') {
+                document.getElementById('pro-limit').value = proPlan.daily_limit || 100;
+                if (proPlan.features && Array.isArray(proPlan.features)) {
+                    document.getElementById('pro-features').value = proPlan.features.join('\n');
+                }
+            }
+            
+            // Load PREMIUM plan
+            const premiumPlan = data.prices.premium;
+            const premiumPrice = typeof premiumPlan === 'object' ? premiumPlan.price : premiumPlan;
+            document.getElementById('premium-current').textContent = premiumPrice.toFixed(2);
+            document.getElementById('premium-price').placeholder = premiumPrice.toFixed(2);
+            
+            if (typeof premiumPlan === 'object') {
+                document.getElementById('premium-limit').value = premiumPlan.daily_limit || -1;
+                if (premiumPlan.features && Array.isArray(premiumPlan.features)) {
+                    document.getElementById('premium-features').value = premiumPlan.features.join('\n');
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error loading pricing:', error);
+    }
+}
+
+async function updatePrice(event, plan) {
+    event.preventDefault();
+    
+    const priceInput = document.getElementById(`${plan}-price`);
+    const limitInput = document.getElementById(`${plan}-limit`);
+    const featuresInput = document.getElementById(`${plan}-features`);
+    
+    const newPrice = parseFloat(priceInput.value);
+    const newLimit = parseInt(limitInput.value);
+    const newFeatures = featuresInput.value.trim();
+    
+    if (newPrice < 0) {
+        showAlert('error', 'Price cannot be negative!');
+        return;
+    }
+    
+    if (!confirm(`Update ${plan.toUpperCase()} plan?\n\nPrice: $${newPrice.toFixed(2)}\nDaily Limit: ${newLimit === -1 ? 'Unlimited' : newLimit}\nFeatures: ${newFeatures.split('\n').length} items`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/admin/pricing/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                plan: plan,
+                price: newPrice,
+                daily_limit: newLimit,
+                features: newFeatures
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            showAlert('success', data.message);
+            loadPricing();
+            priceInput.value = '';
+        } else {
+            showAlert('error', data.error || 'Failed to update plan');
+        }
+    } catch (error) {
+        showAlert('error', 'Network error. Please try again.');
+    }
+}
+
+function showAlert(type, message) {
+    const container = document.getElementById('alert-container');
+    container.innerHTML = `
+        <div class="alert alert-${type}">
+            <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
+            ${message}
+        </div>
+    `;
+    container.querySelector('.alert').style.display = 'block';
+    
+    setTimeout(() => {
+        const alert = container.querySelector('.alert');
+        if (alert) alert.style.display = 'none';
+    }, 5000);
+}
+</script>
+
+<script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
+</body>
+</html>
+

@@ -1,0 +1,37 @@
+{
+  "users": [
+    {
+      "id": "a3a90d27f61cac7921d9a9d5f2627dca",
+      "first_name": "Omar",
+      "last_name": "frahat",
+      "email": "omarfarhat711@gmail.com",
+      "password": "5c0dc8c5fb32c8c413d9e4abea14d85c22545b7fe116235173671163c9de32c9",
+      "created_at": "2025-12-28T08:41:23.489647",
+      "last_login": "2026-01-01T11:46:19.670015",
+      "is_active": true,
+      "profile_image": null
+    },
+    {
+      "id": "f744e3dfb6f625560506f19a6dcaef16",
+      "first_name": "TARE",
+      "last_name": "farhat",
+      "email": "tarek.zaghloul@rkiehsolutions.com",
+      "password": "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f",
+      "created_at": "2026-01-01T11:01:31.130437",
+      "last_login": "2026-01-01T11:02:08.877743",
+      "is_active": true,
+      "profile_image": null
+    },
+    {
+      "id": "af2e8ae0b0c8c6d5544907468770730a",
+      "first_name": "Mohammad",
+      "last_name": "Mostafa",
+      "email": "mhmdmostafa414@gmail.com",
+      "password": "ee1428c8ec3d5f079f821a438911ebc37b3712b4627a17b1747d614ff3501527",
+      "created_at": "2026-01-01T12:25:48.730207",
+      "last_login": "2026-01-01T12:26:02.517883",
+      "is_active": true,
+      "profile_image": null
+    }
+  ]
+}

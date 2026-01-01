@@ -1,0 +1,400 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout - {{ tool_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .checkout-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 30px;
+    }
+
+    .checkout-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .checkout-header h1 {
+        color: #fff;
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+
+    .checkout-header p {
+        color: #888;
+        font-size: 16px;
+    }
+
+    .checkout-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .order-summary {
+        background: linear-gradient(135deg, rgba(255, 51, 51, 0.1), rgba(255, 51, 51, 0.05));
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 20px;
+        padding: 30px;
+    }
+
+    .order-summary h2 {
+        color: #fff;
+        font-size: 24px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .tool-info {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .tool-name {
+        color: #fff;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .tool-desc {
+        color: #aaa;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .price-line {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: #aaa;
+    }
+
+    .price-line.total {
+        border-bottom: none;
+        font-size: 24px;
+        font-weight: 700;
+        color: #4CAF50;
+        padding-top: 20px;
+    }
+
+    .discount-badge {
+        background: linear-gradient(135deg, #4CAF50, #66BB6A);
+        color: #fff;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .payment-form {
+        background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(33, 150, 243, 0.05));
+        border: 2px solid rgba(33, 150, 243, 0.3);
+        border-radius: 20px;
+        padding: 30px;
+    }
+
+    .payment-form h2 {
+        color: #fff;
+        font-size: 24px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #2196F3;
+        background: rgba(33, 150, 243, 0.1);
+        box-shadow: 0 0 20px rgba(33, 150, 243, 0.3);
+    }
+
+    .card-details {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 15px;
+    }
+
+    .secure-badge {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(76, 175, 80, 0.2);
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .secure-badge i {
+        color: #4CAF50;
+        font-size: 24px;
+    }
+
+    .secure-badge span {
+        color: #4CAF50;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .btn-pay {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #4CAF50, #66BB6A);
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn-pay:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
+    }
+
+    .btn-cancel {
+        width: 100%;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 15px;
+    }
+
+    .btn-cancel:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .card-icons {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+        justify-content: center;
+    }
+
+    .card-icons i {
+        font-size: 32px;
+        color: #aaa;
+    }
+
+    @media (max-width: 768px) {
+        .checkout-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <div class="checkout-header">
+        <h1><i class="fas fa-shopping-cart"></i> Checkout</h1>
+        <p>Complete your purchase to get instant access</p>
+    </div>
+
+    <div class="checkout-grid">
+        <!-- Order Summary -->
+        <div class="order-summary">
+            <h2><i class="fas fa-receipt"></i> Order Summary</h2>
+            
+            <div class="tool-info">
+                <div class="tool-name">{{ tool_name }}</div>
+                <div class="tool-desc">{{ tool_description }}</div>
+                
+                {% if discount > 0 %}
+                <div class="discount-badge">
+                    <i class="fas fa-tag"></i> {{ discount }}% OFF - Limited Time!
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="price-line">
+                <span>Original Price:</span>
+                <span>${{ "%.2f"|format(original_price) }}</span>
+            </div>
+
+            {% if discount > 0 %}
+            <div class="price-line" style="color: #4CAF50;">
+                <span>Discount ({{ discount }}%):</span>
+                <span>-${{ "%.2f"|format(original_price - price) }}</span>
+            </div>
+            {% endif %}
+
+            <div class="price-line total">
+                <span>Total:</span>
+                <span>${{ "%.2f"|format(price) }}</span>
+            </div>
+        </div>
+
+        <!-- Payment Form -->
+        <div class="payment-form">
+            <h2><i class="fas fa-credit-card"></i> Payment Details</h2>
+
+            <div class="secure-badge">
+                <i class="fas fa-shield-alt"></i>
+                <span>🔒 Secure Payment - SSL Encrypted</span>
+            </div>
+
+            <form id="payment-form" onsubmit="processPayment(event)">
+                <div class="form-group">
+                    <label for="card-name">Cardholder Name</label>
+                    <input type="text" id="card-name" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="card-number">Card Number</label>
+                    <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                </div>
+
+                <div class="card-details">
+                    <div class="form-group">
+                        <label for="card-expiry">Expiry Date</label>
+                        <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-cvv">CVV</label>
+                        <input type="text" id="card-cvv" placeholder="123" maxlength="3" required>
+                    </div>
+                </div>
+
+                <div class="card-icons">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-cc-discover"></i>
+                </div>
+
+                <button type="submit" class="btn-pay">
+                    <i class="fas fa-lock"></i> Pay ${{ "%.2f"|format(price) }}
+                </button>
+
+                <button type="button" class="btn-cancel" onclick="window.location.href='/tools'">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Format card number with spaces
+document.getElementById('card-number').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\s/g, '');
+    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+    e.target.value = formattedValue;
+});
+
+// Format expiry date
+document.getElementById('card-expiry').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    if (value.length >= 2) {
+        value = value.slice(0, 2) + '/' + value.slice(2, 4);
+    }
+    e.target.value = value;
+});
+
+// Only allow numbers for CVV
+document.getElementById('card-cvv').addEventListener('input', function(e) {
+    e.target.value = e.target.value.replace(/\D/g, '');
+});
+
+async function processPayment(event) {
+    event.preventDefault();
+    
+    const submitBtn = event.target.querySelector('.btn-pay');
+    const originalText = submitBtn.innerHTML;
+    
+    // Show processing state
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    
+    try {
+        // Send payment request to backend
+        const response = await fetch('/api/process-payment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                tool_name: '{{ tool_name }}',
+                amount: {{ price }},
+                card_name: document.getElementById('card-name').value,
+                card_number: document.getElementById('card-number').value.replace(/\s/g, ''),
+                card_expiry: document.getElementById('card-expiry').value,
+                card_cvv: document.getElementById('card-cvv').value
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Show success message
+            submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Payment Successful!';
+            submitBtn.style.background = 'linear-gradient(135deg, #4CAF50, #66BB6A)';
+            
+            // Show success alert
+            alert('✅ Payment Successful!\\n\\nYou now have access to {{ tool_name }}!');
+            
+            // Redirect to the tool after 2 seconds
+            setTimeout(() => {
+                window.location.href = '{{ tool_url }}';
+            }, 2000);
+        } else {
+            throw new Error(data.error || 'Payment failed');
+        }
+    } catch (error) {
+        console.error('Payment error:', error);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+        alert('❌ Payment Failed: ' + error.message);
+    }
+}
+</script>
+{% endblock %}
+

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Discounts - RKIEH Solutions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    body {
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        min-height: 100vh;
+    }
+
+    .admin-container {
+        max-width: 1400px;
+        margin: 100px auto 50px;
+        padding: 20px;
+    }
+
+    .admin-header {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.15), rgba(76, 175, 80, 0.1));
+        border: 2px solid rgba(76, 175, 80, 0.4);
+        border-radius: 25px;
+        padding: 50px;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .admin-title {
+        font-size: 42px;
+        font-weight: 900;
+        color: #fff;
+        margin-bottom: 15px;
+        text-shadow: 0 0 30px rgba(76, 175, 80, 0.5);
+    }
+
+    .admin-subtitle {
+        color: #4CAF50;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .section {
+        background: rgba(255, 255, 255, 0.03);
+        border: 2px solid rgba(76, 175, 80, 0.3);
+        border-radius: 25px;
+        padding: 40px;
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-size: 24px;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .section-title i {
+        color: #4CAF50;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 15px 20px;
+        background: rgba(76, 175, 80, 0.08);
+        border: 2px solid rgba(76, 175, 80, 0.4);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #4CAF50;
+        background: rgba(76, 175, 80, 0.15);
+        box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+    }
+
+    .form-group select option {
+        background: #1a1a2e;
+        color: #fff;
+        padding: 10px;
+    }
+
+    .form-group select option:hover {
+        background: #4CAF50;
+    }
+
+    .btn {
+        padding: 15px 30px;
+        border: none;
+        border-radius: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #4CAF50, #66BB6A);
+        color: #fff;
+        box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(76, 175, 80, 0.6);
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        color: #fff;
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .btn-danger:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-warning {
+        background: linear-gradient(135deg, #FFA500, #FFB74D);
+        color: #000;
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .discounts-table {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background: rgba(76, 175, 80, 0.1);
+    }
+
+    th {
+        padding: 15px;
+        text-align: left;
+        color: #4CAF50;
+        font-weight: 700;
+        border-bottom: 2px solid rgba(76, 175, 80, 0.3);
+    }
+
+    td {
+        padding: 15px;
+        color: #ddd;
+        border-bottom: 1px solid rgba(76, 175, 80, 0.1);
+    }
+
+    tr:hover {
+        background: rgba(76, 175, 80, 0.05);
+    }
+
+    .badge {
+        padding: 6px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .badge-active {
+        background: rgba(76, 175, 80, 0.2);
+        color: #4CAF50;
+        border: 1px solid #4CAF50;
+    }
+
+    .badge-inactive {
+        background: rgba(255, 51, 51, 0.2);
+        color: #ff3333;
+        border: 1px solid #ff3333;
+    }
+
+    .badge-percentage {
+        background: rgba(33, 150, 243, 0.2);
+        color: #2196F3;
+        border: 1px solid #2196F3;
+    }
+
+    .badge-fixed {
+        background: rgba(156, 39, 176, 0.2);
+        color: #9C27B0;
+        border: 1px solid #9C27B0;
+    }
+
+    .alert {
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        display: none;
+    }
+
+    .alert-success {
+        background: rgba(76, 175, 80, 0.1);
+        border: 2px solid #4CAF50;
+        color: #4CAF50;
+    }
+
+    .alert-error {
+        background: rgba(255, 51, 51, 0.1);
+        border: 2px solid #ff3333;
+        color: #ff6666;
+    }
+
+    .actions-group {
+        display: flex;
+        gap: 8px;
+    }
+
+    @media (max-width: 768px) {
+        .admin-container {
+            margin-top: 80px;
+            padding: 15px;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+<body>
+    <!-- Admin Navigation Bar -->
+    <nav class="navbar" style="background: rgba(255, 152, 0, 0.1); border-bottom: 2px solid rgba(255, 152, 0, 0.3);">
+        <div class="nav-container">
+            <a href="/admin" class="brand">
+                <div class="brand-logo" style="font-size: 28px; font-weight: 900; letter-spacing: -2px;">
+                    <span style="color: #ff9800;">R</span><span style="color: #1a1a2e;">K</span>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">ADMIN</span>
+                    <span class="brand-subtitle" style="color: #ff9800;">Panel</span>
+                </div>
+            </a>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="/admin" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="/admin/manage" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-users-cog"></i> Manage Admins & Users
+                </a>
+                <a href="/admin/feedback" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-comments"></i> Feedback
+                </a>
+                <a href="/admin/leaderboard" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-trophy"></i> Leaderboard
+                </a>
+                <a href="/admin/discounts" class="nav-link active" style="color: #ff9800;">
+                    <i class="fas fa-tags"></i> Discounts
+                </a>
+                <a href="/admin/pricing" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-dollar-sign"></i> Pricing
+                </a>
+                <a href="/admin/tool-access" class="nav-link" style="color: #ff9800;">
+                    <i class="fas fa-key"></i> Tool Access
+                </a>
+                <a href="/admin/logout" class="nav-link nav-link-logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+            
+            <button class="nav-toggle" id="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+<div class="admin-container">
+    <div class="admin-header">
+        <h1 class="admin-title">
+            <i class="fas fa-tags"></i> Manage Discounts
+        </h1>
+        <p class="admin-subtitle">Create and manage promotional discounts for tools</p>
+    </div>
+
+    <!-- Create Discount -->
+    <div class="section">
+        <h2 class="section-title">
+            <i class="fas fa-plus-circle"></i> Create New Discount
+        </h2>
+
+        <div id="alert-container"></div>
+
+        <form id="create-discount-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="tool-name">
+                        <i class="fas fa-tools"></i> Tool Name
+                    </label>
+                    <select id="tool-name" required>
+                        <option value="">Select Tool</option>
+                        <option value="all">All Tools</option>
+                        <option value="Media Converter Pro">Media Converter Pro</option>
+                        <option value="Watermark Remover">Watermark Remover</option>
+                        <option value="Media Downloader">Media Downloader</option>
+                        <option value="Subtitle Downloader">Subtitle Downloader</option>
+                        <option value="QR Code Generator">QR Code Generator</option>
+                        <option value="Product QR Generator">Product QR Generator</option>
+                        <option value="GIF Maker">GIF Maker</option>
+                        <option value="Duplicate File Finder">Duplicate File Finder</option>
+                        <option value="File Encryptor">File Encryptor</option>
+                        <option value="Hook Analyzer">Hook Analyzer</option>
+                        <option value="Random Picker">Random Picker</option>
+                        <option value="Trending Detector">Trending Detector</option>
+                        <option value="Social Media Search">Social Media Search</option>
+                        <option value="Social Media News">Social Media News</option>
+                        <option value="Audio Enhancer">Audio Enhancer</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="discount-type">
+                        <i class="fas fa-percent"></i> Discount Type
+                    </label>
+                    <select id="discount-type" required onchange="handleDiscountTypeChange()">
+                        <option value="percentage">Percentage (%)</option>
+                        <option value="fixed">Fixed Amount ($)</option>
+                        <option value="free" style="background: linear-gradient(135deg, #4CAF50, #66BB6A); color: #fff; font-weight: 700;">🎁 FREE (100% Off)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="discount-value-group">
+                    <label for="discount-value">
+                        <i class="fas fa-tag"></i> Discount Value <span style="color: #888; font-weight: 400;">(Optional)</span>
+                    </label>
+                    <input type="number" id="discount-value" min="1" max="100" placeholder="Leave empty if not needed">
+                </div>
+
+                <div class="form-group">
+                    <label for="original-price">
+                        <i class="fas fa-dollar-sign"></i> Original Price <span style="color: #888; font-weight: 400;">(Optional)</span>
+                    </label>
+                    <input type="number" id="original-price" min="0" step="0.01" placeholder="Leave empty if not needed">
+                </div>
+
+                <div class="form-group">
+                    <label for="expires-at">
+                        <i class="fas fa-calendar-alt"></i> Expires At <span style="color: #888; font-weight: 400;">(Optional)</span>
+                    </label>
+                    <input type="datetime-local" id="expires-at" placeholder="Leave empty for no expiry">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">
+                    <i class="fas fa-file-alt"></i> Description <span style="color: #888; font-weight: 400;">(Optional)</span>
+                </label>
+                <input type="text" id="description" placeholder="Leave empty if not needed">
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Create Discount
+            </button>
+        </form>
+    </div>
+
+    <!-- Active Discounts -->
+    <div class="section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 class="section-title">
+                <i class="fas fa-list"></i> All Discounts
+            </h2>
+            <button class="btn btn-primary" onclick="loadDiscounts()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+        </div>
+
+        <div class="discounts-table" id="discounts-container">
+            <p style="text-align: center; color: #666;">Loading discounts...</p>
+        </div>
+    </div>
+</div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    loadDiscounts();
+});
+
+// Handle discount type change
+function handleDiscountTypeChange() {
+    const type = document.getElementById('discount-type').value;
+    const valueGroup = document.getElementById('discount-value-group');
+    const valueInput = document.getElementById('discount-value');
+    
+    if (type === 'free') {
+        valueGroup.style.display = 'none';
+        valueInput.value = '100';
+        valueInput.removeAttribute('required');
+    } else {
+        valueGroup.style.display = 'block';
+        valueInput.value = '';
+        valueInput.setAttribute('required', 'required');
+    }
+}
+
+// Create discount form
+document.getElementById('create-discount-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const toolName = document.getElementById('tool-name').value;
+    const discountType = document.getElementById('discount-type').value;
+    let discountValue = parseFloat(document.getElementById('discount-value').value);
+    const expiresAt = document.getElementById('expires-at').value;
+    const description = document.getElementById('description').value;
+    
+    // Handle FREE type
+    if (discountType === 'free') {
+        discountValue = 100;
+    }
+    
+    if (!toolName) {
+        showAlert('error', '⚠️ Please select a Tool Name!');
+        return;
+    }
+    
+    if (!discountType) {
+        showAlert('error', '⚠️ Please select a Discount Type!');
+        return;
+    }
+    
+    // If FREE type, set value to 100
+    // If value is provided, use it
+    // If no value provided and not FREE, set to 0 (no discount)
+    if (discountType === 'free') {
+        discountValue = 100;
+    } else if (!discountValue || discountValue <= 0) {
+        discountValue = 0;
+    }
+    
+    try {
+        const response = await fetch('/api/admin/discount/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                tool_name: toolName,
+                discount_type: discountType === 'free' ? 'percentage' : discountType, // Convert 'free' to percentage 100
+                discount_value: discountValue,
+                original_price: parseFloat(document.getElementById('original-price').value) || null,
+                expires_at: expiresAt || null,
+                description: description || (discountType === 'free' ? '🎁 FREE ACCESS' : '')
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            showAlert('success', data.message);
+            document.getElementById('create-discount-form').reset();
+            handleDiscountTypeChange(); // Reset the form visibility
+            loadDiscounts();
+        } else {
+            showAlert('error', data.error || 'Failed to create discount');
+        }
+    } catch (error) {
+        showAlert('error', 'Network error. Please try again.');
+    }
+});
+
+async function loadDiscounts() {
+    try {
+        const response = await fetch('/api/admin/discounts');
+        const data = await response.json();
+        
+        if (data.success && data.discounts) {
+            displayDiscounts(data.discounts);
+        } else {
+            document.getElementById('discounts-container').innerHTML = 
+                '<p style="text-align: center; color: #666;">No discounts found.</p>';
+        }
+    } catch (error) {
+        console.error('Error loading discounts:', error);
+        document.getElementById('discounts-container').innerHTML = 
+            '<p style="text-align: center; color: #666;">Error loading discounts.</p>';
+    }
+}
+
+function displayDiscounts(discounts) {
+    if (discounts.length === 0) {
+        document.getElementById('discounts-container').innerHTML = 
+            '<p style="text-align: center; color: #666;">No discounts created yet.</p>';
+        return;
+    }
+    
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Tool</th>
+                    <th>Type</th>
+                    <th>Value</th>
+                    <th>Original Price</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Expires</th>
+                    <th>Used</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+    
+    discounts.forEach(discount => {
+        const statusClass = discount.is_active ? 'badge-active' : 'badge-inactive';
+        const statusText = discount.is_active ? 'Active' : 'Inactive';
+        const typeClass = discount.discount_type === 'percentage' ? 'badge-percentage' : 'badge-fixed';
+        const typeText = discount.discount_type === 'percentage' ? 'Percentage' : 'Fixed';
+        const valueText = discount.discount_type === 'percentage' ? `${discount.discount_value}%` : `$${discount.discount_value}`;
+        const expires = discount.expires_at ? new Date(discount.expires_at).toLocaleDateString() : 'Never';
+        const used = discount.used_count || 0;
+        
+        const originalPriceText = discount.original_price ? `$${discount.original_price.toFixed(2)}` : '-';
+        
+        html += `
+            <tr>
+                <td><strong>${discount.tool_name}</strong></td>
+                <td><span class="badge ${typeClass}">${typeText}</span></td>
+                <td><strong style="color: #4CAF50; font-size: 16px;">${valueText}</strong></td>
+                <td><strong style="color: #FFD700;">${originalPriceText}</strong></td>
+                <td>${discount.description || '-'}</td>
+                <td><span class="badge ${statusClass}">${statusText}</span></td>
+                <td>${expires}</td>
+                <td>${used}</td>
+                <td>
+                    <div class="actions-group">
+                        ${discount.is_active ? 
+                            `<button class="btn btn-warning" onclick="deactivateDiscount('${discount.id}')">
+                                <i class="fas fa-pause"></i> Deactivate
+                            </button>` : 
+                            ''
+                        }
+                        <button class="btn btn-danger" onclick="deleteDiscount('${discount.id}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+    
+    html += `
+            </tbody>
+        </table>
+    `;
+    
+    document.getElementById('discounts-container').innerHTML = html;
+}
+
+async function deactivateDiscount(discountId) {
+    if (!confirm('Are you sure you want to deactivate this discount?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/admin/discount/${discountId}/deactivate`, {
+            method: 'POST'
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            showAlert('success', data.message);
+            loadDiscounts();
+        } else {
+            showAlert('error', data.error || 'Failed to deactivate discount');
+        }
+    } catch (error) {
+        showAlert('error', 'Network error. Please try again.');
+    }
+}
+
+async function deleteDiscount(discountId) {
+    if (!confirm('Are you sure you want to DELETE this discount? This cannot be undone.')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/admin/discount/${discountId}`, {
+            method: 'DELETE'
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            showAlert('success', data.message);
+            loadDiscounts();
+        } else {
+            showAlert('error', data.error || 'Failed to delete discount');
+        }
+    } catch (error) {
+        showAlert('error', 'Network error. Please try again.');
+    }
+}
+
+function showAlert(type, message) {
+    const container = document.getElementById('alert-container');
+    container.innerHTML = `
+        <div class="alert alert-${type}">
+            <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
+            ${message}
+        </div>
+    `;
+    container.querySelector('.alert').style.display = 'block';
+    
+    setTimeout(() => {
+        const alert = container.querySelector('.alert');
+        if (alert) alert.style.display = 'none';
+    }, 5000);
+}
+</script>
+
+<script src="{{ url_for('static', filename='js/navigation.js') }}"></script>
+</body>
+</html>
+

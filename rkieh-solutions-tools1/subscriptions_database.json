@@ -1,0 +1,35 @@
+{
+  "a3a90d27f61cac7921d9a9d5f2627dca": {
+    "user_id": "a3a90d27f61cac7921d9a9d5f2627dca",
+    "plan": "free",
+    "status": "active",
+    "created_at": "2025-12-28T10:02:28.245072",
+    "expires_at": null,
+    "usage": {
+      "today": 0,
+      "last_reset": "2025-12-31"
+    }
+  },
+  "f744e3dfb6f625560506f19a6dcaef16": {
+    "user_id": "f744e3dfb6f625560506f19a6dcaef16",
+    "plan": "free",
+    "status": "active",
+    "created_at": "2026-01-01T11:01:39.922595",
+    "expires_at": null,
+    "usage": {
+      "today": 0,
+      "last_reset": "2026-01-01"
+    }
+  },
+  "af2e8ae0b0c8c6d5544907468770730a": {
+    "user_id": "af2e8ae0b0c8c6d5544907468770730a",
+    "plan": "free",
+    "status": "active",
+    "created_at": "2026-01-01T12:26:04.337111",
+    "expires_at": null,
+    "usage": {
+      "today": 0,
+      "last_reset": "2026-01-01"
+    }
+  }
+}

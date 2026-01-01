@@ -1,0 +1,320 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16162b 50%, #1a1a2e 100%);
+    }
+
+    .auth-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 152, 0, 0.3);
+        border-radius: 20px;
+        padding: 40px;
+        max-width: 450px;
+        width: 100%;
+        box-shadow: 0 20px 60px rgba(255, 152, 0, 0.3);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .auth-logo {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #ff9800, #ffb74d);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 40px;
+        box-shadow: 0 10px 30px rgba(255, 152, 0, 0.4);
+    }
+
+    .auth-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .auth-subtitle {
+        color: #ff9800;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 15px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 152, 0, 0.3);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #ff9800;
+        background: rgba(255, 152, 0, 0.1);
+        box-shadow: 0 0 20px rgba(255, 152, 0, 0.3);
+    }
+
+    .form-group input::placeholder {
+        color: #666;
+    }
+
+    .password-toggle {
+        position: relative;
+    }
+
+    .password-toggle-btn {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #aaa;
+        cursor: pointer;
+        font-size: 18px;
+        transition: color 0.3s;
+    }
+
+    .password-toggle-btn:hover {
+        color: #ff9800;
+    }
+
+    .btn-auth {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #ff9800, #ffb74d);
+        border: none;
+        border-radius: 12px;
+        color: #000;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 10px 30px rgba(255, 152, 0, 0.4);
+    }
+
+    .btn-auth:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 40px rgba(255, 152, 0, 0.6);
+    }
+
+    .btn-auth:active {
+        transform: translateY(0);
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 25px;
+        color: #aaa;
+        font-size: 14px;
+    }
+
+    .auth-footer a {
+        color: #ff9800;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
+    }
+
+    .auth-footer a:hover {
+        color: #ffb74d;
+    }
+
+    .alert {
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        display: none;
+    }
+
+    .alert-error {
+        background: rgba(255, 51, 51, 0.1);
+        border: 2px solid #ff3333;
+        color: #ff6666;
+    }
+
+    .alert-success {
+        background: rgba(76, 175, 80, 0.1);
+        border: 2px solid #4CAF50;
+        color: #4CAF50;
+    }
+
+    .warning-box {
+        background: rgba(255, 152, 0, 0.1);
+        border: 2px solid rgba(255, 152, 0, 0.3);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .warning-box i {
+        color: #ff9800;
+        font-size: 24px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .warning-box p {
+        color: #ff9800;
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    @media (max-width: 768px) {
+        .auth-card {
+            padding: 30px 20px;
+        }
+
+        .auth-title {
+            font-size: 26px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">
+                🛡️
+            </div>
+            <h1 class="auth-title">Admin Login</h1>
+            <p class="auth-subtitle">Authorized Personnel Only</p>
+        </div>
+
+        <div class="warning-box">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>⚠️ Admin Access Only - Unauthorized access is prohibited</p>
+        </div>
+
+        <div id="alert-container"></div>
+
+        <form id="admin-login-form">
+            <div class="form-group">
+                <label for="email">
+                    <i class="fas fa-envelope"></i> Admin Email
+                </label>
+                <input type="email" id="email" name="email" placeholder="admin@rkieh.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">
+                    <i class="fas fa-lock"></i> Admin Password
+                </label>
+                <div class="password-toggle">
+                    <input type="password" id="password" name="password" placeholder="Enter admin password" required>
+                    <button type="button" class="password-toggle-btn" onclick="togglePassword()">
+                        <i class="fas fa-eye" id="toggle-icon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-auth">
+                <i class="fas fa-shield-alt"></i> Login as Admin
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <a href="/">← Back to Home</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const toggleIcon = document.getElementById('toggle-icon');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.className = 'fas fa-eye-slash';
+    } else {
+        passwordInput.type = 'password';
+        toggleIcon.className = 'fas fa-eye';
+    }
+}
+
+document.getElementById('admin-login-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    try {
+        const response = await fetch('/api/admin/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            showAlert('success', 'Admin login successful! Redirecting...');
+            setTimeout(() => {
+                window.location.href = data.redirect || '/admin';
+            }, 1000);
+        } else {
+            showAlert('error', data.error || 'Admin login failed. Please check your credentials.');
+        }
+    } catch (error) {
+        showAlert('error', 'Network error. Please try again.');
+    }
+});
+
+function showAlert(type, message) {
+    const container = document.getElementById('alert-container');
+    container.innerHTML = `
+        <div class="alert alert-${type}">
+            <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
+            ${message}
+        </div>
+    `;
+    container.querySelector('.alert').style.display = 'block';
+    
+    if (type === 'success') {
+        setTimeout(() => {
+            container.querySelector('.alert').style.display = 'none';
+        }, 3000);
+    }
+}
+</script>
+{% endblock %}
+

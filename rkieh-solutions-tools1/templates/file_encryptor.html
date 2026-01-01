@@ -1,0 +1,423 @@
+{% extends "base.html" %}
+
+{% block title %}File Encryptor - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+    .encryptor-container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+    
+    .mode-selector {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+        background: #1a1a1a;
+        padding: 10px;
+        border-radius: 12px;
+        border: 2px solid #333;
+    }
+    
+    .mode-btn {
+        flex: 1;
+        padding: 15px 20px;
+        background: #2a2a2a;
+        border: 2px solid #333;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+    }
+    
+    .mode-btn:hover {
+        background: #333;
+        border-color: #555;
+    }
+    
+    .mode-btn.active {
+        background: #ff3333;
+        border-color: #ff3333;
+        color: #fff;
+    }
+    
+    .encryptor-section {
+        background: #1a1a1a;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 2px solid #333;
+    }
+    
+    .file-upload-area {
+        border: 3px dashed #444;
+        border-radius: 12px;
+        padding: 40px;
+        text-align: center;
+        background: #2a2a2a;
+        transition: all 0.3s;
+        cursor: pointer;
+        margin-bottom: 20px;
+    }
+    
+    .file-upload-area:hover {
+        border-color: #ff3333;
+        background: #333;
+    }
+    
+    .file-upload-area.dragover {
+        border-color: #ff3333;
+        background: #3a1a1a;
+    }
+    
+    .file-upload-icon {
+        font-size: 64px;
+        color: #666;
+        margin-bottom: 20px;
+    }
+    
+    .file-upload-text {
+        color: #fff;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    
+    .file-upload-hint {
+        color: #888;
+        font-size: 14px;
+    }
+    
+    .file-input {
+        display: none;
+    }
+    
+    .selected-file {
+        background: #2a2a2a;
+        border: 2px solid #333;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .selected-file-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex: 1;
+    }
+    
+    .selected-file-icon {
+        font-size: 32px;
+        color: #ff3333;
+    }
+    
+    .selected-file-details {
+        flex: 1;
+    }
+    
+    .selected-file-name {
+        color: #fff;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+    
+    .selected-file-size {
+        color: #888;
+        font-size: 14px;
+    }
+    
+    .remove-file-btn {
+        background: #ff3333;
+        border: none;
+        color: #fff;
+        padding: 8px 15px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    
+    .remove-file-btn:hover {
+        background: #ff5555;
+    }
+    
+    .password-section {
+        margin-bottom: 20px;
+    }
+    
+    .password-input-group {
+        position: relative;
+        margin-bottom: 15px;
+    }
+    
+    .password-input {
+        width: 100%;
+        padding: 12px 45px 12px 15px;
+        background: #2a2a2a;
+        border: 2px solid #333;
+        border-radius: 6px;
+        color: #fff;
+        font-size: 16px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .password-toggle {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #888;
+        cursor: pointer;
+        font-size: 18px;
+        padding: 5px;
+    }
+    
+    .password-toggle:hover {
+        color: #fff;
+    }
+    
+    .password-strength {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #888;
+    }
+    
+    .password-strength.weak {
+        color: #ff5555;
+    }
+    
+    .password-strength.medium {
+        color: #ffaa00;
+    }
+    
+    .password-strength.strong {
+        color: #55ff55;
+    }
+    
+    .info-box {
+        background: #2a2a2a;
+        border-left: 4px solid #ff3333;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+    
+    .info-box-title {
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .info-box-text {
+        color: #aaa;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    
+    .info-box-text ul {
+        margin: 10px 0;
+        padding-left: 20px;
+    }
+    
+    .info-box-text li {
+        margin-bottom: 5px;
+    }
+    
+    .result-section {
+        background: #1a1a1a;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 2px solid #333;
+        display: none;
+    }
+    
+    .result-section.show {
+        display: block;
+    }
+    
+    .result-success {
+        text-align: center;
+    }
+    
+    .result-icon {
+        font-size: 64px;
+        color: #55ff55;
+        margin-bottom: 20px;
+    }
+    
+    .result-message {
+        color: #fff;
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    
+    .result-file-info {
+        background: #2a2a2a;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+    
+    .result-file-name {
+        color: #fff;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+    
+    .result-file-size {
+        color: #888;
+        font-size: 14px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="tool-container">
+        <!-- Tool Header -->
+        <div class="tool-header">
+            <div class="tool-breadcrumb">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="/tools">Tools</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>File Encryptor</span>
+            </div>
+            <h1 class="tool-title">
+                <i class="fas fa-lock"></i>
+                File Encryptor
+            </h1>
+            <p class="tool-description">Encrypt and decrypt files with strong encryption. Protect sensitive documents and media files.</p>
+        </div>
+
+        <div class="encryptor-container">
+            <!-- Mode Selector -->
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="encrypt">
+                    <i class="fas fa-lock"></i> Encrypt File
+                </button>
+                <button class="mode-btn" data-mode="decrypt">
+                    <i class="fas fa-unlock"></i> Decrypt File
+                </button>
+            </div>
+
+            <!-- Encryption/Decryption Section -->
+            <div class="encryptor-section">
+                <h2 id="section-title"><i class="fas fa-lock"></i> Encrypt File</h2>
+                
+                <!-- File Upload Area -->
+                <div class="file-upload-area" id="file-upload-area">
+                    <div class="file-upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="file-upload-text">Click to select file or drag and drop</div>
+                    <div class="file-upload-hint">Supports all file types (documents, images, videos, etc.)</div>
+                    <input type="file" id="file-input" class="file-input" />
+                </div>
+
+                <!-- Selected File Display -->
+                <div class="selected-file" id="selected-file" style="display: none;">
+                    <div class="selected-file-info">
+                        <div class="selected-file-icon">
+                            <i class="fas fa-file"></i>
+                        </div>
+                        <div class="selected-file-details">
+                            <div class="selected-file-name" id="file-name"></div>
+                            <div class="selected-file-size" id="file-size"></div>
+                        </div>
+                    </div>
+                    <button class="remove-file-btn" id="remove-file-btn">
+                        <i class="fas fa-times"></i> Remove
+                    </button>
+                </div>
+
+                <!-- Password Section -->
+                <div class="password-section">
+                    <label for="password-input" style="display: block; color: #fff; margin-bottom: 8px; font-weight: 500;">
+                        <i class="fas fa-key"></i> Password *
+                    </label>
+                    <div class="password-input-group">
+                        <input type="password" id="password-input" class="password-input" placeholder="Enter a strong password" required />
+                        <button type="button" class="password-toggle" id="password-toggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength" id="password-strength"></div>
+                </div>
+
+                <!-- Info Box -->
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="info-title">About Encryption</span>
+                    </div>
+                    <div class="info-box-text" id="info-text">
+                        <p><strong>Strong AES-256 Encryption:</strong> Your files are encrypted using industry-standard AES-256 encryption, the same encryption used by banks and governments.</p>
+                        <ul>
+                            <li><strong>Secure:</strong> Your password is never stored or transmitted in plain text</li>
+                            <li><strong>Private:</strong> Files are processed securely and deleted after processing</li>
+                            <li><strong>Compatible:</strong> Encrypted files can be decrypted on any device with this tool</li>
+                            <li><strong>Important:</strong> Remember your password! Without it, your files cannot be recovered</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button type="button" class="btn btn-primary btn-large" id="process-btn" style="width: 100%;" disabled>
+                    <i class="fas fa-lock"></i> Encrypt File
+                </button>
+            </div>
+
+            <!-- Result Section -->
+            <div class="result-section" id="result-section">
+                <div class="result-success">
+                    <div class="result-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="result-message" id="result-message">File encrypted successfully!</div>
+                    <div class="result-file-info">
+                        <div class="result-file-name" id="result-file-name"></div>
+                        <div class="result-file-size" id="result-file-size"></div>
+                    </div>
+                    <button type="button" class="btn btn-success btn-large" id="download-btn">
+                        <i class="fas fa-download"></i> Download <span id="download-action">Encrypted</span> File
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="reset-btn" style="margin-top: 15px;">
+                        <i class="fas fa-redo"></i> Process Another File
+                    </button>
+                </div>
+            </div>
+
+            <!-- Error Section -->
+            <div class="error-section" id="error-section" style="display: none;">
+                <div class="card error-card">
+                    <div class="error-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Oops! Something went wrong</h3>
+                    <p id="error-message">An error occurred during processing</p>
+                    <button class="btn btn-secondary" onclick="resetForm()">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/file_encryptor.js') }}"></script>
+{% endblock %}
+

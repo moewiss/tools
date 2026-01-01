@@ -1,0 +1,599 @@
+{% extends "base.html" %}
+
+{% block title %}Tools - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<style>
+    .search-container {
+        max-width: 600px;
+        margin: 30px auto;
+        position: relative;
+    }
+
+    .search-box {
+        width: 100%;
+        padding: 15px 50px 15px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 50px;
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+
+    .search-box:focus {
+        outline: none;
+        border-color: #ff3333;
+        background: rgba(255, 51, 51, 0.1);
+        box-shadow: 0 0 20px rgba(255, 51, 51, 0.3);
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #ff3333;
+        font-size: 20px;
+    }
+
+    .tool-rating {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+    }
+
+    .stars {
+        display: flex;
+        gap: 3px;
+    }
+
+    .star {
+        color: #FFD700;
+        font-size: 16px;
+    }
+
+    .star.empty {
+        color: #444;
+    }
+
+    .rating-count {
+        color: #aaa;
+        font-size: 12px;
+    }
+
+    .tool-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+        flex-wrap: wrap;
+    }
+
+    .btn-feedback {
+        padding: 8px 15px;
+        background: rgba(76, 175, 80, 0.1);
+        border: 2px solid rgba(76, 175, 80, 0.3);
+        border-radius: 8px;
+        color: #4CAF50;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        text-decoration: none;
+    }
+
+    .btn-feedback:hover {
+        background: rgba(76, 175, 80, 0.2);
+        border-color: #4CAF50;
+        transform: translateY(-2px);
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+
+    .no-results i {
+        font-size: 64px;
+        margin-bottom: 20px;
+        display: block;
+    }
+
+    .feedback-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 10000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .feedback-modal.active {
+        display: flex;
+    }
+
+    .feedback-content {
+        background: #1a1a2e;
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 20px;
+        padding: 30px;
+        max-width: 500px;
+        width: 100%;
+        position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .feedback-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        color: #aaa;
+        font-size: 24px;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+    .feedback-close:hover {
+        color: #ff3333;
+    }
+
+    .feedback-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 14px;
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #ff3333;
+        background: rgba(255, 51, 51, 0.1);
+    }
+
+    .rating-select {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    .rating-select .star {
+        font-size: 32px;
+        color: #444;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .rating-select .star.selected {
+        color: #FFD700;
+    }
+
+    .rating-select .star:hover {
+        transform: scale(1.2);
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(255, 51, 51, 0.5);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="tools-page">
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-tools"></i> Our Tools</h1>
+            <p>Professional-grade tools for all your media processing needs</p>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-container">
+            <input type="text" id="tool-search" class="search-box" placeholder="Search tools by name or description...">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+
+        <!-- Active Tools -->
+        <div class="tools-section">
+            <h2><i class="fas fa-star"></i> Available Now <span style="color: #ff3333; font-size: 18px; margin-left: 10px;">(17 Tools)</span></h2>
+            <div class="tools-grid" id="tools-container">
+                <!-- Tool cards will be here -->
+            </div>
+            
+            <!-- No Results Message -->
+            <div id="no-results" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3 style="color: #aaa; margin-bottom: 10px;">No Tools Found</h3>
+                <p style="color: #666;">Try a different search term</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Feedback Modal -->
+<div id="feedback-modal" class="feedback-modal">
+    <div class="feedback-content">
+        <button class="feedback-close" onclick="closeFeedbackModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <h2 class="feedback-title" id="feedback-tool-name">Rate & Review Tool</h2>
+        
+        <form id="feedback-form" onsubmit="submitFeedback(event)">
+            <div class="form-group">
+                <label>Your Rating</label>
+                <div class="rating-select" id="rating-stars">
+                    <i class="fas fa-star star" data-rating="1"></i>
+                    <i class="fas fa-star star" data-rating="2"></i>
+                    <i class="fas fa-star star" data-rating="3"></i>
+                    <i class="fas fa-star star" data-rating="4"></i>
+                    <i class="fas fa-star star" data-rating="5"></i>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="feedback-text">
+                    <i class="fas fa-comment"></i> Your Feedback
+                </label>
+                <textarea id="feedback-text" placeholder="Share your experience with this tool..." required></textarea>
+            </div>
+            
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-paper-plane"></i> Submit Feedback
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+// Tools data
+const tools = [
+    {
+        name: "Media Converter Pro",
+        description: "Convert between audio and video formats with professional quality. Supports batch processing and multiple formats.",
+        icon: "fas fa-exchange-alt",
+        url: "/tool/media-converter",
+        rating: 4.8,
+        reviews: 156,
+        features: ["MP4 → MP3", "MP3 → MP4", "Batch", "Upload"]
+    },
+    {
+        name: "Watermark Remover",
+        description: "Remove watermarks, logos, and text overlays using classical image processing. Fast, privacy-focused, and no AI required.",
+        icon: "fas fa-eraser",
+        url: "/tool/watermark-remover",
+        rating: 4.6,
+        reviews: 89,
+        features: ["Privacy First", "No AI", "Unlimited", "Manual"]
+    },
+    {
+        name: "Media Downloader",
+        description: "Download videos from YouTube, Instagram, Facebook, and TikTok. Support for video and audio formats.",
+        icon: "fas fa-download",
+        url: "/tool/media-downloader",
+        rating: 4.7,
+        reviews: 234,
+        features: ["YouTube", "Instagram", "Facebook", "TikTok"]
+    },
+    {
+        name: "Subtitle Downloader",
+        description: "Download videos with subtitles in multiple languages. Auto-translate, embed, or save as separate files.",
+        icon: "fas fa-closed-captioning",
+        url: "/tool/subtitle-downloader",
+        rating: 4.5,
+        reviews: 67,
+        features: ["Multi-Language", "Auto-Translate", "SRT/VTT/ASS", "Embed"]
+    },
+    {
+        name: "QR Code Generator",
+        description: "Generate custom QR codes with logos, colors, and styles. Perfect for URLs, contact info, WiFi, and more.",
+        icon: "fas fa-qrcode",
+        url: "/tool/qr-generator",
+        rating: 4.9,
+        reviews: 178,
+        features: ["Custom Colors", "Logo Support", "High Quality", "Multiple Types"]
+    },
+    {
+        name: "Product QR Generator",
+        description: "Generate QR codes for products with detailed information. Perfect for inventory, e-commerce, and product tracking.",
+        icon: "fas fa-box",
+        url: "/tool/product-qr-generator",
+        rating: 4.4,
+        reviews: 45,
+        features: ["Product Info", "SKU/ID", "Price", "E-commerce"]
+    },
+    {
+        name: "GIF Maker",
+        description: "Create animated GIFs from videos or images. Customize speed, size, and quality for perfect GIFs.",
+        icon: "fas fa-film",
+        url: "/tool/gif-maker",
+        rating: 4.6,
+        reviews: 123,
+        features: ["Video to GIF", "Image to GIF", "Custom Speed", "Quality Control"]
+    },
+    {
+        name: "Duplicate File Finder",
+        description: "Find and remove duplicate files in your system. Save storage space by cleaning up duplicates.",
+        icon: "fas fa-search",
+        url: "/tool/duplicate-finder",
+        rating: 4.3,
+        reviews: 56,
+        features: ["Hash Detection", "Folder Scan", "Safe Delete", "Save Space"]
+    },
+    {
+        name: "File Encryptor",
+        description: "Encrypt and decrypt files with military-grade encryption. Protect your sensitive data with password protection.",
+        icon: "fas fa-lock",
+        url: "/tool/file-encryptor",
+        rating: 4.7,
+        reviews: 92,
+        features: ["AES-256", "Password", "Secure", "Fast"]
+    },
+    {
+        name: "Hook Analyzer",
+        description: "Analyze the strength of your content's opening hook. Perfect for TikTok, Instagram Reels, YouTube, and more.",
+        icon: "fas fa-chart-line",
+        url: "/tool/hook-analyzer",
+        rating: 4.8,
+        reviews: 201,
+        features: ["AI Analysis", "Score", "Suggestions", "Multi-Platform"]
+    },
+    {
+        name: "Random Picker",
+        description: "Make random decisions! Add your options and let the picker choose for you. Perfect for choosing what to eat, where to go, or any decision.",
+        icon: "fas fa-random",
+        url: "/tool/random-picker",
+        rating: 4.5,
+        reviews: 134,
+        features: ["Pick One", "Pick Multiple", "History", "Custom Options"]
+    },
+    {
+        name: "Trending Detector",
+        description: "Discover what's trending on social media! Analyze hashtags, topics, and viral content across platforms.",
+        icon: "fas fa-fire",
+        url: "/tool/trending-detector",
+        rating: 4.9,
+        reviews: 289,
+        features: ["Real-Time", "Multi-Platform", "Analytics", "Hashtags"]
+    },
+    {
+        name: "Social Media Search",
+        description: "Search across all social media platforms at once. Find profiles, posts, and content from one place.",
+        icon: "fas fa-search-plus",
+        url: "/tool/social-media-search",
+        rating: 4.6,
+        reviews: 167,
+        features: ["All Platforms", "Profile Search", "Fast", "Comprehensive"]
+    },
+    {
+        name: "Social Media News",
+        description: "Get the latest news from social media and news platforms. Stay updated with trending stories and breaking news.",
+        icon: "fas fa-newspaper",
+        url: "/tool/social-media-news",
+        rating: 4.4,
+        reviews: 78,
+        features: ["Real-Time", "Multiple Sources", "Trending", "Breaking News"]
+    },
+    {
+        name: "Audio Enhancer",
+        description: "Clean voice and reduce noise from audio files. Professional audio enhancement with noise reduction and voice isolation.",
+        icon: "fas fa-volume-up",
+        url: "/tool/audio-enhancer",
+        rating: 4.7,
+        reviews: 145,
+        features: ["Noise Reduction", "Voice Isolation", "Professional", "Fast"]
+    }
+];
+
+let selectedRating = 0;
+let currentToolName = "";
+
+// Render tools
+function renderTools(toolsToRender = tools) {
+    const container = document.getElementById('tools-container');
+    const noResults = document.getElementById('no-results');
+    
+    if (toolsToRender.length === 0) {
+        container.innerHTML = '';
+        noResults.style.display = 'block';
+        return;
+    }
+    
+    noResults.style.display = 'none';
+    
+    container.innerHTML = toolsToRender.map(tool => `
+        <div class="tool-card active" data-tool-name="${tool.name.toLowerCase()}" data-tool-desc="${tool.description.toLowerCase()}">
+            <div class="card-ribbon">Active</div>
+            <div class="card-icon">
+                <i class="${tool.icon}"></i>
+            </div>
+            <h3>${tool.name}</h3>
+            <p>${tool.description}</p>
+            
+            <div class="tool-rating">
+                <div class="stars">
+                    ${generateStars(tool.rating)}
+                </div>
+                <span class="rating-count">${tool.rating} (${tool.reviews} reviews)</span>
+            </div>
+            
+            <div class="card-features">
+                ${tool.features.map(f => `<span class="feature-tag">${f}</span>`).join('')}
+            </div>
+            
+            <div class="tool-actions">
+                <a href="${tool.url}" class="btn btn-primary" style="flex: 1;">
+                    <i class="fas fa-rocket"></i> Launch Tool
+                </a>
+                <button class="btn-feedback" onclick="openFeedbackModal('${tool.name}')">
+                    <i class="fas fa-star"></i> Rate
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function generateStars(rating) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= Math.floor(rating)) {
+            stars += '<i class="fas fa-star star"></i>';
+        } else if (i === Math.ceil(rating) && rating % 1 !== 0) {
+            stars += '<i class="fas fa-star-half-alt star"></i>';
+        } else {
+            stars += '<i class="fas fa-star star empty"></i>';
+        }
+    }
+    return stars;
+}
+
+// Search functionality
+document.getElementById('tool-search').addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    
+    if (searchTerm === '') {
+        renderTools(tools);
+        return;
+    }
+    
+    const filtered = tools.filter(tool => 
+        tool.name.toLowerCase().includes(searchTerm) ||
+        tool.description.toLowerCase().includes(searchTerm) ||
+        tool.features.some(f => f.toLowerCase().includes(searchTerm))
+    );
+    
+    renderTools(filtered);
+});
+
+// Feedback modal
+function openFeedbackModal(toolName) {
+    currentToolName = toolName;
+    document.getElementById('feedback-tool-name').textContent = `Rate & Review: ${toolName}`;
+    document.getElementById('feedback-modal').classList.add('active');
+    selectedRating = 0;
+    updateRatingStars();
+}
+
+function closeFeedbackModal() {
+    document.getElementById('feedback-modal').classList.remove('active');
+    document.getElementById('feedback-form').reset();
+    selectedRating = 0;
+    updateRatingStars();
+}
+
+// Rating stars
+document.querySelectorAll('#rating-stars .star').forEach(star => {
+    star.addEventListener('click', function() {
+        selectedRating = parseInt(this.dataset.rating);
+        updateRatingStars();
+    });
+    
+    star.addEventListener('mouseenter', function() {
+        const rating = parseInt(this.dataset.rating);
+        document.querySelectorAll('#rating-stars .star').forEach((s, i) => {
+            if (i < rating) {
+                s.classList.add('selected');
+            } else {
+                s.classList.remove('selected');
+            }
+        });
+    });
+});
+
+document.getElementById('rating-stars').addEventListener('mouseleave', function() {
+    updateRatingStars();
+});
+
+function updateRatingStars() {
+    document.querySelectorAll('#rating-stars .star').forEach((star, i) => {
+        if (i < selectedRating) {
+            star.classList.add('selected');
+        } else {
+            star.classList.remove('selected');
+        }
+    });
+}
+
+function submitFeedback(e) {
+    e.preventDefault();
+    
+    if (selectedRating === 0) {
+        alert('Please select a rating!');
+        return;
+    }
+    
+    const feedback = document.getElementById('feedback-text').value;
+    
+    // Here you can send to backend
+    console.log('Feedback submitted:', {
+        tool: currentToolName,
+        rating: selectedRating,
+        feedback: feedback
+    });
+    
+    alert(`Thank you for your feedback on ${currentToolName}!\\nRating: ${selectedRating} stars`);
+    closeFeedbackModal();
+}
+
+// Close modal on outside click
+document.getElementById('feedback-modal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeFeedbackModal();
+    }
+});
+
+// Initialize
+renderTools();
+</script>
+{% endblock %}
+

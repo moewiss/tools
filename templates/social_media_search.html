@@ -1,0 +1,399 @@
+{% extends "base.html" %}
+
+{% block title %}Social Media Search - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+    .search-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .search-section {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2a1a1a 100%);
+        border-radius: 16px;
+        padding: 35px;
+        margin-bottom: 30px;
+        border: 2px solid #333;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .search-input-wrapper {
+        position: relative;
+        margin-bottom: 20px;
+    }
+    
+    .search-input {
+        width: 100%;
+        padding: 18px 20px 18px 60px;
+        background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+        border: 2px solid #333;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 18px;
+        transition: all 0.3s;
+    }
+    
+    .search-input:focus {
+        outline: none;
+        border-color: #ff3333;
+        box-shadow: 0 0 0 3px rgba(255, 51, 51, 0.1);
+        transform: translateY(-2px);
+    }
+    
+    .search-icon {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 24px;
+        color: #888;
+    }
+    
+    .search-btn {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #ff3333 0%, #cc0000 100%);
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 16px rgba(255, 51, 51, 0.3);
+    }
+    
+    .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(255, 51, 51, 0.4);
+    }
+    
+    .search-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .platform-results {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+    }
+    
+    .platform-card {
+        background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+        border: 2px solid #333;
+        border-radius: 16px;
+        padding: 25px;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .platform-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, #ff3333, #ff6666);
+        transform: scaleY(0);
+        transition: transform 0.3s;
+    }
+    
+    .platform-card:hover {
+        border-color: #ff3333;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 32px rgba(255, 51, 51, 0.2);
+    }
+    
+    .platform-card:hover::before {
+        transform: scaleY(1);
+    }
+    
+    .platform-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #333;
+    }
+    
+    .platform-icon {
+        font-size: 32px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #333 0%, #222 100%);
+    }
+    
+    .platform-name {
+        color: #fff;
+        font-size: 20px;
+        font-weight: 600;
+        flex: 1;
+    }
+    
+    .result-count {
+        color: #ff3333;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    
+    .profile-item {
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 12px;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+    
+    .profile-item:hover {
+        border-color: #ff3333;
+        transform: translateX(5px);
+        box-shadow: 0 4px 12px rgba(255, 51, 51, 0.1);
+    }
+    
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 10px;
+    }
+    
+    .profile-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff3333 0%, #cc0000 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    
+    .profile-info {
+        flex: 1;
+    }
+    
+    .profile-name {
+        color: #fff;
+        font-weight: 600;
+        font-size: 16px;
+        margin-bottom: 4px;
+    }
+    
+    .profile-handle {
+        color: #888;
+        font-size: 14px;
+    }
+    
+    .profile-stats {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #333;
+    }
+    
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #aaa;
+        font-size: 13px;
+    }
+    
+    .stat-item i {
+        color: #ff3333;
+    }
+    
+    .profile-description {
+        color: #aaa;
+        font-size: 14px;
+        line-height: 1.5;
+        margin-top: 8px;
+    }
+    
+    .profile-link {
+        display: inline-block;
+        margin-top: 10px;
+        color: #ff3333;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: color 0.3s;
+    }
+    
+    .profile-link:hover {
+        color: #ff5555;
+    }
+    
+    .empty-results {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+    
+    .empty-results i {
+        font-size: 64px;
+        margin-bottom: 20px;
+        display: block;
+        color: #333;
+    }
+    
+    .loading-state {
+        text-align: center;
+        padding: 40px;
+        color: #aaa;
+    }
+    
+    .loading-state i {
+        font-size: 48px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+        display: block;
+        color: #ff3333;
+    }
+    
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.1);
+            opacity: 0.8;
+        }
+    }
+    
+    .summary-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .stat-box {
+        background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        border: 2px solid #333;
+        transition: all 0.3s;
+    }
+    
+    .stat-box:hover {
+        border-color: #ff3333;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(255, 51, 51, 0.2);
+    }
+    
+    .stat-value {
+        font-size: 32px;
+        font-weight: bold;
+        background: linear-gradient(135deg, #ff3333 0%, #ff6666 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 8px;
+    }
+    
+    .stat-label {
+        color: #aaa;
+        font-size: 14px;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="tool-container">
+        <!-- Tool Header -->
+        <div class="tool-header">
+            <div class="tool-breadcrumb">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="/tools">Tools</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Social Media Search</span>
+            </div>
+            <h1 class="tool-title">
+                <i class="fas fa-search"></i>
+                Social Media Search
+            </h1>
+            <p class="tool-description">Search for profiles, pages, and content related to any name across all major social media platforms.</p>
+        </div>
+
+        <div class="search-container">
+            <!-- Search Section -->
+            <div class="search-section">
+                <h2 style="color: #fff; margin-top: 0; margin-bottom: 25px; display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 28px;">🔍</span>
+                    <span>Search Social Media</span>
+                </h2>
+                <div class="search-input-wrapper">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" id="search-name" placeholder="Enter a name, username, or keyword to search..." />
+                </div>
+                <button type="button" class="search-btn" id="search-btn">
+                    <i class="fas fa-search"></i> Search All Platforms
+                </button>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="search-section" id="stats-section" style="display: none;">
+                <h2 style="color: #fff; margin-top: 0; margin-bottom: 25px; display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 28px;">📊</span>
+                    <span>Search Summary</span>
+                </h2>
+                <div class="summary-stats" id="summary-stats"></div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="search-section" id="results-section" style="display: none;">
+                <h2 style="color: #fff; margin-top: 0; margin-bottom: 25px; display: flex; align-items: center; gap: 12px;">
+                    <span style="font-size: 28px;">📱</span>
+                    <span>Search Results</span>
+                </h2>
+                <div id="results-container">
+                    <div class="loading-state">
+                        <i class="fas fa-spinner"></i>
+                        <p>Searching across all platforms...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="search-section" id="empty-section">
+                <div class="empty-results">
+                    <i class="fas fa-search"></i>
+                    <h3 style="color: #fff; margin-bottom: 10px;">Start Your Search</h3>
+                    <p style="color: #888;">Enter a name, username, or keyword to find related profiles and content across all social media platforms.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/social_media_search.js') }}"></script>
+{% endblock %}
+

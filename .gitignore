@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# Media files
+*.mp4
+*.mp3
+*.mkv
+*.avi
+*.mov
+*.flv
+*.webm
+*.m4a
+
+# Downloads
+downloads/
+output/
+music/
+videos/
+
+# Web app directories
+uploads/
+outputs/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+

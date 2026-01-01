@@ -1,0 +1,23 @@
+{
+  "pro": {
+    "price": 11.0,
+    "daily_limit": 100,
+    "features": [
+      "100 uses per day",
+      "High quality",
+      "Priority support",
+      "No ads"
+    ]
+  },
+  "premium": {
+    "price": 19.0,
+    "daily_limit": -1,
+    "features": [
+      "Unlimited uses",
+      "Ultra quality",
+      "VIP support",
+      "API access",
+      "Custom branding"
+    ]
+  }
+}

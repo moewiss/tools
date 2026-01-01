@@ -1,0 +1,9 @@
+# Example URLs file
+# Place your YouTube or video URLs here (one per line)
+# Lines starting with # are ignored
+
+# Example:
+# https://www.youtube.com/watch?v=dQw4w9WgXcQ
+# https://www.youtube.com/watch?v=VIDEO_ID_2
+# https://www.youtube.com/watch?v=VIDEO_ID_3
+

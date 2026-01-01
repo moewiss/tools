@@ -1,0 +1,377 @@
+{% extends "base.html" %}
+
+{% block title %}Media Downloader - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<style>
+    .platform-tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+    
+    .platform-tab {
+        flex: 1;
+        min-width: 150px;
+        padding: 15px 20px;
+        background: #1a1a1a;
+        border: 2px solid #333;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+        color: #fff;
+    }
+    
+    .platform-tab:hover {
+        border-color: #ff3333;
+        transform: translateY(-2px);
+    }
+    
+    .platform-tab.active {
+        border-color: #ff3333;
+        background: linear-gradient(135deg, #ff3333 0%, #cc0000 100%);
+        box-shadow: 0 4px 15px rgba(255, 51, 51, 0.3);
+    }
+    
+    .platform-tab i {
+        font-size: 24px;
+        display: block;
+        margin-bottom: 8px;
+    }
+    
+    .platform-content {
+        display: none;
+    }
+    
+    .platform-content.active {
+        display: block;
+    }
+    
+    .url-input-group {
+        margin-bottom: 20px;
+    }
+    
+    .url-input-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #fff;
+        font-weight: 500;
+    }
+    
+    .url-input-group input {
+        width: 100%;
+        padding: 12px 15px;
+        background: #1a1a1a;
+        border: 2px solid #333;
+        border-radius: 6px;
+        color: #fff;
+        font-size: 14px;
+    }
+    
+    .url-input-group input:focus {
+        outline: none;
+        border-color: #ff3333;
+    }
+    
+    .platform-examples {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #888;
+    }
+    
+    .platform-examples code {
+        background: #2a2a2a;
+        padding: 2px 6px;
+        border-radius: 3px;
+        color: #ff6666;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="tool-container">
+        <!-- Tool Header -->
+        <div class="tool-header">
+            <div class="tool-breadcrumb">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="/tools">Tools</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Media Downloader</span>
+            </div>
+            <h1 class="tool-title">
+                <i class="fas fa-download"></i>
+                Media Downloader
+            </h1>
+            <p class="tool-description">Download videos from YouTube, Instagram, Facebook, and TikTok</p>
+        </div>
+
+        <!-- Platform Tabs -->
+        <div class="platform-tabs">
+            <div class="platform-tab active" data-platform="youtube">
+                <i class="fab fa-youtube"></i>
+                <span>YouTube</span>
+            </div>
+            <div class="platform-tab" data-platform="instagram">
+                <i class="fab fa-instagram"></i>
+                <span>Instagram</span>
+            </div>
+            <div class="platform-tab" data-platform="facebook">
+                <i class="fab fa-facebook"></i>
+                <span>Facebook</span>
+            </div>
+            <div class="platform-tab" data-platform="tiktok">
+                <i class="fab fa-tiktok"></i>
+                <span>TikTok</span>
+            </div>
+        </div>
+
+        <!-- YouTube Platform -->
+        <div class="platform-content active" id="youtube-content">
+            <div class="card">
+                <h2><i class="fab fa-youtube"></i> Download from YouTube</h2>
+                <p class="description">Download videos or audio from YouTube</p>
+                
+                <form id="youtube-form">
+                    <div class="url-input-group">
+                        <label for="youtube-url">
+                            <i class="fas fa-link"></i> YouTube URL
+                        </label>
+                        <input 
+                            type="url" 
+                            id="youtube-url" 
+                            placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."
+                            required
+                        >
+                        <div class="platform-examples">
+                            Examples: <code>youtube.com/watch?v=VIDEO_ID</code> | 
+                            <code>youtu.be/VIDEO_ID</code> | 
+                            <code>youtube.com/shorts/VIDEO_ID</code>
+                        </div>
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="setting-item">
+                            <label for="youtube-format">
+                                <i class="fas fa-file-download"></i> Format
+                            </label>
+                            <select id="youtube-format" name="format">
+                                <option value="mp3">MP3 (Audio Only)</option>
+                                <option value="video">MP4 (Video)</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-item">
+                            <label for="youtube-quality">
+                                <i class="fas fa-hd-video"></i> Quality
+                            </label>
+                            <select id="youtube-quality" name="quality">
+                                <option value="best" selected>Best Available</option>
+                                <option value="1080p">1080p (Full HD)</option>
+                                <option value="720p">720p (HD)</option>
+                                <option value="480p">480p (SD)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="youtube-download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Instagram Platform -->
+        <div class="platform-content" id="instagram-content">
+            <div class="card">
+                <h2><i class="fab fa-instagram"></i> Download from Instagram</h2>
+                <p class="description">Download videos, photos, and reels from Instagram</p>
+                
+                <form id="instagram-form">
+                    <div class="url-input-group">
+                        <label for="instagram-url">
+                            <i class="fas fa-link"></i> Instagram URL
+                        </label>
+                        <input 
+                            type="url" 
+                            id="instagram-url" 
+                            placeholder="https://www.instagram.com/p/... or https://www.instagram.com/reel/..."
+                            required
+                        >
+                        <div class="platform-examples">
+                            Examples: <code>instagram.com/p/POST_ID</code> | 
+                            <code>instagram.com/reel/REEL_ID</code> | 
+                            <code>instagram.com/tv/VIDEO_ID</code>
+                        </div>
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="setting-item">
+                            <label for="instagram-format">
+                                <i class="fas fa-file-download"></i> Format
+                            </label>
+                            <select id="instagram-format" name="format">
+                                <option value="video" selected>MP4 (Video)</option>
+                                <option value="mp3">MP3 (Audio Only)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="instagram-download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Facebook Platform -->
+        <div class="platform-content" id="facebook-content">
+            <div class="card">
+                <h2><i class="fab fa-facebook"></i> Download from Facebook</h2>
+                <p class="description">Download videos from Facebook posts and pages</p>
+                
+                <form id="facebook-form">
+                    <div class="url-input-group">
+                        <label for="facebook-url">
+                            <i class="fas fa-link"></i> Facebook URL
+                        </label>
+                        <input 
+                            type="url" 
+                            id="facebook-url" 
+                            placeholder="https://www.facebook.com/watch?v=... or https://fb.watch/..."
+                            required
+                        >
+                    <div class="platform-examples">
+                        Examples: <code>facebook.com/watch?v=VIDEO_ID</code> | 
+                        <code>fb.watch/VIDEO_ID</code> | 
+                        <code>facebook.com/PAGE/videos/VIDEO_ID</code>
+                        <br><small style="color: #ff6666;">
+                            <strong>Important:</strong> Videos must be PUBLIC (not private/friends-only). 
+                            If download fails, update yt-dlp: <code>pip install --upgrade yt-dlp</code> or 
+                            <code>python3 -m pip install --upgrade yt-dlp --break-system-packages</code>
+                        </small>
+                    </div>
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="setting-item">
+                            <label for="facebook-format">
+                                <i class="fas fa-file-download"></i> Format
+                            </label>
+                            <select id="facebook-format" name="format">
+                                <option value="video" selected>MP4 (Video)</option>
+                                <option value="mp3">MP3 (Audio Only)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="facebook-download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- TikTok Platform -->
+        <div class="platform-content" id="tiktok-content">
+            <div class="card">
+                <h2><i class="fab fa-tiktok"></i> Download from TikTok</h2>
+                <p class="description">Download videos from TikTok</p>
+                
+                <form id="tiktok-form">
+                    <div class="url-input-group">
+                        <label for="tiktok-url">
+                            <i class="fas fa-link"></i> TikTok URL
+                        </label>
+                        <input 
+                            type="url" 
+                            id="tiktok-url" 
+                            placeholder="https://www.tiktok.com/@username/video/..."
+                            required
+                        >
+                        <div class="platform-examples">
+                            Examples: <code>tiktok.com/@username/video/VIDEO_ID</code> | 
+                            <code>vm.tiktok.com/VIDEO_ID</code>
+                        </div>
+                    </div>
+
+                    <div class="settings-row">
+                        <div class="setting-item">
+                            <label for="tiktok-format">
+                                <i class="fas fa-file-download"></i> Format
+                            </label>
+                            <select id="tiktok-format" name="format">
+                                <option value="video" selected>MP4 (Video)</option>
+                                <option value="mp3">MP3 (Audio Only)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="tiktok-download-btn">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-section" id="progress-section" style="display: none;">
+            <div class="card">
+                <h3 id="progress-title"><i class="fas fa-spinner fa-spin"></i> Processing...</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <p class="progress-text" id="progress-text">0%</p>
+                <p class="progress-message" id="progress-message">Please wait...</p>
+                <button class="btn-cancel-download" id="cancel-download-btn" style="display: none;">
+                    <i class="fas fa-times-circle"></i> Cancel Download
+                </button>
+            </div>
+        </div>
+
+        <!-- Result Section -->
+        <div class="result-section" id="result-section" style="display: none;">
+            <div class="card success-card">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Success!</h3>
+                <p id="result-message">Your file is ready for download</p>
+                <div class="result-info">
+                    <i class="fas fa-file-archive" id="result-icon"></i>
+                    <span id="result-filename"></span>
+                </div>
+                <p class="result-note" id="result-note"></p>
+                <button class="btn btn-success" id="download-result-btn">
+                    <i class="fas fa-download"></i> <span id="download-btn-text">Download File</span>
+                </button>
+                <button class="btn btn-secondary" id="new-download-btn">
+                    <i class="fas fa-redo"></i> Download Another
+                </button>
+            </div>
+        </div>
+
+        <!-- Error Section -->
+        <div class="error-section" id="error-section" style="display: none;">
+            <div class="card error-card">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>Oops! Something went wrong</h3>
+                <p id="error-message">An error occurred during download</p>
+                <button class="btn btn-secondary" id="retry-btn">
+                    <i class="fas fa-redo"></i> Try Again
+                </button>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/media_downloader.js') }}"></script>
+{% endblock %}
+

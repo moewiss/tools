@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}Terms of Service - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<style>
+    .legal-container {
+        max-width: 900px;
+        margin: 80px auto 40px;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 51, 51, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .legal-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding-bottom: 30px;
+        border-bottom: 2px solid rgba(255, 51, 51, 0.3);
+    }
+
+    .legal-header h1 {
+        font-size: 42px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 15px;
+    }
+
+    .legal-header .last-updated {
+        color: #aaa;
+        font-size: 14px;
+    }
+
+    .legal-content h2 {
+        color: #ff3333;
+        font-size: 28px;
+        font-weight: 700;
+        margin: 40px 0 20px;
+    }
+
+    .legal-content h3 {
+        color: #ff6666;
+        font-size: 22px;
+        font-weight: 600;
+        margin: 30px 0 15px;
+    }
+
+    .legal-content p {
+        color: #ddd;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+
+    .legal-content ul, .legal-content ol {
+        color: #ddd;
+        line-height: 1.8;
+        margin: 15px 0 20px 30px;
+    }
+
+    .legal-content li {
+        margin-bottom: 10px;
+    }
+
+    .legal-content strong {
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .highlight-box {
+        background: rgba(255, 51, 51, 0.1);
+        border-left: 4px solid #ff3333;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 10px;
+    }
+
+    .back-btn {
+        display: inline-block;
+        margin-top: 30px;
+        padding: 12px 30px;
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        color: #fff;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .back-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(255, 51, 51, 0.4);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="legal-container">
+    <div class="legal-header">
+        <h1>📜 Terms of Service</h1>
+        <p class="last-updated">Last Updated: January 1, 2026</p>
+    </div>
+
+    <div class="legal-content">
+        <p>Welcome to RKIEH Solutions. By accessing and using our services, you agree to be bound by these Terms of Service. Please read them carefully.</p>
+
+        <h2>1. Acceptance of Terms</h2>
+        <p>By creating an account and using RKIEH Solutions, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree with any part of these terms, you must not use our services.</p>
+
+        <h2>2. Description of Service</h2>
+        <p>RKIEH Solutions provides a comprehensive suite of digital tools including but not limited to:</p>
+        <ul>
+            <li>Media conversion and enhancement tools</li>
+            <li>Content analysis and optimization tools</li>
+            <li>Social media management utilities</li>
+            <li>Watermark removal and image processing</li>
+            <li>Audio and video enhancement services</li>
+            <li>Trending content detection and analytics</li>
+        </ul>
+
+        <h2>3. User Accounts</h2>
+        <h3>3.1 Registration</h3>
+        <p>To access certain features, you must create an account by providing accurate and complete information. You are responsible for maintaining the confidentiality of your account credentials.</p>
+
+        <h3>3.2 Account Security</h3>
+        <p>You agree to:</p>
+        <ul>
+            <li>Keep your password secure and confidential</li>
+            <li>Notify us immediately of any unauthorized access</li>
+            <li>Accept responsibility for all activities under your account</li>
+            <li>Not share your account with others</li>
+        </ul>
+
+        <h2>4. Acceptable Use Policy</h2>
+        <div class="highlight-box">
+            <strong>You agree NOT to use our services to:</strong>
+            <ul>
+                <li>Violate any laws or regulations</li>
+                <li>Infringe on intellectual property rights of others</li>
+                <li>Upload malicious code, viruses, or harmful content</li>
+                <li>Harass, abuse, or harm other users</li>
+                <li>Attempt to gain unauthorized access to our systems</li>
+                <li>Use automated bots or scrapers without permission</li>
+                <li>Resell or redistribute our services without authorization</li>
+            </ul>
+        </div>
+
+        <h2>5. Subscription and Payments</h2>
+        <h3>5.1 Subscription Plans</h3>
+        <p>We offer multiple subscription tiers (Free, Pro, Premium) with different features and usage limits. Subscription details and pricing are available on our Pricing page.</p>
+
+        <h3>5.2 Billing</h3>
+        <p>Paid subscriptions are billed in advance on a monthly or annual basis. By subscribing, you authorize us to charge your payment method.</p>
+
+        <h3>5.3 Refunds</h3>
+        <p>Refunds are handled on a case-by-case basis. Contact our support team within 7 days of purchase to request a refund.</p>
+
+        <h3>5.4 Cancellation</h3>
+        <p>You may cancel your subscription at any time. Your access will continue until the end of your current billing period.</p>
+
+        <h2>6. Intellectual Property</h2>
+        <h3>6.1 Our Content</h3>
+        <p>All content, features, and functionality on RKIEH Solutions are owned by us or our licensors and are protected by copyright, trademark, and other intellectual property laws.</p>
+
+        <h3>6.2 Your Content</h3>
+        <p>You retain ownership of any content you upload or create using our services. By uploading content, you grant us a limited license to process, store, and display your content solely for providing our services.</p>
+
+        <h3>6.3 Third-Party Content</h3>
+        <p>You are responsible for ensuring you have the right to use, download, or modify any third-party content through our services.</p>
+
+        <h2>7. Content and Liability</h2>
+        <p>RKIEH Solutions acts as a tool provider. We are not responsible for:</p>
+        <ul>
+            <li>The content you create or process using our tools</li>
+            <li>Copyright infringement by users</li>
+            <li>Any damages resulting from use of downloaded or processed content</li>
+            <li>Third-party content accuracy or availability</li>
+        </ul>
+
+        <div class="highlight-box">
+            <p><strong>Important:</strong> You are solely responsible for ensuring your use of our tools complies with applicable copyright laws and platform terms of service.</p>
+        </div>
+
+        <h2>8. Service Availability</h2>
+        <p>We strive to provide 99.9% uptime but do not guarantee uninterrupted access. We may perform maintenance, updates, or modifications at any time, which may temporarily affect service availability.</p>
+
+        <h2>9. Limitation of Liability</h2>
+        <p>To the fullest extent permitted by law, RKIEH Solutions shall not be liable for:</p>
+        <ul>
+            <li>Indirect, incidental, special, or consequential damages</li>
+            <li>Loss of profits, data, or goodwill</li>
+            <li>Service interruptions or errors</li>
+            <li>Third-party actions or content</li>
+        </ul>
+        <p>Our total liability shall not exceed the amount you paid us in the 12 months preceding the claim.</p>
+
+        <h2>10. Indemnification</h2>
+        <p>You agree to indemnify and hold RKIEH Solutions harmless from any claims, damages, losses, or expenses arising from:</p>
+        <ul>
+            <li>Your use of our services</li>
+            <li>Your violation of these Terms</li>
+            <li>Your violation of any third-party rights</li>
+        </ul>
+
+        <h2>11. Privacy and Data Protection</h2>
+        <p>Your privacy is important to us. Please review our <a href="/privacy" style="color: #ff3333;">Privacy Policy</a> to understand how we collect, use, and protect your personal information.</p>
+
+        <h2>12. Termination</h2>
+        <p>We reserve the right to suspend or terminate your account at any time if:</p>
+        <ul>
+            <li>You violate these Terms of Service</li>
+            <li>You engage in fraudulent or illegal activity</li>
+            <li>Your account remains inactive for an extended period</li>
+            <li>Required by law or regulatory authority</li>
+        </ul>
+
+        <h2>13. Changes to Terms</h2>
+        <p>We may update these Terms of Service from time to time. We will notify users of significant changes via email or in-app notification. Continued use after changes constitutes acceptance of the new terms.</p>
+
+        <h2>14. Governing Law</h2>
+        <p>These Terms shall be governed by and construed in accordance with the laws of your jurisdiction, without regard to conflict of law principles.</p>
+
+        <h2>15. Dispute Resolution</h2>
+        <p>Any disputes arising from these Terms or use of our services shall be resolved through:</p>
+        <ol>
+            <li>Good faith negotiation between parties</li>
+            <li>Mediation if negotiation fails</li>
+            <li>Binding arbitration if mediation is unsuccessful</li>
+        </ol>
+
+        <h2>16. Contact Information</h2>
+        <p>If you have questions about these Terms of Service, please contact us:</p>
+        <div class="highlight-box">
+            <p><strong>📧 Email:</strong> support@rkiehsolutions.com</p>
+            <p><strong>🌐 Website:</strong> www.rkiehsolutions.com</p>
+            <p><strong>⏰ Support Hours:</strong> Monday - Friday, 9 AM - 6 PM</p>
+        </div>
+
+        <h2>17. Entire Agreement</h2>
+        <p>These Terms of Service, together with our Privacy Policy, constitute the entire agreement between you and RKIEH Solutions regarding use of our services.</p>
+
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="/signup" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Sign Up
+            </a>
+            <a href="/" class="back-btn" style="margin-left: 15px; background: linear-gradient(135deg, #4CAF50, #66BB6A);">
+                <i class="fas fa-home"></i> Go Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

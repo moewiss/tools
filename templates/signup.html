@@ -1,0 +1,527 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - RKIEH Solutions{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16162b 50%, #1a1a2e 100%);
+    }
+
+    .auth-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 51, 51, 0.3);
+        border-radius: 20px;
+        padding: 40px;
+        max-width: 500px;
+        width: 100%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .auth-logo {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 40px;
+        box-shadow: 0 10px 30px rgba(255, 51, 51, 0.4);
+    }
+
+    .auth-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .auth-subtitle {
+        color: #aaa;
+        font-size: 16px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        color: #fff;
+        font-weight: 600;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 15px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 12px;
+        color: #fff;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #ff3333;
+        background: rgba(255, 51, 51, 0.1);
+        box-shadow: 0 0 20px rgba(255, 51, 51, 0.3);
+    }
+
+    .form-group input::placeholder {
+        color: #666;
+    }
+
+    .password-toggle {
+        position: relative;
+    }
+
+    .password-toggle-btn {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #aaa;
+        cursor: pointer;
+        font-size: 18px;
+        transition: color 0.3s;
+    }
+
+    .password-toggle-btn:hover {
+        color: #ff3333;
+    }
+
+    .password-strength {
+        margin-top: 8px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    .password-strength-bar {
+        height: 100%;
+        width: 0%;
+        transition: all 0.3s;
+    }
+
+    .password-strength-text {
+        font-size: 12px;
+        margin-top: 5px;
+        color: #aaa;
+    }
+
+    .terms-checkbox {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 25px;
+        color: #aaa;
+        font-size: 14px;
+    }
+
+    .terms-checkbox input {
+        margin-top: 3px;
+        cursor: pointer;
+    }
+
+    .terms-checkbox a {
+        color: #ff3333;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .terms-checkbox a:hover {
+        color: #ff6666;
+    }
+
+    .btn-auth {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #ff3333, #ff6666);
+        border: none;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 10px 30px rgba(255, 51, 51, 0.4);
+    }
+
+    .btn-auth:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 40px rgba(255, 51, 51, 0.6);
+    }
+
+    .btn-auth:active {
+        transform: translateY(0);
+    }
+
+    .btn-auth:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin: 25px 0;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: rgba(255, 51, 51, 0.2);
+    }
+
+    .social-login {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .social-btn {
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(255, 51, 51, 0.3);
+        border-radius: 12px;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .social-btn:hover {
+        background: rgba(255, 51, 51, 0.1);
+        border-color: #ff3333;
+        transform: translateY(-2px);
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 25px;
+        color: #aaa;
+        font-size: 14px;
+    }
+
+    .auth-footer a {
+        color: #ff3333;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
+    }
+
+    .auth-footer a:hover {
+        color: #ff6666;
+    }
+
+    .alert {
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        display: none;
+    }
+
+    .alert-error {
+        background: rgba(255, 51, 51, 0.1);
+        border: 2px solid #ff3333;
+        color: #ff6666;
+    }
+
+    .alert-success {
+        background: rgba(76, 175, 80, 0.1);
+        border: 2px solid #4CAF50;
+        color: #4CAF50;
+    }
+
+    .name-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    @media (max-width: 768px) {
+        .auth-card {
+            padding: 30px 20px;
+        }
+
+        .auth-title {
+            font-size: 26px;
+        }
+
+        .name-group {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .social-login {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">
+                🚀
+            </div>
+            <h1 class="auth-title">Create Account</h1>
+            <p class="auth-subtitle">Join RKIEH Solutions today!</p>
+        </div>
+
+        <div id="alert-container"></div>
+
+        <form id="signup-form">
+            <div class="name-group">
+                <div class="form-group">
+                    <label for="first-name">
+                        <i class="fas fa-user"></i> First Name
+                    </label>
+                    <input type="text" id="first-name" name="first_name" placeholder="John" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="last-name">
+                        Last Name
+                    </label>
+                    <input type="text" id="last-name" name="last_name" placeholder="Doe" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">
+                    <i class="fas fa-envelope"></i> Email Address
+                </label>
+                <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">
+                    <i class="fas fa-lock"></i> Password
+                </label>
+                <div class="password-toggle">
+                    <input type="password" id="password" name="password" placeholder="Create a strong password" required minlength="8" oninput="checkPasswordStrength()">
+                    <button type="button" class="password-toggle-btn" onclick="togglePassword('password')">
+                        <i class="fas fa-eye" id="toggle-icon-password"></i>
+                    </button>
+                </div>
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="strength-bar"></div>
+                </div>
+                <div class="password-strength-text" id="strength-text"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">
+                    <i class="fas fa-lock"></i> Confirm Password
+                </label>
+                <div class="password-toggle">
+                    <input type="password" id="confirm-password" name="confirm_password" placeholder="Re-enter your password" required>
+                    <button type="button" class="password-toggle-btn" onclick="togglePassword('confirm-password')">
+                        <i class="fas fa-eye" id="toggle-icon-confirm-password"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="terms-checkbox">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">
+                    I agree to the <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-auth">
+                <i class="fas fa-user-plus"></i> Create Account
+            </button>
+        </form>
+
+        <div class="divider">OR</div>
+
+        <div class="social-login">
+            <button class="social-btn" onclick="alert('Google signup coming soon!')">
+                <i class="fab fa-google"></i> Google
+            </button>
+            <button class="social-btn" onclick="alert('GitHub signup coming soon!')">
+                <i class="fab fa-github"></i> GitHub
+            </button>
+        </div>
+
+        <div class="auth-footer">
+            Already have an account? <a href="/login">Login</a>
+        </div>
+
+        <div class="auth-footer" style="margin-top: 15px;">
+            <a href="/">← Back to Home</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function togglePassword(inputId) {
+    const passwordInput = document.getElementById(inputId);
+    const toggleIcon = document.getElementById(`toggle-icon-${inputId}`);
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.className = 'fas fa-eye-slash';
+    } else {
+        passwordInput.type = 'password';
+        toggleIcon.className = 'fas fa-eye';
+    }
+}
+
+function checkPasswordStrength() {
+    const password = document.getElementById('password').value;
+    const strengthBar = document.getElementById('strength-bar');
+    const strengthText = document.getElementById('strength-text');
+    
+    let strength = 0;
+    let text = '';
+    let color = '';
+    
+    if (password.length >= 8) strength += 25;
+    if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 25;
+    if (password.match(/[0-9]/)) strength += 25;
+    if (password.match(/[^a-zA-Z0-9]/)) strength += 25;
+    
+    if (strength === 0) {
+        text = '';
+        color = '';
+    } else if (strength <= 25) {
+        text = 'Weak password';
+        color = '#ff3333';
+    } else if (strength <= 50) {
+        text = 'Fair password';
+        color = '#ff9800';
+    } else if (strength <= 75) {
+        text = 'Good password';
+        color = '#ffeb3b';
+    } else {
+        text = 'Strong password';
+        color = '#4CAF50';
+    }
+    
+    strengthBar.style.width = strength + '%';
+    strengthBar.style.background = color;
+    strengthText.textContent = text;
+    strengthText.style.color = color;
+}
+
+// Verification removed - direct signup
+
+document.getElementById('signup-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const firstName = document.getElementById('first-name').value;
+    const lastName = document.getElementById('last-name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+    const terms = document.getElementById('terms').checked;
+    
+    // Validation
+    if (password !== confirmPassword) {
+        showAlert('error', 'Passwords do not match!');
+        return;
+    }
+    
+    if (!terms) {
+        showAlert('error', 'Please accept the Terms of Service and Privacy Policy');
+        return;
+    }
+    
+    if (password.length < 8) {
+        showAlert('error', 'Password must be at least 8 characters long');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
+                password: password
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            showAlert('success', '✅ Account created successfully! Redirecting to login...');
+            setTimeout(() => {
+                window.location.href = '/login?registered=true';
+            }, 2000);
+        } else {
+            showAlert('error', data.error || 'Signup failed. Please try again.');
+        }
+    } catch (error) {
+        showAlert('error', 'Network error. Please try again.');
+    }
+});
+
+function showAlert(type, message) {
+    const container = document.getElementById('alert-container');
+    container.innerHTML = `
+        <div class="alert alert-${type}">
+            <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i>
+            ${message}
+        </div>
+    `;
+    container.querySelector('.alert').style.display = 'block';
+    
+    if (type === 'success') {
+        setTimeout(() => {
+            container.querySelector('.alert').style.display = 'none';
+        }, 3000);
+    }
+}
+
+// Show registration success message if redirected from signup
+window.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('registered') === 'true') {
+        showAlert('success', 'Account created successfully! Please login.');
+    }
+});
+</script>
+{% endblock %}
+

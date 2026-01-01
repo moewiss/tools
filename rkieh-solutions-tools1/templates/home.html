@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+
+{% block title %}RKIEH Solutions - Professional Media Tools{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-background"></div>
+    <div class="hero-content">
+        <div class="hero-logo">
+            <i class="fas fa-cube"></i>
+        </div>
+        <h1 class="hero-title">
+            Welcome to <span class="highlight">RKIEH</span> Solutions
+        </h1>
+        <p class="hero-subtitle">
+            Professional Tools Suite for Media Processing & Conversion
+        </p>
+        <p class="hero-description">
+            Powerful, fast, and reliable tools designed for professionals and enthusiasts
+        </p>
+        <div class="hero-buttons">
+            <a href="/tools" class="btn btn-primary btn-large">
+                <i class="fas fa-tools"></i> Explore Tools
+            </a>
+            <a href="/about" class="btn btn-secondary btn-large">
+                <i class="fas fa-info-circle"></i> Learn More
+            </a>
+        </div>
+        
+        <div class="hero-stats">
+            <div class="stat-item">
+                <i class="fas fa-check-circle"></i>
+                <div class="stat-number">2</div>
+                <div class="stat-label">Active Tools</div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-bolt"></i>
+                <div class="stat-number">Fast</div>
+                <div class="stat-label">Processing</div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-shield-alt"></i>
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Secure</div>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-server"></i>
+                <div class="stat-number">WSL</div>
+                <div class="stat-label">Ubuntu Server</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Tool Section -->
+<section class="featured-section">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-star"></i> Featured Tool</h2>
+            <p>Our most powerful and popular tool</p>
+        </div>
+        
+        <div class="featured-tool">
+            <div class="tool-showcase">
+                <div class="tool-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <h3>Media Converter Pro</h3>
+                <p class="tool-tagline">Convert between audio and video formats with ease</p>
+                
+                <div class="tool-features">
+                    <div class="feature-badge">
+                        <i class="fas fa-video"></i> Video → Audio
+                    </div>
+                    <div class="feature-badge">
+                        <i class="fas fa-music"></i> Audio → Video
+                    </div>
+                    <div class="feature-badge">
+                        <i class="fas fa-layer-group"></i> Batch Processing
+                    </div>
+                    <div class="feature-badge">
+                        <i class="fas fa-folder"></i> Folder Upload
+                    </div>
+                    <div class="feature-badge">
+                        <i class="fas fa-file-archive"></i> ZIP Download
+                    </div>
+                    <div class="feature-badge">
+                        <i class="fas fa-tachometer-alt"></i> Real-time Progress
+                    </div>
+                </div>
+                
+                <a href="/tool/media-converter" class="btn btn-primary btn-large">
+                    <i class="fas fa-rocket"></i> Launch Tool
+                </a>
+            </div>
+            
+            <div class="tool-preview">
+                <div class="preview-card">
+                    <div class="preview-header">
+                        <i class="fas fa-code"></i>
+                        <span>Supported Formats</span>
+                    </div>
+                    <div class="formats-grid">
+                        <div class="format-item">
+                            <i class="fas fa-file-video"></i>
+                            <span>MP4</span>
+                        </div>
+                        <div class="format-item">
+                            <i class="fas fa-file-video"></i>
+                            <span>MKV</span>
+                        </div>
+                        <div class="format-item">
+                            <i class="fas fa-file-video"></i>
+                            <span>AVI</span>
+                        </div>
+                        <div class="format-item">
+                            <i class="fas fa-file-audio"></i>
+                            <span>MP3</span>
+                        </div>
+                        <div class="format-item">
+                            <i class="fas fa-file-audio"></i>
+                            <span>M4A</span>
+                        </div>
+                        <div class="format-item">
+                            <i class="fas fa-file-audio"></i>
+                            <span>WAV</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="preview-card">
+                    <div class="preview-header">
+                        <i class="fas fa-bolt"></i>
+                        <span>Key Features</span>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Multi-file batch conversion</li>
+                        <li><i class="fas fa-check"></i> Drag & drop interface</li>
+                        <li><i class="fas fa-check"></i> Quality selection (128k-320k)</li>
+                        <li><i class="fas fa-check"></i> No audio loss guarantee</li>
+                        <li><i class="fas fa-check"></i> Parallel processing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Second Tool Section -->
+<section class="featured-section">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-fire"></i> New Tool: Watermark Remover</h2>
+            <p>Remove watermarks using classical image processing</p>
+        </div>
+        
+        <div class="featured-tool">
+            <div class="tool-showcase">
+                <div class="tool-icon">
+                    <i class="fas fa-eraser"></i>
+                </div>
+                <h3>Classic Watermark Removal</h3>
+                <p class="tool-tagline">Remove simple watermarks without AI or GPUs</p>
+                
+                <div class="tool-features">
+                    <div class="feature-badge">
+                        <i class="fas fa-shield-alt"></i> Privacy First
+                    </div>
+                    <div class="feature-badge">
+                        <i class="fas fa-bolt"></i> No AI Required
+                    </div>
+                    <div class="feature-badge">
+                        <i class="fas fa-paint-brush"></i> Manual Selection
+                    </div>
+                    <div class="feature-badge">
+                        <i class="fas fa-infinity"></i> Unlimited Use
+                    </div>
+                    <div class="feature-badge">
+                        <i class="fas fa-check-circle"></i> Classical Algorithms
+                    </div>
+                    <div class="feature-badge">
+                        <i class="fas fa-tachometer-alt"></i> Instant Processing
+                    </div>
+                </div>
+                
+                <a href="/tool/watermark-remover" class="btn btn-primary btn-large">
+                    <i class="fas fa-rocket"></i> Try It Now
+                </a>
+            </div>
+            
+            <div class="tool-preview">
+                <div class="preview-card">
+                    <div class="preview-header">
+                        <i class="fas fa-check-double"></i>
+                        <span>Best For</span>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Transparent text watermarks</li>
+                        <li><i class="fas fa-check"></i> Small logo overlays</li>
+                        <li><i class="fas fa-check"></i> Simple backgrounds</li>
+                        <li><i class="fas fa-check"></i> Repeated patterns</li>
+                        <li><i class="fas fa-check"></i> Quick image cleanup</li>
+                    </ul>
+                </div>
+                
+                <div class="preview-card">
+                    <div class="preview-header">
+                        <i class="fas fa-info-circle"></i>
+                        <span>How It Works</span>
+                    </div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-upload"></i> Upload your image</li>
+                        <li><i class="fas fa-paint-brush"></i> Mark watermark areas</li>
+                        <li><i class="fas fa-magic"></i> Classical inpainting</li>
+                        <li><i class="fas fa-download"></i> Download result</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Coming Soon Section -->
+<section class="coming-soon-section">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-rocket"></i> More Coming Soon</h2>
+            <p>Exciting new tools in development</p>
+        </div>
+        
+        <div class="tools-grid">
+            <div class="tool-card coming-soon">
+                <div class="card-icon">
+                    <i class="fas fa-image"></i>
+                </div>
+                <h3>Image Converter</h3>
+                <p>Convert between image formats, resize, and optimize</p>
+                <span class="coming-badge">Coming Soon</span>
+            </div>
+            
+            <div class="tool-card coming-soon">
+                <div class="card-icon">
+                    <i class="fas fa-compress"></i>
+                </div>
+                <h3>File Compressor</h3>
+                <p>Compress files and create archives efficiently</p>
+                <span class="coming-badge">Coming Soon</span>
+            </div>
+            
+            <div class="tool-card coming-soon">
+                <div class="card-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <h3>PDF Tools</h3>
+                <p>Merge, split, and convert PDF documents</p>
+                <span class="coming-badge">Coming Soon</span>
+            </div>
+            
+            <div class="tool-card coming-soon">
+                <div class="card-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Code Formatter</h3>
+                <p>Format and beautify code in multiple languages</p>
+                <span class="coming-badge">Coming Soon</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <h2><i class="fas fa-sparkles"></i> Why Choose RKIEH Solutions?</h2>
+            <p>Built with performance and reliability in mind</p>
+        </div>
+        
+        <div class="features-grid-large">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Lightning Fast</h3>
+                <p>Optimized algorithms and parallel processing ensure rapid conversion speeds</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure & Private</h3>
+                <p>All processing happens locally. Your files never leave your network</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Responsive Design</h3>
+                <p>Works perfectly on desktop, tablet, and mobile devices</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h3>Professional Grade</h3>
+                <p>Enterprise-level quality suitable for professional workflows</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-infinity"></i>
+                </div>
+                <h3>No Limits</h3>
+                <p>Convert unlimited files without restrictions or subscriptions</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>Open Source</h3>
+                <p>Built with transparency and community contributions in mind</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="cta-content">
+        <h2>Ready to Get Started?</h2>
+        <p>Experience professional-grade media tools right now</p>
+        <a href="/tools" class="btn btn-primary btn-large">
+            <i class="fas fa-rocket"></i> Explore All Tools
+        </a>
+    </div>
+</section>
+{% endblock %}
+
